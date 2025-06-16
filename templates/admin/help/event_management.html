@@ -1,0 +1,181 @@
+{% extends "admin/help/help_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} - SOI Hub Help{% endblock %}
+
+{% block help_content %}
+<div class="help-content">
+    <div class="help-header">
+        <h1><i class="fas fa-calendar-alt"></i> {{ title }}</h1>
+        <p class="help-description">
+            Learn how to create, manage, and coordinate events for ISG 2026 using the SOI Hub system.
+        </p>
+    </div>
+
+    <div class="help-stats">
+        <div class="stat-card">
+            <h3>{{ total_events|default:"0" }}</h3>
+            <p>Total Events</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ active_events|default:"0" }}</h3>
+            <p>Active Events</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ upcoming_events|default:"0" }}</h3>
+            <p>Upcoming Events</p>
+        </div>
+    </div>
+
+    <div class="help-sections">
+        <section class="help-section">
+            <h2><i class="fas fa-plus-circle"></i> Creating New Events</h2>
+            <div class="help-content-block">
+                <h3>Event Creation Process</h3>
+                <ol>
+                    <li>Navigate to <strong>Events</strong> in the admin panel</li>
+                    <li>Click <strong>"Add Event"</strong> button</li>
+                    <li>Fill in basic event information:
+                        <ul>
+                            <li>Event name and description</li>
+                            <li>Event type (Competition, Training, Ceremony, etc.)</li>
+                            <li>Start and end dates/times</li>
+                            <li>Primary venue</li>
+                        </ul>
+                    </li>
+                    <li>Configure event settings and requirements</li>
+                    <li>Set volunteer requirements and roles needed</li>
+                    <li>Save and publish the event</li>
+                </ol>
+
+                <div class="help-tip">
+                    <strong>💡 Tip:</strong> Create events well in advance to allow time for volunteer recruitment and planning.
+                </div>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-cogs"></i> Event Configuration</h2>
+            <div class="help-content-block">
+                <h3>Event Settings</h3>
+                <ul>
+                    <li><strong>Status Management:</strong> Draft, Published, Active, Completed, Cancelled</li>
+                    <li><strong>Visibility:</strong> Public, Private, or Restricted access</li>
+                    <li><strong>Registration:</strong> Open, Closed, or Invitation-only</li>
+                    <li><strong>Capacity Limits:</strong> Maximum participants and volunteers</li>
+                    <li><strong>Requirements:</strong> Age restrictions, qualifications, equipment</li>
+                </ul>
+
+                <h3>Advanced Configuration</h3>
+                <ul>
+                    <li><strong>Multi-day Events:</strong> Configure sessions and schedules</li>
+                    <li><strong>Recurring Events:</strong> Set up repeating event patterns</li>
+                    <li><strong>Sub-events:</strong> Create related or dependent events</li>
+                    <li><strong>Integration Settings:</strong> Connect with external systems</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-users"></i> Volunteer Management</h2>
+            <div class="help-content-block">
+                <h3>Role Assignment</h3>
+                <ol>
+                    <li>Define roles needed for the event</li>
+                    <li>Set capacity limits for each role</li>
+                    <li>Specify qualifications and requirements</li>
+                    <li>Assign volunteers to roles</li>
+                    <li>Monitor assignment status and availability</li>
+                </ol>
+
+                <h3>Volunteer Communication</h3>
+                <ul>
+                    <li><strong>Bulk Messaging:</strong> Send updates to all event volunteers</li>
+                    <li><strong>Role-specific Messages:</strong> Target specific volunteer groups</li>
+                    <li><strong>Automated Reminders:</strong> Set up automatic notifications</li>
+                    <li><strong>Check-in System:</strong> Track volunteer attendance</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-map-marker-alt"></i> Venue & Logistics</h2>
+            <div class="help-content-block">
+                <h3>Venue Management</h3>
+                <ul>
+                    <li><strong>Primary Venue:</strong> Main event location</li>
+                    <li><strong>Additional Venues:</strong> Secondary locations if needed</li>
+                    <li><strong>Capacity Planning:</strong> Ensure venue can accommodate event</li>
+                    <li><strong>Accessibility:</strong> Verify accessibility requirements are met</li>
+                </ul>
+
+                <h3>Logistics Coordination</h3>
+                <ul>
+                    <li><strong>Equipment Lists:</strong> Track required equipment and supplies</li>
+                    <li><strong>Setup/Breakdown:</strong> Schedule setup and cleanup activities</li>
+                    <li><strong>Transportation:</strong> Coordinate volunteer and equipment transport</li>
+                    <li><strong>Emergency Planning:</strong> Prepare contingency plans</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-chart-line"></i> Monitoring & Reporting</h2>
+            <div class="help-content-block">
+                <h3>Event Analytics</h3>
+                <ul>
+                    <li><strong>Registration Tracking:</strong> Monitor sign-up progress</li>
+                    <li><strong>Volunteer Metrics:</strong> Track volunteer engagement and attendance</li>
+                    <li><strong>Capacity Utilization:</strong> Monitor venue and role capacity</li>
+                    <li><strong>Performance Indicators:</strong> Key metrics for event success</li>
+                </ul>
+
+                <h3>Reporting Tools</h3>
+                <ul>
+                    <li><strong>Event Summary Reports:</strong> Comprehensive event overview</li>
+                    <li><strong>Volunteer Reports:</strong> Detailed volunteer participation data</li>
+                    <li><strong>Financial Reports:</strong> Budget tracking and expense reports</li>
+                    <li><strong>Custom Reports:</strong> Create tailored reports for specific needs</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-exclamation-triangle"></i> Common Issues & Solutions</h2>
+            <div class="help-content-block">
+                <div class="faq-item">
+                    <h4>Q: Event not showing up for volunteer registration</h4>
+                    <p>A: Check that the event status is "Published" and registration is "Open". Verify the event date is in the future.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: Volunteer assignments not saving</h4>
+                    <p>A: Ensure the volunteer meets the role requirements and the role hasn't reached capacity. Check for conflicting assignments.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: How to handle event cancellation</h4>
+                    <p>A: Change event status to "Cancelled", notify all registered volunteers, and update any dependent events or bookings.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: Venue double-booking issues</h4>
+                    <p>A: Use the venue calendar to check availability before creating events. The system will warn about conflicts.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="help-actions">
+        <a href="{% url 'admin:events_event_changelist' %}" class="btn btn-primary">
+            <i class="fas fa-calendar-alt"></i> Manage Events
+        </a>
+        <a href="{% url 'admin:events_venue_changelist' %}" class="btn btn-secondary">
+            <i class="fas fa-map-marker-alt"></i> Manage Venues
+        </a>
+        <a href="{% url 'help:index' %}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Back to Help
+        </a>
+    </div>
+</div>
+{% endblock %} 

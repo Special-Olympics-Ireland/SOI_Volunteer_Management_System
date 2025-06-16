@@ -1,0 +1,232 @@
+{% extends "admin/help/help_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} - SOI Hub Help{% endblock %}
+
+{% block help_content %}
+<div class="help-content">
+    <div class="help-header">
+        <h1><i class="fas fa-users"></i> {{ title }}</h1>
+        <p class="help-description">
+            Learn how to manage users, roles, and permissions in the SOI Hub volunteer management system.
+        </p>
+    </div>
+
+    <div class="help-stats">
+        <div class="stat-card">
+            <h3>{{ total_users }}</h3>
+            <p>Total Users</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ pending_users }}</h3>
+            <p>Pending Approval</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ user_types|length }}</h3>
+            <p>User Types</p>
+        </div>
+    </div>
+
+    <div class="help-sections">
+        <section class="help-section">
+            <h2><i class="fas fa-user-plus"></i> Creating New Users</h2>
+            <div class="help-content-block">
+                <h3>Adding Users Manually</h3>
+                <ol>
+                    <li>Navigate to <strong>Users</strong> in the admin panel</li>
+                    <li>Click <strong>"Add User"</strong> button</li>
+                    <li>Fill in required information:
+                        <ul>
+                            <li>Username (unique identifier)</li>
+                            <li>Email address</li>
+                            <li>First and last name</li>
+                            <li>User type (see types below)</li>
+                        </ul>
+                    </li>
+                    <li>Set initial password or send invitation email</li>
+                    <li>Configure permissions and group memberships</li>
+                    <li>Save the user account</li>
+                </ol>
+
+                <div class="help-tip">
+                    <strong>💡 Tip:</strong> Use strong passwords and encourage users to change them on first login.
+                </div>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-user-tag"></i> User Types & Roles</h2>
+            <div class="help-content-block">
+                <h3>Available User Types</h3>
+                <div class="user-types-grid">
+                    {% for value, label in user_types %}
+                    <div class="user-type-card">
+                        <h4>{{ label }}</h4>
+                        <p>
+                            {% if value == 'VOLUNTEER' %}
+                                Standard volunteers participating in ISG 2026 events
+                            {% elif value == 'STAFF' %}
+                                SOI staff members with administrative access
+                            {% elif value == 'VMT' %}
+                                Volunteer Management Team with volunteer oversight
+                            {% elif value == 'CVT' %}
+                                Corporate Volunteer Team managing corporate volunteers
+                            {% elif value == 'GOC' %}
+                                Games Organizing Committee with full event access
+                            {% elif value == 'ADMIN' %}
+                                System administrators with full access
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-user-check"></i> User Approval Process</h2>
+            <div class="help-content-block">
+                <h3>Approving New Users</h3>
+                <ol>
+                    <li>Review pending user applications in the <strong>Users</strong> section</li>
+                    <li>Verify user information and documentation</li>
+                    <li>Check background verification status (if required)</li>
+                    <li>Assign appropriate user type and permissions</li>
+                    <li>Click <strong>"Approve"</strong> to activate the account</li>
+                    <li>Send welcome email with login instructions</li>
+                </ol>
+
+                <div class="help-warning">
+                    <strong>⚠️ Important:</strong> Always verify user identity before approval, especially for staff and management roles.
+                </div>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-key"></i> Permissions & Access Control</h2>
+            <div class="help-content-block">
+                <h3>Managing User Permissions</h3>
+                <ul>
+                    <li><strong>Group Permissions:</strong> Assign users to groups with predefined permissions</li>
+                    <li><strong>Individual Permissions:</strong> Grant specific permissions to individual users</li>
+                    <li><strong>Role-Based Access:</strong> Use user types to automatically assign appropriate permissions</li>
+                    <li><strong>Temporary Access:</strong> Grant time-limited access for specific events or tasks</li>
+                </ul>
+
+                <h3>Common Permission Groups</h3>
+                <ul>
+                    <li><strong>Volunteer Managers:</strong> Can view and manage volunteer profiles</li>
+                    <li><strong>Event Coordinators:</strong> Can create and manage events</li>
+                    <li><strong>Venue Managers:</strong> Can manage venue information and assignments</li>
+                    <li><strong>Report Viewers:</strong> Can access reports and analytics</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-search"></i> Finding & Managing Users</h2>
+            <div class="help-content-block">
+                <h3>Search and Filter Options</h3>
+                <ul>
+                    <li><strong>Quick Search:</strong> Search by name, email, or username</li>
+                    <li><strong>Filter by Type:</strong> Show only specific user types</li>
+                    <li><strong>Status Filters:</strong> Active, inactive, pending approval</li>
+                    <li><strong>Date Filters:</strong> Recently created, last login, etc.</li>
+                </ul>
+
+                <h3>Bulk Operations</h3>
+                <ul>
+                    <li>Select multiple users using checkboxes</li>
+                    <li>Apply bulk actions: activate, deactivate, send emails</li>
+                    <li>Export user lists to CSV for external processing</li>
+                    <li>Bulk permission changes for groups of users</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-shield-alt"></i> Security Best Practices</h2>
+            <div class="help-content-block">
+                <ul>
+                    <li><strong>Regular Reviews:</strong> Periodically review user accounts and permissions</li>
+                    <li><strong>Deactivate Unused Accounts:</strong> Disable accounts that haven't been used recently</li>
+                    <li><strong>Monitor Login Activity:</strong> Check for suspicious login patterns</li>
+                    <li><strong>Two-Factor Authentication:</strong> Enable 2FA for administrative accounts</li>
+                    <li><strong>Password Policies:</strong> Enforce strong password requirements</li>
+                    <li><strong>Access Logging:</strong> Monitor who accesses what data and when</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-question-circle"></i> Common Issues & Solutions</h2>
+            <div class="help-content-block">
+                <div class="faq-item">
+                    <h4>Q: User can't log in after approval</h4>
+                    <p>A: Check that the account is active and the user has the correct login credentials. Verify email address is correct for password reset.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: User doesn't see expected menu options</h4>
+                    <p>A: Review user permissions and group memberships. Ensure they have the correct user type assigned.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: How to handle duplicate user accounts</h4>
+                    <p>A: Merge accounts by transferring data to the primary account, then deactivate the duplicate. Contact IT support for complex merges.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: User forgot password</h4>
+                    <p>A: Use the "Reset Password" function in the user's profile, or have them use the "Forgot Password" link on the login page.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="help-actions">
+        <a href="{% url 'admin:accounts_user_changelist' %}" class="btn btn-primary">
+            <i class="fas fa-users"></i> Manage Users
+        </a>
+        <a href="{% url 'admin:auth_group_changelist' %}" class="btn btn-secondary">
+            <i class="fas fa-users-cog"></i> Manage Groups
+        </a>
+        <a href="{% url 'help:index' %}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Back to Help
+        </a>
+    </div>
+</div>
+
+<style>
+.user-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.user-type-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.user-type-card h4 {
+    color: #2E7D32;
+    margin-bottom: 0.5rem;
+}
+
+.faq-item {
+    background: #f8f9fa;
+    border-left: 4px solid #2E7D32;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.faq-item h4 {
+    color: #2E7D32;
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %} 

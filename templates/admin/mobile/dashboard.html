@@ -1,0 +1,355 @@
+{% extends "admin/mobile_admin.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | SOI Hub Admin{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style>
+        .mobile-dashboard {
+            padding: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-button {
+            background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .action-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .recent-activity {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .activity-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f5e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2E7D32;
+            font-size: 1.2rem;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .activity-time {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2E7D32;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="mobile-dashboard">
+    <!-- Statistics Overview -->
+    <div class="section-title">
+        <span>📊</span> Dashboard Overview
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.total_volunteers }}</div>
+            <div class="stat-label">Total Volunteers</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.active_events }}</div>
+            <div class="stat-label">Active Events</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.pending_assignments }}</div>
+            <div class="stat-label">Pending Assignments</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.overdue_tasks }}</div>
+            <div class="stat-label">Overdue Tasks</div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="section-title">
+        <span>⚡</span> Quick Actions
+    </div>
+    
+    <div class="quick-actions">
+        <a href="{% url 'mobile_admin:volunteer_list' %}" class="action-button">
+            <div class="action-icon">👥</div>
+            <div>Volunteers</div>
+        </a>
+        
+        <a href="/admin/events/event/" class="action-button">
+            <div class="action-icon">📅</div>
+            <div>Events</div>
+        </a>
+        
+        <a href="/admin/events/assignment/" class="action-button">
+            <div class="action-icon">📋</div>
+            <div>Assignments</div>
+        </a>
+        
+        <a href="/admin/tasks/task/" class="action-button">
+            <div class="action-icon">✅</div>
+            <div>Tasks</div>
+        </a>
+        
+        <a href="/admin/reporting/report/" class="action-button">
+            <div class="action-icon">📊</div>
+            <div>Reports</div>
+        </a>
+        
+        <a href="/admin/common/adminoverride/" class="action-button">
+            <div class="action-icon">🔧</div>
+            <div>Overrides</div>
+        </a>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div class="section-title">
+        <span>🕒</span> Recent Activity
+    </div>
+    
+    <div class="recent-activity">
+        {% if recent_activity %}
+            {% for activity in recent_activity %}
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        {% if activity.action == 'USER_LOGIN' %}🔐
+                        {% elif activity.action == 'VOLUNTEER_CREATED' %}👤
+                        {% elif activity.action == 'EVENT_CREATED' %}📅
+                        {% elif activity.action == 'ASSIGNMENT_CREATED' %}📋
+                        {% elif activity.action == 'TASK_COMPLETED' %}✅
+                        {% elif activity.action == 'ADMIN_OVERRIDE_CREATED' %}🔧
+                        {% else %}📝{% endif %}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">
+                            {{ activity.action|title|replace:"_":" " }}
+                        </div>
+                        <div class="activity-time">
+                            {{ activity.timestamp|timesince }} ago
+                            {% if activity.user %}by {{ activity.user.get_full_name }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="activity-item">
+                <div class="activity-icon">ℹ️</div>
+                <div class="activity-content">
+                    <div class="activity-title">No recent activity</div>
+                    <div class="activity-time">System is ready for use</div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Mobile-specific help -->
+    <div class="recent-activity" style="margin-top: 2rem;">
+        <div class="section-title">
+            <span>💡</span> Mobile Tips
+        </div>
+        
+        <div class="activity-item">
+            <div class="activity-icon">📱</div>
+            <div class="activity-content">
+                <div class="activity-title">Touch-Friendly Interface</div>
+                <div class="activity-time">All buttons are optimized for touch interaction</div>
+            </div>
+        </div>
+        
+        <div class="activity-item">
+            <div class="activity-icon">🔄</div>
+            <div class="activity-content">
+                <div class="activity-title">Pull to Refresh</div>
+                <div class="activity-time">Pull down on lists to refresh data</div>
+            </div>
+        </div>
+        
+        <div class="activity-item">
+            <div class="activity-icon">👆</div>
+            <div class="activity-content">
+                <div class="activity-title">Swipe Navigation</div>
+                <div class="activity-time">Swipe left/right on pagination controls</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Auto-refresh functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-refresh stats every 30 seconds
+    setInterval(function() {
+        fetch('{% url "mobile_admin:stats_api" %}')
+            .then(response => response.json())
+            .then(data => {
+                // Update stat cards
+                document.querySelector('.stats-grid .stat-card:nth-child(1) .stat-number').textContent = data.volunteers.total;
+                document.querySelector('.stats-grid .stat-card:nth-child(2) .stat-number').textContent = data.events.active;
+                document.querySelector('.stats-grid .stat-card:nth-child(3) .stat-number').textContent = data.assignments.pending;
+                document.querySelector('.stats-grid .stat-card:nth-child(4) .stat-number').textContent = data.tasks.overdue;
+            })
+            .catch(error => console.log('Stats refresh failed:', error));
+    }, 30000);
+    
+    // Add haptic feedback to action buttons
+    document.querySelectorAll('.action-button').forEach(button => {
+        button.addEventListener('touchstart', function() {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(10);
+            }
+        });
+    });
+    
+    // Add pull-to-refresh functionality
+    let startY = 0;
+    let pullDistance = 0;
+    const pullThreshold = 100;
+    
+    document.addEventListener('touchstart', function(e) {
+        startY = e.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchmove', function(e) {
+        if (window.scrollY === 0) {
+            pullDistance = e.touches[0].clientY - startY;
+            
+            if (pullDistance > 0 && pullDistance < pullThreshold) {
+                document.getElementById('pull-to-refresh').style.opacity = pullDistance / pullThreshold;
+            }
+        }
+    });
+    
+    document.addEventListener('touchend', function(e) {
+        if (pullDistance > pullThreshold) {
+            document.getElementById('pull-to-refresh').textContent = 'Refreshing...';
+            document.getElementById('pull-to-refresh').style.opacity = 1;
+            
+            // Refresh the page
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
+        } else {
+            document.getElementById('pull-to-refresh').style.opacity = 0;
+        }
+        
+        pullDistance = 0;
+    });
+});
+</script>
+{% endblock %} 

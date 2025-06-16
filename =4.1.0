@@ -1,0 +1,16 @@
+Collecting channels
+  Downloading channels-4.2.2-py3-none-any.whl.metadata (4.6 kB)
+Collecting channels-redis
+  Downloading channels_redis-4.2.1-py3-none-any.whl.metadata (12 kB)
+Requirement already satisfied: Django>=4.2 in ./venv/lib/python3.12/site-packages (from channels) (5.0.14)
+Requirement already satisfied: asgiref<4,>=3.6.0 in ./venv/lib/python3.12/site-packages (from channels) (3.8.1)
+Requirement already satisfied: redis>=4.6 in ./venv/lib/python3.12/site-packages (from channels-redis) (6.2.0)
+Collecting msgpack~=1.0 (from channels-redis)
+  Downloading msgpack-1.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (8.4 kB)
+Requirement already satisfied: sqlparse>=0.3.1 in ./venv/lib/python3.12/site-packages (from Django>=4.2->channels) (0.5.3)
+Downloading channels-4.2.2-py3-none-any.whl (31 kB)
+Downloading channels_redis-4.2.1-py3-none-any.whl (20 kB)
+Downloading msgpack-1.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (426 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 426.9/426.9 kB 11.0 MB/s eta 0:00:00
+Installing collected packages: msgpack, channels, channels-redis
+Successfully installed channels-4.2.2 channels-redis-4.2.1 msgpack-1.1.1

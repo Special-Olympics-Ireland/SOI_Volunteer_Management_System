@@ -1,0 +1,236 @@
+{% extends "admin/help/help_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} - SOI Hub Help{% endblock %}
+
+{% block help_content %}
+<div class="help-content">
+    <div class="help-header">
+        <h1><i class="fas fa-tasks"></i> {{ title }}</h1>
+        <p class="help-description">
+            Learn how to create, assign, and track tasks for volunteers in the SOI Hub system.
+        </p>
+    </div>
+
+    <div class="help-stats">
+        <div class="stat-card">
+            <h3>{{ total_tasks|default:"0" }}</h3>
+            <p>Total Tasks</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ active_tasks|default:"0" }}</h3>
+            <p>Active Tasks</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ completed_tasks|default:"0" }}</h3>
+            <p>Completed Tasks</p>
+        </div>
+    </div>
+
+    <div class="help-sections">
+        <section class="help-section">
+            <h2><i class="fas fa-plus-circle"></i> Creating Tasks</h2>
+            <div class="help-content-block">
+                <h3>Task Creation Process</h3>
+                <ol>
+                    <li>Navigate to <strong>Tasks</strong> in the admin panel</li>
+                    <li>Click <strong>"Add Task"</strong> button</li>
+                    <li>Fill in task details:
+                        <ul>
+                            <li>Task title and description</li>
+                            <li>Task type (Checkbox, Photo, Text, Custom)</li>
+                            <li>Priority level and due date</li>
+                            <li>Role or event association</li>
+                        </ul>
+                    </li>
+                    <li>Set completion requirements</li>
+                    <li>Configure verification settings</li>
+                    <li>Save and assign the task</li>
+                </ol>
+
+                <div class="help-tip">
+                    <strong>💡 Tip:</strong> Use clear, specific task descriptions to avoid confusion and ensure proper completion.
+                </div>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-list-alt"></i> Task Types</h2>
+            <div class="help-content-block">
+                <h3>Available Task Types</h3>
+                <div class="task-types-grid">
+                    {% for value, label in task_types %}
+                    <div class="task-type-card">
+                        <h4>{{ label }}</h4>
+                        <p>
+                            {% if value == 'CHECKBOX' %}
+                                Simple completion tasks that require only a check-off
+                            {% elif value == 'PHOTO' %}
+                                Tasks requiring photo evidence of completion
+                            {% elif value == 'TEXT' %}
+                                Tasks requiring text input or detailed responses
+                            {% elif value == 'CUSTOM' %}
+                                Complex tasks with custom completion requirements
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <h3>Task Configuration Options</h3>
+                <ul>
+                    <li><strong>Prerequisites:</strong> Tasks that must be completed first</li>
+                    <li><strong>Time Limits:</strong> Deadlines and time constraints</li>
+                    <li><strong>Verification Required:</strong> Tasks needing supervisor approval</li>
+                    <li><strong>Recurring Tasks:</strong> Tasks that repeat on a schedule</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-user-check"></i> Task Assignment</h2>
+            <div class="help-content-block">
+                <h3>Assignment Methods</h3>
+                <ul>
+                    <li><strong>Individual Assignment:</strong> Assign tasks to specific volunteers</li>
+                    <li><strong>Role-based Assignment:</strong> Assign tasks to all volunteers in a role</li>
+                    <li><strong>Event-based Assignment:</strong> Assign tasks to all event volunteers</li>
+                    <li><strong>Bulk Assignment:</strong> Assign multiple tasks to multiple volunteers</li>
+                </ul>
+
+                <h3>Assignment Criteria</h3>
+                <ul>
+                    <li><strong>Skill Requirements:</strong> Match tasks to volunteer capabilities</li>
+                    <li><strong>Availability:</strong> Consider volunteer schedules</li>
+                    <li><strong>Workload Balance:</strong> Distribute tasks evenly</li>
+                    <li><strong>Priority Levels:</strong> Assign high-priority tasks first</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-chart-bar"></i> Progress Tracking</h2>
+            <div class="help-content-block">
+                <h3>Monitoring Task Progress</h3>
+                <ul>
+                    <li><strong>Status Dashboard:</strong> Overview of all task statuses</li>
+                    <li><strong>Individual Progress:</strong> Track each volunteer's task completion</li>
+                    <li><strong>Deadline Alerts:</strong> Notifications for overdue tasks</li>
+                    <li><strong>Completion Rates:</strong> Statistics on task completion performance</li>
+                </ul>
+
+                <h3>Task Status Workflow</h3>
+                <ol>
+                    <li><strong>Assigned:</strong> Task has been assigned to volunteer</li>
+                    <li><strong>In Progress:</strong> Volunteer has started working on task</li>
+                    <li><strong>Submitted:</strong> Volunteer has submitted completion</li>
+                    <li><strong>Under Review:</strong> Task is being verified</li>
+                    <li><strong>Completed:</strong> Task has been approved and completed</li>
+                    <li><strong>Rejected:</strong> Task needs to be redone</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-check-circle"></i> Verification & Approval</h2>
+            <div class="help-content-block">
+                <h3>Verification Process</h3>
+                <ol>
+                    <li>Review submitted task completion</li>
+                    <li>Check against task requirements</li>
+                    <li>Verify photo evidence (if applicable)</li>
+                    <li>Approve or request corrections</li>
+                    <li>Provide feedback to volunteer</li>
+                </ol>
+
+                <h3>Quality Control</h3>
+                <ul>
+                    <li><strong>Verification Checklists:</strong> Standardized review criteria</li>
+                    <li><strong>Multiple Reviewers:</strong> Require multiple approvals for critical tasks</li>
+                    <li><strong>Feedback System:</strong> Provide constructive feedback</li>
+                    <li><strong>Resubmission Process:</strong> Clear process for task corrections</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-bell"></i> Notifications & Reminders</h2>
+            <div class="help-content-block">
+                <h3>Automated Notifications</h3>
+                <ul>
+                    <li><strong>Task Assignment:</strong> Notify volunteers of new tasks</li>
+                    <li><strong>Deadline Reminders:</strong> Send reminders before due dates</li>
+                    <li><strong>Overdue Alerts:</strong> Notify about missed deadlines</li>
+                    <li><strong>Completion Confirmations:</strong> Confirm task completion</li>
+                </ul>
+
+                <h3>Communication Tools</h3>
+                <ul>
+                    <li><strong>Task Comments:</strong> Allow communication within tasks</li>
+                    <li><strong>Bulk Messaging:</strong> Send updates to multiple volunteers</li>
+                    <li><strong>Status Updates:</strong> Keep volunteers informed of changes</li>
+                    <li><strong>Help Requests:</strong> Allow volunteers to request assistance</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <h2><i class="fas fa-exclamation-triangle"></i> Common Issues & Solutions</h2>
+            <div class="help-content-block">
+                <div class="faq-item">
+                    <h4>Q: Volunteer can't see assigned tasks</h4>
+                    <p>A: Check that the task is in "Assigned" status and the volunteer has the correct permissions. Verify the assignment is active.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: Photo upload failing for photo tasks</h4>
+                    <p>A: Check file size limits and supported formats. Ensure the volunteer has a stable internet connection.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: Task showing as overdue but was completed</h4>
+                    <p>A: Check if the task requires verification. Tasks may show as overdue until approved by a supervisor.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Q: How to handle task reassignment</h4>
+                    <p>A: Use the "Reassign" function in the task details. This will notify both the original and new assignee.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="help-actions">
+        <a href="{% url 'admin:tasks_task_changelist' %}" class="btn btn-primary">
+            <i class="fas fa-tasks"></i> Manage Tasks
+        </a>
+        <a href="{% url 'admin:tasks_taskcompletion_changelist' %}" class="btn btn-secondary">
+            <i class="fas fa-check-circle"></i> Review Completions
+        </a>
+        <a href="{% url 'help:index' %}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Back to Help
+        </a>
+    </div>
+</div>
+
+<style>
+.task-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.task-type-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.task-type-card h4 {
+    color: #2E7D32;
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %} 

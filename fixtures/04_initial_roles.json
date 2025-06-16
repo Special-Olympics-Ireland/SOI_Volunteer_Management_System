@@ -1,0 +1,259 @@
+[
+  {
+    "model": "events.role",
+    "pk": "hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh",
+    "fields": {
+      "event_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "venue_id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "name": "Ceremony Volunteer",
+      "slug": "ceremony-volunteer",
+      "role_type": "GENERAL_SUPPORT",
+      "status": "ACTIVE",
+      "description": "Support volunteers for opening and closing ceremonies at Aviva Stadium.",
+      "responsibilities": "Assist with crowd management, distribute programs, guide spectators to seats, support ceremony logistics.",
+      "skill_level": "BEGINNER",
+      "commitment_level": "MULTI_DAY",
+      "minimum_age": 16,
+      "maximum_age": null,
+      "physical_requirements": "Ability to stand for extended periods, walk long distances, lift up to 10kg.",
+      "language_requirements": ["English"],
+      "required_credentials": [],
+      "preferred_credentials": ["Customer Service", "Event Management"],
+      "background_checks_required": ["garda_vetting"],
+      "total_positions": 100,
+      "filled_positions": 0,
+      "minimum_volunteers": 80,
+      "required_training": ["General Orientation", "Ceremony Briefing"],
+      "training_duration_hours": 4,
+      "equipment_provided": ["High-vis vest", "ID badge", "Radio"],
+      "uniform_requirements": {
+        "dress_code": "Smart casual",
+        "colors": ["Navy", "White"],
+        "provided_items": ["Polo shirt", "Cap"]
+      },
+      "benefits": {
+        "meals_provided": true,
+        "transport_provided": false,
+        "accommodation_provided": false,
+        "merchandise": true,
+        "certificate": true
+      },
+      "schedule_requirements": {
+        "shifts_per_day": 2,
+        "hours_per_shift": 4,
+        "break_duration_minutes": 30,
+        "flexibility_required": true
+      },
+      "application_deadline": "2026-03-31",
+      "selection_criteria": "Enthusiasm, reliability, good communication skills",
+      "created_by_id": "22222222-2222-2222-2222-222222222222",
+      "managed_by_id": "22222222-2222-2222-2222-222222222222"
+    }
+  },
+  {
+    "model": "events.role",
+    "pk": "iiiiiiii-iiii-iiii-iiii-iiiiiiiiiiii",
+    "fields": {
+      "event_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "venue_id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "name": "Swimming Official Assistant",
+      "slug": "swimming-official-assistant",
+      "role_type": "SPORTS_OFFICIAL",
+      "status": "ACTIVE",
+      "description": "Assist swimming officials with timing, scoring, and competition management.",
+      "responsibilities": "Support timekeepers, assist with lane assignments, help with results processing, maintain equipment.",
+      "skill_level": "INTERMEDIATE",
+      "commitment_level": "FULL_EVENT",
+      "minimum_age": 18,
+      "maximum_age": null,
+      "physical_requirements": "Ability to work poolside, comfortable around water, good hand-eye coordination.",
+      "language_requirements": ["English"],
+      "required_credentials": ["Swimming Official Level 1"],
+      "preferred_credentials": ["Swimming Official Level 2", "First Aid"],
+      "background_checks_required": ["garda_vetting", "child_protection"],
+      "total_positions": 20,
+      "filled_positions": 0,
+      "minimum_volunteers": 15,
+      "required_training": ["Swimming Officials Training", "Competition Procedures"],
+      "training_duration_hours": 8,
+      "equipment_provided": ["Stopwatch", "Clipboard", "Whistle", "Official uniform"],
+      "uniform_requirements": {
+        "dress_code": "Official uniform",
+        "colors": ["White", "Navy"],
+        "provided_items": ["Polo shirt", "Shorts", "Cap", "Jacket"]
+      },
+      "benefits": {
+        "meals_provided": true,
+        "transport_provided": true,
+        "accommodation_provided": false,
+        "merchandise": true,
+        "certificate": true,
+        "official_recognition": true
+      },
+      "schedule_requirements": {
+        "shifts_per_day": 1,
+        "hours_per_shift": 8,
+        "break_duration_minutes": 60,
+        "flexibility_required": false
+      },
+      "application_deadline": "2026-02-28",
+      "selection_criteria": "Swimming knowledge, attention to detail, reliability, official certification",
+      "created_by_id": "22222222-2222-2222-2222-222222222222",
+      "managed_by_id": "33333333-3333-3333-3333-333333333333"
+    }
+  },
+  {
+    "model": "events.role",
+    "pk": "jjjjjjjj-jjjj-jjjj-jjjj-jjjjjjjjjjjj",
+    "fields": {
+      "event_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "venue_id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "name": "Medical Support Volunteer",
+      "slug": "medical-support-volunteer",
+      "role_type": "MEDICAL_SAFETY",
+      "status": "ACTIVE",
+      "description": "Provide first aid and medical support to athletes and spectators.",
+      "responsibilities": "Basic first aid, assist medical professionals, maintain medical supplies, incident reporting.",
+      "skill_level": "INTERMEDIATE",
+      "commitment_level": "DAILY",
+      "minimum_age": 18,
+      "maximum_age": 65,
+      "physical_requirements": "Physical fitness, ability to respond quickly to emergencies, lift patients if needed.",
+      "language_requirements": ["English"],
+      "required_credentials": ["First Aid Certificate", "CPR Certification"],
+      "preferred_credentials": ["Emergency Medical Technician", "Nursing Qualification"],
+      "background_checks_required": ["garda_vetting", "medical_clearance"],
+      "total_positions": 15,
+      "filled_positions": 0,
+      "minimum_volunteers": 12,
+      "required_training": ["Medical Procedures", "Emergency Response", "Incident Reporting"],
+      "training_duration_hours": 6,
+      "equipment_provided": ["First aid kit", "Medical bag", "Radio", "Medical uniform"],
+      "uniform_requirements": {
+        "dress_code": "Medical uniform",
+        "colors": ["White", "Red"],
+        "provided_items": ["Medical jacket", "Trousers", "ID badge"]
+      },
+      "benefits": {
+        "meals_provided": true,
+        "transport_provided": true,
+        "accommodation_provided": false,
+        "merchandise": true,
+        "certificate": true,
+        "continuing_education_credits": true
+      },
+      "schedule_requirements": {
+        "shifts_per_day": 3,
+        "hours_per_shift": 4,
+        "break_duration_minutes": 30,
+        "flexibility_required": true
+      },
+      "application_deadline": "2026-01-31",
+      "selection_criteria": "Medical qualifications, emergency response experience, calm under pressure",
+      "created_by_id": "22222222-2222-2222-2222-222222222222",
+      "managed_by_id": "44444444-4444-4444-4444-444444444444"
+    }
+  },
+  {
+    "model": "events.role",
+    "pk": "kkkkkkkk-kkkk-kkkk-kkkk-kkkkkkkkkkkk",
+    "fields": {
+      "event_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "venue_id": "gggggggg-gggg-gggg-gggg-gggggggggggg",
+      "name": "Athletics Field Marshal",
+      "slug": "athletics-field-marshal",
+      "role_type": "VENUE_OPERATIONS",
+      "status": "ACTIVE",
+      "description": "Manage field events and ensure smooth operations during athletics competitions.",
+      "responsibilities": "Coordinate field events, manage equipment, assist athletes, ensure safety protocols.",
+      "skill_level": "ADVANCED",
+      "commitment_level": "FULL_EVENT",
+      "minimum_age": 21,
+      "maximum_age": null,
+      "physical_requirements": "Excellent physical fitness, ability to work outdoors, lift heavy equipment.",
+      "language_requirements": ["English"],
+      "required_credentials": ["Athletics Official Certification"],
+      "preferred_credentials": ["Field Events Specialist", "Safety Training"],
+      "background_checks_required": ["garda_vetting"],
+      "total_positions": 8,
+      "filled_positions": 0,
+      "minimum_volunteers": 6,
+      "required_training": ["Athletics Officials Training", "Field Events Management", "Safety Procedures"],
+      "training_duration_hours": 12,
+      "equipment_provided": ["Official uniform", "Measuring equipment", "Radio", "Clipboard"],
+      "uniform_requirements": {
+        "dress_code": "Official athletics uniform",
+        "colors": ["White", "Green"],
+        "provided_items": ["Tracksuit", "Polo shirt", "Cap", "Jacket"]
+      },
+      "benefits": {
+        "meals_provided": true,
+        "transport_provided": true,
+        "accommodation_provided": true,
+        "merchandise": true,
+        "certificate": true,
+        "official_recognition": true
+      },
+      "schedule_requirements": {
+        "shifts_per_day": 1,
+        "hours_per_shift": 10,
+        "break_duration_minutes": 90,
+        "flexibility_required": false
+      },
+      "application_deadline": "2025-03-31",
+      "selection_criteria": "Athletics experience, leadership skills, official certification, physical fitness",
+      "created_by_id": "33333333-3333-3333-3333-333333333333",
+      "managed_by_id": "33333333-3333-3333-3333-333333333333"
+    }
+  },
+  {
+    "model": "events.role",
+    "pk": "llllllll-llll-llll-llll-llllllllllll",
+    "fields": {
+      "event_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "name": "Training Facilitator",
+      "slug": "training-facilitator",
+      "role_type": "GENERAL_SUPPORT",
+      "status": "ACTIVE",
+      "description": "Facilitate volunteer orientation and training sessions.",
+      "responsibilities": "Lead training sessions, answer questions, distribute materials, collect feedback.",
+      "skill_level": "ADVANCED",
+      "commitment_level": "SINGLE_SESSION",
+      "minimum_age": 25,
+      "maximum_age": null,
+      "physical_requirements": "Ability to stand and present for extended periods.",
+      "language_requirements": ["English"],
+      "required_credentials": ["Training Certification", "Public Speaking"],
+      "preferred_credentials": ["Adult Education", "Special Olympics Experience"],
+      "background_checks_required": ["garda_vetting"],
+      "total_positions": 5,
+      "filled_positions": 0,
+      "minimum_volunteers": 3,
+      "required_training": ["Train the Trainer", "Special Olympics Overview"],
+      "training_duration_hours": 4,
+      "equipment_provided": ["Presentation materials", "Microphone", "Laptop"],
+      "uniform_requirements": {
+        "dress_code": "Business casual",
+        "colors": ["Navy", "White"],
+        "provided_items": ["Polo shirt", "ID badge"]
+      },
+      "benefits": {
+        "meals_provided": true,
+        "transport_provided": false,
+        "accommodation_provided": false,
+        "merchandise": true,
+        "certificate": true
+      },
+      "schedule_requirements": {
+        "shifts_per_day": 1,
+        "hours_per_shift": 6,
+        "break_duration_minutes": 60,
+        "flexibility_required": false
+      },
+      "application_deadline": "2024-12-01",
+      "selection_criteria": "Training experience, communication skills, Special Olympics knowledge",
+      "created_by_id": "22222222-2222-2222-2222-222222222222",
+      "managed_by_id": "22222222-2222-2222-2222-222222222222"
+    }
+  }
+] 

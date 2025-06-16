@@ -1,0 +1,301 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load theme_tags %}
+
+{% block title %}Theme Selector - SOI Hub{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin/css/theme-selector.css' %}">
+    {% theme_css %}
+{% endblock %}
+
+{% block content %}
+<div class="theme-selector-container">
+    <div class="theme-header">
+        <h1>🎨 Theme Preferences</h1>
+        <p>Customize your SOI Hub experience with different themes and accessibility options.</p>
+    </div>
+
+    <div class="theme-sections">
+        <!-- Admin Theme Section -->
+        <div class="theme-section">
+            <h2>Admin Interface Theme</h2>
+            <p>Choose your preferred theme for the admin interface.</p>
+            
+            <div class="theme-grid">
+                <div class="theme-option {% if not user_preference.admin_theme %}active{% endif %}" 
+                     data-theme-type="admin" data-theme-id="">
+                    <div class="theme-preview">
+                        <div class="preview-header" style="background: #2E7D32; color: white;">
+                            <span>System Default</span>
+                        </div>
+                        <div class="preview-content">
+                            <div class="preview-text">Default SOI theme</div>
+                        </div>
+                    </div>
+                    <div class="theme-info">
+                        <h3>System Default</h3>
+                        <p>Use the system default theme</p>
+                    </div>
+                </div>
+
+                {% for theme in admin_themes %}
+                <div class="theme-option {% if user_preference.admin_theme.id == theme.id %}active{% endif %}" 
+                     data-theme-type="admin" data-theme-id="{{ theme.id }}">
+                    <div class="theme-preview">
+                        <div class="preview-header" style="background: {{ theme.primary_color }}; color: {{ theme.text_on_primary }};">
+                            <span>{{ theme.name }}</span>
+                        </div>
+                        <div class="preview-content" style="background: {{ theme.surface_color }}; color: {{ theme.text_primary }};">
+                            <div class="preview-text">{{ theme.description|truncatechars:50 }}</div>
+                            <div class="preview-colors">
+                                <span class="color-dot" style="background: {{ theme.primary_color }};" title="Primary"></span>
+                                <span class="color-dot" style="background: {{ theme.secondary_color }};" title="Secondary"></span>
+                                <span class="color-dot" style="background: {{ theme.accent_color }};" title="Accent"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-info">
+                        <h3>{{ theme.name }}</h3>
+                        <p>{{ theme.description }}</p>
+                        {% if theme.is_dark_mode %}
+                            <span class="theme-badge dark-mode">🌙 Dark Mode</span>
+                        {% endif %}
+                        {% if theme.accessibility_compliant %}
+                            <span class="theme-badge accessible">♿ Accessible</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Mobile Theme Section -->
+        <div class="theme-section">
+            <h2>Mobile Interface Theme</h2>
+            <p>Choose your preferred theme for mobile devices.</p>
+            
+            <div class="theme-grid">
+                <div class="theme-option {% if not user_preference.mobile_theme %}active{% endif %}" 
+                     data-theme-type="mobile" data-theme-id="">
+                    <div class="theme-preview mobile-preview">
+                        <div class="preview-header" style="background: #2E7D32; color: white;">
+                            <span>System Default</span>
+                        </div>
+                        <div class="preview-content">
+                            <div class="preview-text">Default mobile theme</div>
+                        </div>
+                    </div>
+                    <div class="theme-info">
+                        <h3>System Default</h3>
+                        <p>Use the system default mobile theme</p>
+                    </div>
+                </div>
+
+                {% for theme in mobile_themes %}
+                <div class="theme-option {% if user_preference.mobile_theme.id == theme.id %}active{% endif %}" 
+                     data-theme-type="mobile" data-theme-id="{{ theme.id }}">
+                    <div class="theme-preview mobile-preview">
+                        <div class="preview-header" style="background: {{ theme.primary_color }}; color: {{ theme.text_on_primary }};">
+                            <span>{{ theme.name }}</span>
+                        </div>
+                        <div class="preview-content" style="background: {{ theme.surface_color }}; color: {{ theme.text_primary }};">
+                            <div class="preview-text">{{ theme.description|truncatechars:40 }}</div>
+                            <div class="preview-colors">
+                                <span class="color-dot" style="background: {{ theme.primary_color }};"></span>
+                                <span class="color-dot" style="background: {{ theme.secondary_color }};"></span>
+                                <span class="color-dot" style="background: {{ theme.accent_color }};"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-info">
+                        <h3>{{ theme.name }}</h3>
+                        <p>{{ theme.description }}</p>
+                        {% if theme.is_dark_mode %}
+                            <span class="theme-badge dark-mode">🌙 Dark Mode</span>
+                        {% endif %}
+                        {% if theme.accessibility_compliant %}
+                            <span class="theme-badge accessible">♿ Accessible</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Accessibility Options -->
+        <div class="theme-section">
+            <h2>Accessibility Options</h2>
+            <p>Additional options to improve accessibility and readability.</p>
+            
+            <div class="accessibility-options">
+                <div class="option-group">
+                    <label class="option-label">
+                        <input type="checkbox" id="use_dark_mode" 
+                               {% if user_preference.use_dark_mode %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                        <div class="option-info">
+                            <h4>🌙 Prefer Dark Mode</h4>
+                            <p>Automatically use dark mode themes when available</p>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option-group">
+                    <label class="option-label">
+                        <input type="checkbox" id="use_high_contrast" 
+                               {% if user_preference.use_high_contrast %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                        <div class="option-info">
+                            <h4>♿ High Contrast</h4>
+                            <p>Use high contrast themes for better visibility</p>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="option-group">
+                    <label class="option-label">
+                        <span class="option-info">
+                            <h4>📝 Font Size</h4>
+                            <p>Adjust the base font size for better readability</p>
+                        </span>
+                    </label>
+                    <select id="font_size_preference" class="font-size-select">
+                        <option value="SMALL" {% if user_preference.font_size_preference == 'SMALL' %}selected{% endif %}>Small (12px)</option>
+                        <option value="NORMAL" {% if user_preference.font_size_preference == 'NORMAL' %}selected{% endif %}>Normal (14px)</option>
+                        <option value="LARGE" {% if user_preference.font_size_preference == 'LARGE' %}selected{% endif %}>Large (16px)</option>
+                        <option value="EXTRA_LARGE" {% if user_preference.font_size_preference == 'EXTRA_LARGE' %}selected{% endif %}>Extra Large (18px)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="theme-actions">
+        <button type="button" class="btn btn-primary" id="save-preferences">
+            💾 Save Preferences
+        </button>
+        <button type="button" class="btn btn-secondary" id="reset-preferences">
+            🔄 Reset to Defaults
+        </button>
+        <a href="{% url 'admin:index' %}" class="btn btn-outline-secondary">
+            ← Back to Admin
+        </a>
+    </div>
+
+    <!-- Status Messages -->
+    <div id="status-messages" class="status-messages"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Theme selection handling
+    const themeOptions = document.querySelectorAll('.theme-option');
+    const saveButton = document.getElementById('save-preferences');
+    const resetButton = document.getElementById('reset-preferences');
+    const statusMessages = document.getElementById('status-messages');
+    
+    let selectedThemes = {
+        admin: '{{ user_preference.admin_theme.id|default:"" }}',
+        mobile: '{{ user_preference.mobile_theme.id|default:"" }}'
+    };
+    
+    // Handle theme selection
+    themeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const themeType = this.dataset.themeType;
+            const themeId = this.dataset.themeId;
+            
+            // Remove active class from siblings
+            const siblings = this.parentElement.querySelectorAll('.theme-option');
+            siblings.forEach(sibling => sibling.classList.remove('active'));
+            
+            // Add active class to selected
+            this.classList.add('active');
+            
+            // Update selected themes
+            selectedThemes[themeType] = themeId;
+        });
+    });
+    
+    // Save preferences
+    saveButton.addEventListener('click', function() {
+        const preferences = {
+            admin_theme_id: selectedThemes.admin || null,
+            mobile_theme_id: selectedThemes.mobile || null,
+            use_dark_mode: document.getElementById('use_dark_mode').checked,
+            use_high_contrast: document.getElementById('use_high_contrast').checked,
+            font_size_preference: document.getElementById('font_size_preference').value
+        };
+        
+        fetch('{% url "themes:update_preference" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(preferences)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage('✅ Theme preferences saved successfully!', 'success');
+                // Reload page to apply new theme
+                setTimeout(() => window.location.reload(), 1000);
+            } else {
+                showMessage('❌ Error saving preferences: ' + data.error, 'error');
+            }
+        })
+        .catch(error => {
+            showMessage('❌ Network error: ' + error.message, 'error');
+        });
+    });
+    
+    // Reset preferences
+    resetButton.addEventListener('click', function() {
+        if (confirm('Reset all theme preferences to defaults?')) {
+            const preferences = {
+                admin_theme_id: null,
+                mobile_theme_id: null,
+                use_dark_mode: false,
+                use_high_contrast: false,
+                font_size_preference: 'NORMAL'
+            };
+            
+            fetch('{% url "themes:update_preference" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(preferences)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('✅ Preferences reset to defaults!', 'success');
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    showMessage('❌ Error resetting preferences: ' + data.error, 'error');
+                }
+            });
+        }
+    });
+    
+    function showMessage(message, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'}`;
+        messageDiv.textContent = message;
+        
+        statusMessages.innerHTML = '';
+        statusMessages.appendChild(messageDiv);
+        
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
+    }
+});
+</script>
+{% endblock %} 

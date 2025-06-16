@@ -1,0 +1,107 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}SOI Hub Help - {{ block.super }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/help-system.css' %}">
+<script src="{% static 'admin/js/help-system.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'help:index' %}">Help</a>
+    {% block help_breadcrumbs %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="help-container">
+    <!-- Help Navigation Sidebar -->
+    <div class="help-sidebar">
+        <div class="help-search">
+            <input type="text" id="help-search" placeholder="Search help topics..." />
+            <button type="button" id="search-btn">Search</button>
+        </div>
+        
+        <nav class="help-nav">
+            <h3>Help Topics</h3>
+            <ul>
+                <li class="help-section">
+                    <a href="#getting-started">Getting Started</a>
+                </li>
+                <li class="help-section">
+                    <a href="#user-management">User Management</a>
+                </li>
+                <li class="help-section">
+                    <a href="#volunteer-management">Volunteer Management</a>
+                </li>
+                <li class="help-section">
+                    <a href="#event-management">Event Management</a>
+                </li>
+                <li class="help-section">
+                    <a href="#task-management">Task Management</a>
+                </li>
+                <li class="help-section">
+                    <a href="#reporting">Reporting & Analytics</a>
+                </li>
+                <li class="help-section">
+                    <a href="#system-admin">System Administration</a>
+                </li>
+                <li class="help-section">
+                    <a href="#troubleshooting">Troubleshooting</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="help-contact">
+            <h4>Need More Help?</h4>
+            <p>Contact IT Support:</p>
+            <p><strong>Email:</strong> it@specialolympics.ie</p>
+            <p><strong>Hours:</strong> Mon-Fri, 9:00 AM - 5:00 PM</p>
+        </div>
+    </div>
+    
+    <!-- Help Content Area -->
+    <div class="help-content">
+        {% block help_content %}
+        <div class="help-header">
+            <h1>{% block help_title %}SOI Hub Help{% endblock %}</h1>
+        </div>
+        
+        <div class="help-body">
+            {% block help_body %}
+            <div class="help-welcome">
+                <h2>Welcome to SOI Hub Help</h2>
+                <p>This help system provides comprehensive documentation for the SOI Hub volunteer management system.</p>
+                
+                <div class="help-quick-links">
+                    <h3>Quick Start Guides</h3>
+                    <div class="quick-link-grid">
+                        <div class="quick-link-card">
+                            <h4>Getting Started</h4>
+                            <p>Learn the basics of using the admin interface</p>
+                        </div>
+                        <div class="quick-link-card">
+                            <h4>User Management</h4>
+                            <p>Manage user accounts and permissions</p>
+                        </div>
+                        <div class="quick-link-card">
+                            <h4>Volunteer Management</h4>
+                            <p>Handle volunteer applications and profiles</p>
+                        </div>
+                        <div class="quick-link-card">
+                            <h4>Event Management</h4>
+                            <p>Create and manage events, venues, and roles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+        {% endblock %}
+    </div>
+</div>
+{% endblock %} 

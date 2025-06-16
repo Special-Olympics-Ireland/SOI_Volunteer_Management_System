@@ -1,0 +1,380 @@
+{% extends "admin/help/help_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block help_content %}
+<div class="help-header">
+    <h1><i class="icon-wrench"></i> {% trans "Troubleshooting Help" %}</h1>
+    <p class="help-description">
+        {% trans "Common issues, solutions, and troubleshooting procedures for SOI Hub system problems." %}
+    </p>
+</div>
+
+<div class="help-sections">
+    <section class="help-section">
+        <h2><i class="icon-login"></i> {% trans "Login and Access Issues" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Cannot Login to Admin" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Login page shows 'Invalid credentials'" %}</li>
+                        <li>{% trans "Account appears to be locked" %}</li>
+                        <li>{% trans "Password reset not working" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Verify username and password are correct" %}</li>
+                        <li>{% trans "Check if account is active and approved" %}</li>
+                        <li>{% trans "Contact system administrator to reset password" %}</li>
+                        <li>{% trans "Clear browser cache and cookies" %}</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Permission Denied Errors" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "403 Forbidden error when accessing pages" %}</li>
+                        <li>{% trans "Missing menu items or sections" %}</li>
+                        <li>{% trans "Cannot edit or delete records" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Check user role and permissions" %}</li>
+                        <li>{% trans "Contact administrator to update permissions" %}</li>
+                        <li>{% trans "Verify you're logged in with correct account" %}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-volunteer"></i> {% trans "Volunteer Management Issues" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "EOI Submission Problems" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "EOI form not submitting" %}</li>
+                        <li>{% trans "Photo upload failures" %}</li>
+                        <li>{% trans "Validation errors on form" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Check all required fields are completed" %}</li>
+                        <li>{% trans "Verify photo file size is under 5MB" %}</li>
+                        <li>{% trans "Ensure photo is in JPG, PNG, or GIF format" %}</li>
+                        <li>{% trans "Try submitting from different browser" %}</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "JustGo Integration Issues" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "JustGo lookup not working" %}</li>
+                        <li>{% trans "Sync status showing errors" %}</li>
+                        <li>{% trans "Member information not updating" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Check JustGo API connection status" %}</li>
+                        <li>{% trans "Verify member email address is correct" %}</li>
+                        <li>{% trans "Try manual sync from volunteer profile" %}</li>
+                        <li>{% trans "Contact system administrator if issues persist" %}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-event"></i> {% trans "Event Management Issues" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Assignment Problems" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Cannot assign volunteers to roles" %}</li>
+                        <li>{% trans "Capacity limits preventing assignments" %}</li>
+                        <li>{% trans "Volunteer not appearing in assignment list" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Check role capacity and current assignments" %}</li>
+                        <li>{% trans "Verify volunteer status is 'APPROVED' or 'ACTIVE'" %}</li>
+                        <li>{% trans "Check volunteer availability for event dates" %}</li>
+                        <li>{% trans "Use admin override if necessary" %}</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Venue Configuration Issues" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Venue not appearing in event creation" %}</li>
+                        <li>{% trans "Capacity calculations incorrect" %}</li>
+                        <li>{% trans "Venue information not updating" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Check venue status is 'ACTIVE'" %}</li>
+                        <li>{% trans "Verify venue capacity settings" %}</li>
+                        <li>{% trans "Update venue configuration JSON" %}</li>
+                        <li>{% trans "Clear cache and refresh page" %}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-task"></i> {% trans "Task Management Issues" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Task Completion Problems" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Tasks not appearing for volunteers" %}</li>
+                        <li>{% trans "Completion not being recorded" %}</li>
+                        <li>{% trans "Verification process stuck" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Check task status is 'ACTIVE'" %}</li>
+                        <li>{% trans "Verify task prerequisites are met" %}</li>
+                        <li>{% trans "Check volunteer assignment to role" %}</li>
+                        <li>{% trans "Review task configuration settings" %}</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Photo Upload Issues" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Photo tasks failing to upload" %}</li>
+                        <li>{% trans "Image quality rejected" %}</li>
+                        <li>{% trans "File size errors" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Ensure image is under 10MB" %}</li>
+                        <li>{% trans "Use JPG, PNG, or GIF format" %}</li>
+                        <li>{% trans "Check image resolution and quality" %}</li>
+                        <li>{% trans "Try uploading from different device" %}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-report"></i> {% trans "Reporting Issues" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Report Generation Problems" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Reports timing out during generation" %}</li>
+                        <li>{% trans "Empty or incomplete reports" %}</li>
+                        <li>{% trans "Export format issues" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Reduce date range for large reports" %}</li>
+                        <li>{% trans "Add more specific filters" %}</li>
+                        <li>{% trans "Try different export format" %}</li>
+                        <li>{% trans "Schedule report for off-peak hours" %}</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "PowerBI Integration Issues" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Data not refreshing in PowerBI" %}</li>
+                        <li>{% trans "Connection errors" %}</li>
+                        <li>{% trans "Missing data in dashboards" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Check PowerBI connection settings" %}</li>
+                        <li>{% trans "Verify data export permissions" %}</li>
+                        <li>{% trans "Refresh data source manually" %}</li>
+                        <li>{% trans "Contact system administrator" %}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-system"></i> {% trans "System Performance Issues" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Slow Page Loading" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Pages taking long time to load" %}</li>
+                        <li>{% trans "Timeouts when saving data" %}</li>
+                        <li>{% trans "Unresponsive interface" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Clear browser cache and cookies" %}</li>
+                        <li>{% trans "Try different browser or incognito mode" %}</li>
+                        <li>{% trans "Check internet connection speed" %}</li>
+                        <li>{% trans "Contact administrator if issues persist" %}</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Data Not Updating" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Symptoms:" %}</h4>
+                    <ul>
+                        <li>{% trans "Changes not appearing immediately" %}</li>
+                        <li>{% trans "Statistics not updating" %}</li>
+                        <li>{% trans "Old data still showing" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Refresh the page (F5 or Ctrl+R)" %}</li>
+                        <li>{% trans "Clear browser cache" %}</li>
+                        <li>{% trans "Wait a few minutes for cache to update" %}</li>
+                        <li>{% trans "Try hard refresh (Ctrl+Shift+R)" %}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-browser"></i> {% trans "Browser Compatibility" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Supported Browsers" %}</h3>
+                <ul>
+                    <li><strong>{% trans "Chrome" %}</strong> - {% trans "Version 90 or later (Recommended)" %}</li>
+                    <li><strong>{% trans "Firefox" %}</strong> - {% trans "Version 88 or later" %}</li>
+                    <li><strong>{% trans "Safari" %}</strong> - {% trans "Version 14 or later" %}</li>
+                    <li><strong>{% trans "Edge" %}</strong> - {% trans "Version 90 or later" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Browser Issues" %}</h3>
+                <div class="troubleshoot-item">
+                    <h4>{% trans "Common Problems:" %}</h4>
+                    <ul>
+                        <li>{% trans "Layout appearing broken" %}</li>
+                        <li>{% trans "JavaScript errors" %}</li>
+                        <li>{% trans "Forms not submitting" %}</li>
+                    </ul>
+                    <h4>{% trans "Solutions:" %}</h4>
+                    <ol>
+                        <li>{% trans "Update browser to latest version" %}</li>
+                        <li>{% trans "Enable JavaScript" %}</li>
+                        <li>{% trans "Disable browser extensions temporarily" %}</li>
+                        <li>{% trans "Try incognito/private browsing mode" %}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-contact"></i> {% trans "Getting Additional Help" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "When to Contact Support" %}</h3>
+                <ul>
+                    <li>{% trans "System errors that prevent normal operation" %}</li>
+                    <li>{% trans "Data corruption or loss" %}</li>
+                    <li>{% trans "Security concerns or suspicious activity" %}</li>
+                    <li>{% trans "Integration failures with external systems" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Information to Include" %}</h3>
+                <p>{% trans "When reporting issues, please include:" %}</p>
+                <ul>
+                    <li>{% trans "Detailed description of the problem" %}</li>
+                    <li>{% trans "Steps to reproduce the issue" %}</li>
+                    <li>{% trans "Browser and version information" %}</li>
+                    <li>{% trans "Screenshots or error messages" %}</li>
+                    <li>{% trans "Time when the issue occurred" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Emergency Contacts" %}</h3>
+                <div class="emergency-contact">
+                    <p><strong>{% trans "System Administrator:" %}</strong></p>
+                    <p>{% trans "Email: admin@soihub.ie" %}</p>
+                    <p>{% trans "Phone: +353 1 XXX XXXX" %}</p>
+                </div>
+                <div class="emergency-contact">
+                    <p><strong>{% trans "Technical Support:" %}</strong></p>
+                    <p>{% trans "Email: support@soihub.ie" %}</p>
+                    <p>{% trans "Hours: Monday-Friday 9:00-17:00" %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="help-actions">
+    <a href="mailto:support@soihub.ie" class="btn btn-primary">
+        <i class="icon-email"></i> {% trans "Contact Support" %}
+    </a>
+    <a href="{% url 'admin:common_auditlog_changelist' %}" class="btn btn-secondary">
+        <i class="icon-log"></i> {% trans "View System Logs" %}
+    </a>
+</div>
+
+<style>
+.troubleshoot-item {
+    background: #f8f9fa;
+    border-left: 4px solid #28a745;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+.troubleshoot-item h4 {
+    color: #495057;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.emergency-contact {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+</style>
+{% endblock %} 

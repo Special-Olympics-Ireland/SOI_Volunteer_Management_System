@@ -1,0 +1,307 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Theme Analytics - {{ block.super }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .analytics-container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card h3 {
+        margin: 0 0 10px 0;
+        color: #2c5530;
+        font-size: 1.1em;
+    }
+    
+    .stat-number {
+        font-size: 2em;
+        font-weight: bold;
+        color: #1a4d1e;
+        margin: 10px 0;
+    }
+    
+    .stat-breakdown {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 10px;
+    }
+    
+    .themes-analysis {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    
+    .theme-analysis-item {
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .theme-analysis-item:last-child {
+        border-bottom: none;
+    }
+    
+    .theme-info {
+        flex: 1;
+    }
+    
+    .theme-name {
+        font-weight: bold;
+        color: #2c5530;
+        margin-bottom: 5px;
+    }
+    
+    .theme-type {
+        background: #f0f0f0;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8em;
+        margin-right: 10px;
+    }
+    
+    .accessibility-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+    
+    .status-compliant {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status-non-compliant {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    
+    .contrast-info {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+    }
+    
+    .issues-count {
+        background: #fff3cd;
+        color: #856404;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8em;
+    }
+    
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #2c5530;
+    }
+    
+    .page-title {
+        color: #2c5530;
+        margin: 0;
+        font-size: 1.8em;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.9em;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .btn-primary {
+        background: #2c5530;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #1a4d1e;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #545b62;
+        color: white;
+    }
+    
+    .usage-chart {
+        margin-top: 15px;
+    }
+    
+    .usage-bar {
+        background: #e9ecef;
+        height: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 5px 0;
+    }
+    
+    .usage-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #2c5530, #4a7c59);
+        transition: width 0.3s ease;
+    }
+    
+    .usage-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8em;
+        margin-bottom: 3px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="analytics-container">
+    <div class="page-header">
+        <h1 class="page-title">Theme Analytics Dashboard</h1>
+        <div class="action-buttons">
+            <a href="{% url 'admin:common_theme_changelist' %}" class="btn btn-secondary">Back to Themes</a>
+            <a href="{% url 'themes:management' %}" class="btn btn-primary">Theme Management</a>
+        </div>
+    </div>
+    
+    <!-- Statistics Overview -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Themes</h3>
+            <div class="stat-number">{{ stats.total_themes }}</div>
+            <div class="stat-breakdown">
+                Active: {{ stats.active_themes }}
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Themes by Type</h3>
+            <div class="stat-breakdown">
+                Admin: {{ stats.themes_by_type.ADMIN.total }}<br>
+                Mobile: {{ stats.themes_by_type.MOBILE.total }}<br>
+                Public: {{ stats.themes_by_type.PUBLIC.total }}<br>
+                Email: {{ stats.themes_by_type.EMAIL.total }}
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Accessibility</h3>
+            <div class="stat-number">{{ stats.accessibility_stats.compliant_themes }}</div>
+            <div class="stat-breakdown">
+                Compliant themes<br>
+                <span style="color: #dc3545;">{{ stats.accessibility_stats.non_compliant_themes }} non-compliant</span>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>User Preferences</h3>
+            <div class="stat-number">{{ stats.user_preferences.total_users_with_preferences }}</div>
+            <div class="stat-breakdown">
+                Dark mode: {{ stats.user_preferences.dark_mode_users }}<br>
+                High contrast: {{ stats.user_preferences.high_contrast_users }}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Theme Usage Statistics -->
+    {% if stats.theme_usage.admin_themes %}
+    <div class="stat-card">
+        <h3>Most Popular Admin Themes</h3>
+        <div class="usage-chart">
+            {% for theme_name, count in stats.theme_usage.admin_themes.items %}
+            <div class="usage-label">
+                <span>{{ theme_name }}</span>
+                <span>{{ count }} users</span>
+            </div>
+            <div class="usage-bar">
+                <div class="usage-fill" style="width: {% widthratio count stats.user_preferences.total_users_with_preferences 100 %}%"></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Detailed Theme Analysis -->
+    <div class="themes-analysis">
+        <h2 style="color: #2c5530; margin-bottom: 20px;">Theme Accessibility Analysis</h2>
+        
+        {% for item in themes_analysis %}
+        <div class="theme-analysis-item">
+            <div class="theme-info">
+                <div class="theme-name">{{ item.theme.name }}</div>
+                <div>
+                    <span class="theme-type">{{ item.theme.get_theme_type_display }}</span>
+                    {% if item.theme.is_dark_mode %}
+                    <span class="theme-type" style="background: #333; color: white;">Dark Mode</span>
+                    {% endif %}
+                </div>
+                {% if item.analysis.issues %}
+                <div class="contrast-info">
+                    <span class="issues-count">{{ item.analysis.issues|length }} issue{{ item.analysis.issues|length|pluralize }}</span>
+                    {% for issue in item.analysis.issues|slice:":2" %}
+                    <div style="font-size: 0.8em; color: #856404; margin-top: 2px;">• {{ issue }}</div>
+                    {% endfor %}
+                    {% if item.analysis.issues|length > 2 %}
+                    <div style="font-size: 0.8em; color: #856404;">... and {{ item.analysis.issues|length|add:"-2" }} more</div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="accessibility-status">
+                <span class="status-badge {% if item.analysis.is_compliant %}status-compliant{% else %}status-non-compliant{% endif %}">
+                    {% if item.analysis.is_compliant %}✓ Compliant{% else %}⚠ Issues{% endif %}
+                </span>
+                <a href="{% url 'themes:validation' item.theme.id %}" class="btn btn-primary" style="font-size: 0.8em; padding: 4px 8px;">
+                    Validate
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

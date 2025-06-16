@@ -1,0 +1,889 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ page_title }} | {{ site_title|default:"SOI Hub Admin" }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+<style>
+    .dashboard-container {
+        padding: 20px;
+        background: #f8f9fa;
+        min-height: calc(100vh - 120px);
+    }
+    
+    .dashboard-header {
+        background: linear-gradient(135deg, #2e7d32, #4caf50);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .dashboard-header h1 {
+        margin: 0;
+        font-size: 2.2em;
+        font-weight: 300;
+    }
+    
+    .dashboard-header .subtitle {
+        opacity: 0.9;
+        margin-top: 5px;
+        font-size: 1.1em;
+    }
+    
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .dashboard-widget {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-left: 4px solid #4caf50;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .dashboard-widget:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .widget-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .widget-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #2e7d32;
+        margin: 0;
+    }
+    
+    .widget-icon {
+        font-size: 1.5em;
+        color: #4caf50;
+    }
+    
+    .metric-value {
+        font-size: 2.5em;
+        font-weight: 700;
+        color: #2e7d32;
+        margin: 10px 0;
+    }
+    
+    .metric-label {
+        color: #666;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .metric-change {
+        font-size: 0.9em;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-weight: 500;
+    }
+    
+    .metric-change.positive {
+        background: #e8f5e8;
+        color: #2e7d32;
+    }
+    
+    .metric-change.negative {
+        background: #ffebee;
+        color: #c62828;
+    }
+    
+    .metric-change.neutral {
+        background: #f5f5f5;
+        color: #666;
+    }
+    
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .kpi-item {
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .kpi-score {
+        font-size: 2em;
+        font-weight: 700;
+        margin: 5px 0;
+    }
+    
+    .kpi-score.excellent { color: #2e7d32; }
+    .kpi-score.good { color: #f57c00; }
+    .kpi-score.needs_improvement { color: #c62828; }
+    .kpi-score.no_data { color: #666; }
+    
+    .kpi-label {
+        font-size: 0.85em;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .alert-item {
+        padding: 12px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        border-left: 4px solid;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .alert-item.error {
+        background: #ffebee;
+        border-left-color: #c62828;
+        color: #c62828;
+    }
+    
+    .alert-item.warning {
+        background: #fff3e0;
+        border-left-color: #f57c00;
+        color: #f57c00;
+    }
+    
+    .alert-item.info {
+        background: #e3f2fd;
+        border-left-color: #1976d2;
+        color: #1976d2;
+    }
+    
+    .alert-count {
+        background: currentColor;
+        color: white;
+        border-radius: 12px;
+        padding: 2px 8px;
+        font-size: 0.8em;
+        font-weight: 600;
+    }
+    
+    .activity-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+    }
+    
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+    
+    .activity-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: 0.9em;
+        color: white;
+    }
+    
+    .activity-icon.create { background: #4caf50; }
+    .activity-icon.update { background: #2196f3; }
+    .activity-icon.delete { background: #f44336; }
+    .activity-icon.security { background: #ff9800; }
+    .activity-icon.system { background: #9c27b0; }
+    
+    .activity-content {
+        flex: 1;
+    }
+    
+    .activity-description {
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 2px;
+    }
+    
+    .activity-meta {
+        font-size: 0.85em;
+        color: #666;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+        margin-top: 15px;
+    }
+    
+    .refresh-indicator {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4caf50;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .refresh-indicator.show {
+        opacity: 1;
+    }
+    
+    .dashboard-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .control-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .btn-dashboard {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+        transition: background 0.2s ease;
+    }
+    
+    .btn-dashboard:hover {
+        background: #2e7d32;
+    }
+    
+    .btn-dashboard.secondary {
+        background: #666;
+    }
+    
+    .btn-dashboard.secondary:hover {
+        background: #333;
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .kpi-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .dashboard-controls {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h1>🏆 SOI Hub Dashboard</h1>
+        <div class="subtitle">
+            Real-time volunteer management statistics and KPIs
+            <span id="last-updated"></span>
+        </div>
+    </div>
+    
+    <!-- Dashboard Controls -->
+    <div class="dashboard-controls">
+        <div class="control-group">
+            <button class="btn-dashboard" onclick="refreshDashboard()">
+                🔄 Refresh Data
+            </button>
+            <button class="btn-dashboard secondary" onclick="exportDashboard()">
+                📊 Export Report
+            </button>
+            <button class="btn-dashboard secondary" onclick="toggleAutoRefresh()">
+                ⏱️ <span id="auto-refresh-text">Auto Refresh: ON</span>
+            </button>
+        </div>
+        <div class="control-group">
+            <select id="dashboard-view" onchange="changeDashboardView()">
+                <option value="overview">Overview</option>
+                <option value="volunteers">Volunteers</option>
+                <option value="events">Events</option>
+                <option value="system">System</option>
+            </select>
+        </div>
+    </div>
+    
+    <!-- Key Metrics Grid -->
+    <div class="dashboard-grid">
+        <!-- Volunteer Metrics -->
+        <div class="dashboard-widget">
+            <div class="widget-header">
+                <h3 class="widget-title">👥 Volunteer Overview</h3>
+                <span class="widget-icon">📊</span>
+            </div>
+            <div class="metric-value" id="total-volunteers">{{ dashboard_data.volunteer_metrics.total_volunteers|default:0|intcomma }}</div>
+            <div class="metric-label">Total Volunteers</div>
+            <div style="margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Active: <strong id="active-volunteers">{{ dashboard_data.volunteer_metrics.active_volunteers|default:0|intcomma }}</strong></span>
+                    <span>Pending: <strong id="pending-volunteers">{{ dashboard_data.volunteer_metrics.pending_applications|default:0|intcomma }}</strong></span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Approval Rate: <strong id="approval-rate">{{ dashboard_data.volunteer_metrics.approval_rate|default:0 }}%</strong></span>
+                    <span class="metric-change positive">+{{ dashboard_data.volunteer_metrics.recent_registrations|default:0 }} this month</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Event Metrics -->
+        <div class="dashboard-widget">
+            <div class="widget-header">
+                <h3 class="widget-title">🎯 Event Overview</h3>
+                <span class="widget-icon">📅</span>
+            </div>
+            <div class="metric-value" id="total-events">{{ dashboard_data.event_metrics.total_events|default:0|intcomma }}</div>
+            <div class="metric-label">Total Events</div>
+            <div style="margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Active: <strong id="active-events">{{ dashboard_data.event_metrics.active_events|default:0|intcomma }}</strong></span>
+                    <span>Upcoming: <strong id="upcoming-events">{{ dashboard_data.event_metrics.upcoming_events|default:0|intcomma }}</strong></span>
+                </div>
+                <div>
+                    <span>Capacity Utilization: <strong id="capacity-utilization">{{ dashboard_data.event_metrics.capacity_utilization|default:0 }}%</strong></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Assignment Metrics -->
+        <div class="dashboard-widget">
+            <div class="widget-header">
+                <h3 class="widget-title">📋 Assignment Overview</h3>
+                <span class="widget-icon">✅</span>
+            </div>
+            <div class="metric-value" id="total-assignments">{{ dashboard_data.assignment_metrics.total_assignments|default:0|intcomma }}</div>
+            <div class="metric-label">Total Assignments</div>
+            <div style="margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Confirmed: <strong id="confirmed-assignments">{{ dashboard_data.assignment_metrics.confirmed_assignments|default:0|intcomma }}</strong></span>
+                    <span>Pending: <strong id="pending-assignments">{{ dashboard_data.assignment_metrics.pending_assignments|default:0|intcomma }}</strong></span>
+                </div>
+                <div>
+                    <span>Confirmation Rate: <strong id="confirmation-rate">{{ dashboard_data.assignment_metrics.confirmation_rate|default:0 }}%</strong></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- System Health -->
+        <div class="dashboard-widget">
+            <div class="widget-header">
+                <h3 class="widget-title">🔧 System Health</h3>
+                <span class="widget-icon">💚</span>
+            </div>
+            <div class="metric-value" id="system-health">{{ dashboard_data.system_metrics.system_health.health_score|default:0 }}%</div>
+            <div class="metric-label">Health Score</div>
+            <div style="margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>Status: <strong id="system-status">{{ dashboard_data.system_metrics.system_health.overall_status|default:"Unknown"|title }}</strong></span>
+                    <span>Uptime: <strong>99.9%</strong></span>
+                </div>
+                <div>
+                    <span>Active Users Today: <strong id="active-users">{{ dashboard_data.system_metrics.active_users_today|default:0|intcomma }}</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- KPI Dashboard -->
+    <div class="dashboard-widget" style="margin-bottom: 20px;">
+        <div class="widget-header">
+            <h3 class="widget-title">📈 Key Performance Indicators</h3>
+            <span class="widget-icon">🎯</span>
+        </div>
+        <div class="kpi-grid" id="kpi-container">
+            {% for kpi_name, kpi_data in dashboard_data.kpis.items %}
+            <div class="kpi-item">
+                <div class="kpi-score {{ kpi_data.status|default:'no_data' }}">
+                    {% if kpi_data.score %}{{ kpi_data.score }}{% if kpi_name != 'volunteer_satisfaction' %}%{% endif %}{% else %}N/A{% endif %}
+                </div>
+                <div class="kpi-label">{{ kpi_name|title|replace:"_":" " }}</div>
+                {% if kpi_data.target %}
+                <div style="font-size: 0.75em; color: #999;">Target: {{ kpi_data.target }}{% if kpi_name != 'volunteer_satisfaction' %}%{% endif %}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Alerts and Recent Activity -->
+    <div class="dashboard-grid">
+        <!-- Alerts -->
+        <div class="dashboard-widget">
+            <div class="widget-header">
+                <h3 class="widget-title">🚨 Alerts & Notifications</h3>
+                <span class="widget-icon">⚠️</span>
+            </div>
+            <div id="alerts-container">
+                {% for alert in dashboard_data.alerts_and_notifications.alerts %}
+                <div class="alert-item {{ alert.type }}">
+                    <div>
+                        <strong>{{ alert.title }}</strong><br>
+                        <small>{{ alert.message }}</small>
+                    </div>
+                    <span class="alert-count">{{ alert.count }}</span>
+                </div>
+                {% empty %}
+                <div style="text-align: center; color: #666; padding: 20px;">
+                    ✅ No alerts - All systems running smoothly
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="dashboard-widget">
+            <div class="widget-header">
+                <h3 class="widget-title">📝 Recent Activity</h3>
+                <span class="widget-icon">🕒</span>
+            </div>
+            <div id="activity-container" style="max-height: 400px; overflow-y: auto;">
+                {% for activity in dashboard_data.recent_activity|slice:":10" %}
+                <div class="activity-item">
+                    <div class="activity-icon {{ activity.action|lower }}">
+                        {% if activity.action == 'CREATE' %}➕
+                        {% elif activity.action == 'UPDATE' %}✏️
+                        {% elif activity.action == 'DELETE' %}🗑️
+                        {% elif 'SECURITY' in activity.action %}🔒
+                        {% else %}⚙️{% endif %}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-description">{{ activity.description|truncatechars:60 }}</div>
+                        <div class="activity-meta">
+                            {{ activity.user }} • {{ activity.timestamp|date:"M d, H:i" }}
+                            {% if activity.critical %} • <span style="color: #c62828;">CRITICAL</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="text-align: center; color: #666; padding: 20px;">
+                    No recent activity
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Trend Charts -->
+    <div class="dashboard-widget">
+        <div class="widget-header">
+            <h3 class="widget-title">📊 Trends & Analytics</h3>
+            <span class="widget-icon">📈</span>
+        </div>
+        <div class="chart-container">
+            <canvas id="trendsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Refresh Indicator -->
+<div id="refresh-indicator" class="refresh-indicator">
+    🔄 Updating dashboard data...
+</div>
+
+<script>
+// Dashboard JavaScript
+let autoRefreshEnabled = true;
+let refreshInterval;
+let trendsChart;
+
+// Initialize dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTrendsChart();
+    startAutoRefresh();
+    updateLastUpdated();
+});
+
+// Auto-refresh functionality
+function startAutoRefresh() {
+    if (autoRefreshEnabled) {
+        refreshInterval = setInterval(refreshDashboard, {{ refresh_interval|default:300000 }});
+    }
+}
+
+function stopAutoRefresh() {
+    if (refreshInterval) {
+        clearInterval(refreshInterval);
+    }
+}
+
+function toggleAutoRefresh() {
+    autoRefreshEnabled = !autoRefreshEnabled;
+    const text = document.getElementById('auto-refresh-text');
+    
+    if (autoRefreshEnabled) {
+        text.textContent = 'Auto Refresh: ON';
+        startAutoRefresh();
+    } else {
+        text.textContent = 'Auto Refresh: OFF';
+        stopAutoRefresh();
+    }
+}
+
+// Refresh dashboard data
+async function refreshDashboard() {
+    showRefreshIndicator();
+    
+    try {
+        const response = await fetch('/admin/dashboard/api/');
+        const data = await response.json();
+        
+        if (data.success) {
+            updateDashboardData(data.data);
+            updateLastUpdated();
+        } else {
+            console.error('Dashboard refresh failed:', data.error);
+        }
+    } catch (error) {
+        console.error('Dashboard refresh error:', error);
+    } finally {
+        hideRefreshIndicator();
+    }
+}
+
+// Update dashboard data
+function updateDashboardData(data) {
+    // Update volunteer metrics
+    if (data.volunteer_metrics) {
+        updateElement('total-volunteers', data.volunteer_metrics.total_volunteers);
+        updateElement('active-volunteers', data.volunteer_metrics.active_volunteers);
+        updateElement('pending-volunteers', data.volunteer_metrics.pending_applications);
+        updateElement('approval-rate', data.volunteer_metrics.approval_rate + '%');
+    }
+    
+    // Update event metrics
+    if (data.event_metrics) {
+        updateElement('total-events', data.event_metrics.total_events);
+        updateElement('active-events', data.event_metrics.active_events);
+        updateElement('upcoming-events', data.event_metrics.upcoming_events);
+        updateElement('capacity-utilization', data.event_metrics.capacity_utilization + '%');
+    }
+    
+    // Update assignment metrics
+    if (data.assignment_metrics) {
+        updateElement('total-assignments', data.assignment_metrics.total_assignments);
+        updateElement('confirmed-assignments', data.assignment_metrics.confirmed_assignments);
+        updateElement('pending-assignments', data.assignment_metrics.pending_assignments);
+        updateElement('confirmation-rate', data.assignment_metrics.confirmation_rate + '%');
+    }
+    
+    // Update system metrics
+    if (data.system_metrics && data.system_metrics.system_health) {
+        updateElement('system-health', data.system_metrics.system_health.health_score + '%');
+        updateElement('system-status', data.system_metrics.system_health.overall_status);
+        updateElement('active-users', data.system_metrics.active_users_today);
+    }
+    
+    // Update KPIs
+    if (data.kpis) {
+        updateKPIs(data.kpis);
+    }
+    
+    // Update alerts
+    if (data.alerts_and_notifications) {
+        updateAlerts(data.alerts_and_notifications.alerts);
+    }
+    
+    // Update recent activity
+    if (data.recent_activity) {
+        updateRecentActivity(data.recent_activity);
+    }
+    
+    // Update trends chart
+    if (data.trends) {
+        updateTrendsChart(data.trends);
+    }
+}
+
+// Helper functions
+function updateElement(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = typeof value === 'number' ? value.toLocaleString() : value;
+    }
+}
+
+function updateKPIs(kpis) {
+    const container = document.getElementById('kpi-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    for (const [kpiName, kpiData] of Object.entries(kpis)) {
+        const kpiItem = document.createElement('div');
+        kpiItem.className = 'kpi-item';
+        
+        const score = kpiData.score !== null ? 
+            (kpiName === 'volunteer_satisfaction' ? kpiData.score : kpiData.score + '%') : 
+            'N/A';
+        
+        kpiItem.innerHTML = `
+            <div class="kpi-score ${kpiData.status || 'no_data'}">${score}</div>
+            <div class="kpi-label">${kpiName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</div>
+            ${kpiData.target ? `<div style="font-size: 0.75em; color: #999;">Target: ${kpiData.target}${kpiName !== 'volunteer_satisfaction' ? '%' : ''}</div>` : ''}
+        `;
+        
+        container.appendChild(kpiItem);
+    }
+}
+
+function updateAlerts(alerts) {
+    const container = document.getElementById('alerts-container');
+    if (!container) return;
+    
+    if (alerts.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">✅ No alerts - All systems running smoothly</div>';
+        return;
+    }
+    
+    container.innerHTML = '';
+    
+    alerts.forEach(alert => {
+        const alertItem = document.createElement('div');
+        alertItem.className = `alert-item ${alert.type}`;
+        alertItem.innerHTML = `
+            <div>
+                <strong>${alert.title}</strong><br>
+                <small>${alert.message}</small>
+            </div>
+            <span class="alert-count">${alert.count}</span>
+        `;
+        container.appendChild(alertItem);
+    });
+}
+
+function updateRecentActivity(activities) {
+    const container = document.getElementById('activity-container');
+    if (!container) return;
+    
+    if (activities.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">No recent activity</div>';
+        return;
+    }
+    
+    container.innerHTML = '';
+    
+    activities.slice(0, 10).forEach(activity => {
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        
+        let icon = '⚙️';
+        if (activity.action === 'CREATE') icon = '➕';
+        else if (activity.action === 'UPDATE') icon = '✏️';
+        else if (activity.action === 'DELETE') icon = '🗑️';
+        else if (activity.action.includes('SECURITY')) icon = '🔒';
+        
+        const timestamp = new Date(activity.timestamp);
+        const timeString = timestamp.toLocaleDateString() + ', ' + timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        activityItem.innerHTML = `
+            <div class="activity-icon ${activity.action.toLowerCase()}">${icon}</div>
+            <div class="activity-content">
+                <div class="activity-description">${activity.description.substring(0, 60)}${activity.description.length > 60 ? '...' : ''}</div>
+                <div class="activity-meta">
+                    ${activity.user} • ${timeString}
+                    ${activity.critical ? ' • <span style="color: #c62828;">CRITICAL</span>' : ''}
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(activityItem);
+    });
+}
+
+function initializeTrendsChart() {
+    const ctx = document.getElementById('trendsChart');
+    if (!ctx) return;
+    
+    trendsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Volunteer Registrations',
+                    data: [],
+                    borderColor: '#4caf50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    tension: 0.4
+                },
+                {
+                    label: 'System Activity',
+                    data: [],
+                    borderColor: '#2196f3',
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Assignments',
+                    data: [],
+                    borderColor: '#ff9800',
+                    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+    // Load initial trend data
+    loadTrendData();
+}
+
+async function loadTrendData() {
+    try {
+        const response = await fetch('/admin/dashboard/trends/');
+        const data = await response.json();
+        
+        if (data.success) {
+            updateTrendsChart(data.data);
+        }
+    } catch (error) {
+        console.error('Failed to load trend data:', error);
+    }
+}
+
+function updateTrendsChart(trends) {
+    if (!trendsChart || !trends) return;
+    
+    // Prepare data for the last 30 days
+    const last30Days = [];
+    const today = new Date();
+    
+    for (let i = 29; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        last30Days.push(date.toISOString().split('T')[0]);
+    }
+    
+    // Map trend data to chart format
+    const volunteerData = last30Days.map(date => {
+        const found = trends.volunteer_registrations?.find(item => item.day === date);
+        return found ? found.count : 0;
+    });
+    
+    const activityData = last30Days.map(date => {
+        const found = trends.system_activity?.find(item => item.day === date);
+        return found ? found.count : 0;
+    });
+    
+    const assignmentData = last30Days.map(date => {
+        const found = trends.assignments?.find(item => item.day === date);
+        return found ? found.count : 0;
+    });
+    
+    trendsChart.data.labels = last30Days.map(date => {
+        const d = new Date(date);
+        return d.toLocaleDateString([], {month: 'short', day: 'numeric'});
+    });
+    
+    trendsChart.data.datasets[0].data = volunteerData;
+    trendsChart.data.datasets[1].data = activityData;
+    trendsChart.data.datasets[2].data = assignmentData;
+    
+    trendsChart.update();
+}
+
+function showRefreshIndicator() {
+    const indicator = document.getElementById('refresh-indicator');
+    if (indicator) {
+        indicator.classList.add('show');
+    }
+}
+
+function hideRefreshIndicator() {
+    const indicator = document.getElementById('refresh-indicator');
+    if (indicator) {
+        indicator.classList.remove('show');
+    }
+}
+
+function updateLastUpdated() {
+    const element = document.getElementById('last-updated');
+    if (element) {
+        const now = new Date();
+        element.textContent = ` • Last updated: ${now.toLocaleTimeString()}`;
+    }
+}
+
+// Export functionality
+function exportDashboard() {
+    const format = prompt('Export format (json/csv):', 'json');
+    if (format && ['json', 'csv'].includes(format.toLowerCase())) {
+        window.open(`/admin/dashboard/export/overview/?format=${format.toLowerCase()}`, '_blank');
+    }
+}
+
+// Dashboard view switching
+function changeDashboardView() {
+    const select = document.getElementById('dashboard-view');
+    const view = select.value;
+    
+    switch (view) {
+        case 'volunteers':
+            window.location.href = '/admin/dashboard/volunteers/';
+            break;
+        case 'events':
+            window.location.href = '/admin/dashboard/events/';
+            break;
+        case 'system':
+            window.location.href = '/admin/dashboard/system/';
+            break;
+        default:
+            // Stay on overview
+            break;
+    }
+}
+</script>
+{% endblock %} 

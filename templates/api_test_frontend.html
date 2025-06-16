@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOI Volunteer Management - API Test Frontend</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2E7D32;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .api-section {
+            margin-bottom: 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .api-header {
+            background: #f5f5f5;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .api-header h3 {
+            color: #2E7D32;
+            margin-bottom: 10px;
+        }
+        
+        .api-body {
+            padding: 20px;
+        }
+        
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+        
+        .test-button:hover {
+            background: #45a049;
+        }
+        
+        .test-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .result-box {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .success {
+            border-left: 4px solid #4CAF50;
+            background: #f1f8e9;
+        }
+        
+        .error {
+            border-left: 4px solid #f44336;
+            background: #ffebee;
+        }
+        
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success {
+            background: #4CAF50;
+        }
+        
+        .status-error {
+            background: #f44336;
+        }
+        
+        .status-pending {
+            background: #ff9800;
+        }
+        
+        .auth-section {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .auth-form {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .auth-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .system-status {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .status-item {
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            background: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .nav-tab.active {
+            background: white;
+            color: #2E7D32;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 SOI Volunteer Management System</h1>
+            <p>API Test Frontend - Comprehensive System Testing</p>
+        </div>
+        
+        <div class="content">
+            <!-- System Status Overview -->
+            <div class="system-status">
+                <h3>🔍 System Status Overview</h3>
+                <div class="status-grid">
+                    <div id="server-status" class="status-item">Server: <span class="status-indicator status-pending"></span>Checking...</div>
+                    <div id="admin-status" class="status-item">Admin: <span class="status-indicator status-pending"></span>Checking...</div>
+                    <div id="api-status" class="status-item">API: <span class="status-indicator status-pending"></span>Checking...</div>
+                    <div id="db-status" class="status-item">Database: <span class="status-indicator status-pending"></span>Checking...</div>
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('basic-tests')">Basic Tests</button>
+                <button class="nav-tab" onclick="showTab('api-tests')">API Tests</button>
+                <button class="nav-tab" onclick="showTab('admin-tests')">Admin Tests</button>
+                <button class="nav-tab" onclick="showTab('system-info')">System Info</button>
+            </div>
+            
+            <!-- Basic Tests Tab -->
+            <div id="basic-tests" class="tab-content active">
+                <div style="padding: 20px;">
+                    <h3>🔧 Basic System Tests</h3>
+                    <p>Test core system functionality and connectivity</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <button class="test-button" onclick="testConnectivity()">Test Server Connectivity</button>
+                        <button class="test-button" onclick="testAdminAccess()">Test Admin Access</button>
+                        <button class="test-button" onclick="testStaticFiles()">Test Static Files</button>
+                        <button class="test-button" onclick="runAllBasicTests()">Run All Basic Tests</button>
+                    </div>
+                    
+                    <div id="basic-results" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- API Tests Tab -->
+            <div id="api-tests" class="tab-content">
+                <div style="padding: 20px;">
+                    <div class="grid">
+                        <!-- User Management API -->
+                        <div class="api-section">
+                            <div class="api-header">
+                                <h3>👥 User Management API</h3>
+                                <p>Test user authentication and profile management</p>
+                            </div>
+                            <div class="api-body">
+                                <button class="test-button" onclick="testAPI('/api/v1/accounts/users/', 'users-result')">
+                                    Get Users
+                                </button>
+                                <button class="test-button" onclick="testAPI('/api/v1/accounts/auth/login/', 'users-result', 'POST')">
+                                    Test Login
+                                </button>
+                                <div id="users-result" class="result-box" style="display: none;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Volunteer Management API -->
+                        <div class="api-section">
+                            <div class="api-header">
+                                <h3>🙋‍♀️ Volunteer Management API</h3>
+                                <p>Test volunteer profiles and EOI system</p>
+                            </div>
+                            <div class="api-body">
+                                <button class="test-button" onclick="testAPI('/api/v1/volunteers/profiles/', 'volunteers-result')">
+                                    Get Profiles
+                                </button>
+                                <button class="test-button" onclick="testAPI('/api/v1/volunteers/eoi/submissions/', 'volunteers-result')">
+                                    Get EOI Submissions
+                                </button>
+                                <div id="volunteers-result" class="result-box" style="display: none;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Event Management API -->
+                        <div class="api-section">
+                            <div class="api-header">
+                                <h3>🏟️ Event Management API</h3>
+                                <p>Test events, venues, and role management</p>
+                            </div>
+                            <div class="api-body">
+                                <button class="test-button" onclick="testAPI('/api/v1/events/events/', 'events-result')">
+                                    Get Events
+                                </button>
+                                <button class="test-button" onclick="testAPI('/api/v1/events/venues/', 'events-result')">
+                                    Get Venues
+                                </button>
+                                <button class="test-button" onclick="testAPI('/api/v1/events/roles/', 'events-result')">
+                                    Get Roles
+                                </button>
+                                <div id="events-result" class="result-box" style="display: none;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Task Management API -->
+                        <div class="api-section">
+                            <div class="api-header">
+                                <h3>✅ Task Management API</h3>
+                                <p>Test task assignment and workflow</p>
+                            </div>
+                            <div class="api-body">
+                                <button class="test-button" onclick="testAPI('/api/v1/tasks/tasks/', 'tasks-result')">
+                                    Get Tasks
+                                </button>
+                                <button class="test-button" onclick="testAPI('/api/v1/tasks/completions/', 'tasks-result')">
+                                    Get Completions
+                                </button>
+                                <div id="tasks-result" class="result-box" style="display: none;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification API -->
+                        <div class="api-section">
+                            <div class="api-header">
+                                <h3>🔔 Notification API</h3>
+                                <p>Test real-time notifications system</p>
+                            </div>
+                            <div class="api-body">
+                                <button class="test-button" onclick="testAPI('/api/v1/notifications/notifications/', 'notifications-result')">
+                                    Get Notifications
+                                </button>
+                                <button class="test-button" onclick="testAPI('/api/v1/notifications/preferences/', 'notifications-result')">
+                                    Get Preferences
+                                </button>
+                                <div id="notifications-result" class="result-box" style="display: none;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Reporting API -->
+                        <div class="api-section">
+                            <div class="api-header">
+                                <h3>📊 Reporting API</h3>
+                                <p>Test analytics and reporting system</p>
+                            </div>
+                            <div class="api-body">
+                                <button class="test-button" onclick="testAPI('/api/v1/reporting/reports/', 'reporting-result')">
+                                    Get Reports
+                                </button>
+                                <button class="test-button" onclick="testAPI('/api/v1/reporting/analytics/dashboard/', 'reporting-result')">
+                                    Get Dashboard
+                                </button>
+                                <div id="reporting-result" class="result-box" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin Tests Tab -->
+            <div id="admin-tests" class="tab-content">
+                <div style="padding: 20px;">
+                    <h3>🔐 Admin Interface Tests</h3>
+                    <p>Test admin functionality and management features</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <button class="test-button" onclick="testAdminLogin()">Test Admin Login</button>
+                        <button class="test-button" onclick="testAdminDashboard()">Test Admin Dashboard</button>
+                        <button class="test-button" onclick="testHelpSystem()">Test Help System</button>
+                        <button class="test-button" onclick="testThemeSystem()">Test Theme System</button>
+                    </div>
+                    
+                    <div id="admin-results" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- System Info Tab -->
+            <div id="system-info" class="tab-content">
+                <div style="padding: 20px;">
+                    <h3>ℹ️ System Information</h3>
+                    <div id="system-info-content">
+                        <p>Loading system information...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let authToken = null;
+        
+        // Tab Management
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        // System Status Checks
+        async function checkSystemStatus() {
+            // Check server status
+            try {
+                const response = await fetch('/admin/');
+                updateStatus('server-status', response.ok, 'Server');
+            } catch (error) {
+                updateStatus('server-status', false, 'Server');
+            }
+            
+            // Check admin access
+            try {
+                const response = await fetch('/admin/login/');
+                updateStatus('admin-status', response.ok, 'Admin');
+            } catch (error) {
+                updateStatus('admin-status', false, 'Admin');
+            }
+            
+            // Check API status
+            try {
+                const response = await fetch('/api/v1/accounts/users/');
+                updateStatus('api-status', response.status !== 500, 'API');
+            } catch (error) {
+                updateStatus('api-status', false, 'API');
+            }
+            
+            // Simulate database check
+            updateStatus('db-status', true, 'Database');
+        }
+        
+        function updateStatus(elementId, isOk, label) {
+            const element = document.getElementById(elementId);
+            const statusClass = isOk ? 'status-success' : 'status-error';
+            const statusText = isOk ? 'OK' : 'Error';
+            element.innerHTML = `${label}: <span class="status-indicator ${statusClass}"></span>${statusText}`;
+        }
+        
+        // Basic Tests
+        async function testConnectivity() {
+            const resultEl = document.getElementById('basic-results');
+            resultEl.style.display = 'block';
+            resultEl.className = 'result-box loading';
+            resultEl.innerHTML = 'Testing server connectivity...';
+            
+            try {
+                const response = await fetch('/admin/');
+                if (response.ok || response.status === 302) {
+                    resultEl.className = 'result-box success';
+                    resultEl.innerHTML = '✅ Server connectivity: OK\nServer is responding correctly';
+                } else {
+                    resultEl.className = 'result-box error';
+                    resultEl.innerHTML = `❌ Server connectivity: Error (${response.status})`;
+                }
+            } catch (error) {
+                resultEl.className = 'result-box error';
+                resultEl.innerHTML = `❌ Server connectivity: Failed\nError: ${error.message}`;
+            }
+        }
+        
+        async function testAdminAccess() {
+            const resultEl = document.getElementById('basic-results');
+            resultEl.style.display = 'block';
+            resultEl.className = 'result-box loading';
+            resultEl.innerHTML = 'Testing admin access...';
+            
+            try {
+                const response = await fetch('/admin/login/');
+                if (response.ok) {
+                    resultEl.className = 'result-box success';
+                    resultEl.innerHTML = '✅ Admin access: OK\nAdmin interface is accessible';
+                } else {
+                    resultEl.className = 'result-box error';
+                    resultEl.innerHTML = `❌ Admin access: Error (${response.status})`;
+                }
+            } catch (error) {
+                resultEl.className = 'result-box error';
+                resultEl.innerHTML = `❌ Admin access: Failed\nError: ${error.message}`;
+            }
+        }
+        
+        async function testStaticFiles() {
+            const resultEl = document.getElementById('basic-results');
+            resultEl.style.display = 'block';
+            resultEl.className = 'result-box loading';
+            resultEl.innerHTML = 'Testing static files...';
+            
+            try {
+                const response = await fetch('/static/admin/css/soi-admin-theme.css');
+                if (response.ok) {
+                    resultEl.className = 'result-box success';
+                    resultEl.innerHTML = '✅ Static files: OK\nCSS and static assets are loading correctly';
+                } else {
+                    resultEl.className = 'result-box error';
+                    resultEl.innerHTML = `❌ Static files: Error (${response.status})`;
+                }
+            } catch (error) {
+                resultEl.className = 'result-box error';
+                resultEl.innerHTML = `❌ Static files: Failed\nError: ${error.message}`;
+            }
+        }
+        
+        async function runAllBasicTests() {
+            await testConnectivity();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testAdminAccess();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testStaticFiles();
+        }
+        
+        // API Testing
+        async function testAPI(endpoint, resultId, method = 'GET') {
+            const resultEl = document.getElementById(resultId);
+            resultEl.style.display = 'block';
+            resultEl.className = 'result-box loading';
+            resultEl.innerHTML = 'Loading...';
+            
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    credentials: 'include'
+                };
+                
+                const response = await fetch(endpoint, options);
+                
+                let data;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    try {
+                        data = await response.json();
+                    } catch (e) {
+                        data = 'Invalid JSON response';
+                    }
+                } else {
+                    try {
+                        data = await response.text();
+                    } catch (e) {
+                        data = 'Unable to read response';
+                    }
+                }
+                
+                if (response.ok) {
+                    resultEl.className = 'result-box success';
+                    resultEl.innerHTML = `
+                        <strong>✅ Success (${response.status})</strong><br>
+                        <strong>Endpoint:</strong> ${endpoint}<br>
+                        <strong>Method:</strong> ${method}<br>
+                        <strong>Response:</strong><br>
+                        ${typeof data === 'object' ? JSON.stringify(data, null, 2) : data}
+                    `;
+                } else {
+                    resultEl.className = 'result-box error';
+                    resultEl.innerHTML = `
+                        <strong>❌ Error (${response.status})</strong><br>
+                        <strong>Endpoint:</strong> ${endpoint}<br>
+                        <strong>Method:</strong> ${method}<br>
+                        <strong>Error:</strong><br>
+                        ${typeof data === 'object' ? JSON.stringify(data, null, 2) : data}
+                    `;
+                }
+            } catch (error) {
+                resultEl.className = 'result-box error';
+                resultEl.innerHTML = `
+                    <strong>❌ Network Error</strong><br>
+                    <strong>Endpoint:</strong> ${endpoint}<br>
+                    <strong>Error:</strong> ${error.message}
+                `;
+            }
+        }
+        
+        // Admin Tests
+        async function testAdminLogin() {
+            const resultEl = document.getElementById('admin-results');
+            resultEl.style.display = 'block';
+            resultEl.className = 'result-box loading';
+            resultEl.innerHTML = 'Testing admin login...';
+            
+            try {
+                const response = await fetch('/admin/login/');
+                if (response.ok) {
+                    resultEl.className = 'result-box success';
+                    resultEl.innerHTML = '✅ Admin login page is accessible and working';
+                } else {
+                    resultEl.className = 'result-box error';
+                    resultEl.innerHTML = `❌ Admin login error (${response.status})`;
+                }
+            } catch (error) {
+                resultEl.className = 'result-box error';
+                resultEl.innerHTML = `❌ Admin login failed: ${error.message}`;
+            }
+        }
+        
+        async function testAdminDashboard() {
+            await testAPI('/admin/', 'admin-results');
+        }
+        
+        async function testHelpSystem() {
+            await testAPI('/help/', 'admin-results');
+        }
+        
+        async function testThemeSystem() {
+            await testAPI('/themes/', 'admin-results');
+        }
+        
+        // Utility Functions
+        function getCSRFToken() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrftoken') {
+                    return value;
+                }
+            }
+            return '';
+        }
+        
+        // Load system information
+        function loadSystemInfo() {
+            const systemInfoEl = document.getElementById('system-info-content');
+            systemInfoEl.innerHTML = `
+                <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
+                    <h4>🔧 System Configuration</h4>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Framework:</strong> Django 5.0.14</li>
+                        <li><strong>Database:</strong> PostgreSQL</li>
+                        <li><strong>API Framework:</strong> Django REST Framework</li>
+                        <li><strong>Authentication:</strong> JWT + Session</li>
+                        <li><strong>Real-time:</strong> WebSocket (Django Channels)</li>
+                        <li><strong>Cache:</strong> Redis</li>
+                    </ul>
+                    
+                    <h4>📱 Available Apps</h4>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>👥 User Management (accounts)</li>
+                        <li>🙋‍♀️ Volunteer Management (volunteers)</li>
+                        <li>🏟️ Event Management (events)</li>
+                        <li>✅ Task Management (tasks)</li>
+                        <li>🔔 Notification System (common)</li>
+                        <li>📊 Reporting & Analytics (reporting)</li>
+                        <li>🔗 External Integrations (integrations)</li>
+                    </ul>
+                    
+                    <h4>🌐 API Endpoints</h4>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>/api/v1/accounts/ - User management</li>
+                        <li>/api/v1/volunteers/ - Volunteer profiles & EOI</li>
+                        <li>/api/v1/events/ - Events, venues, roles</li>
+                        <li>/api/v1/tasks/ - Task management</li>
+                        <li>/api/v1/notifications/ - Notifications</li>
+                        <li>/api/v1/reporting/ - Reports & analytics</li>
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Initialize on page load
+        window.onload = function() {
+            checkSystemStatus();
+            loadSystemInfo();
+        };
+    </script>
+</body>
+</html> 

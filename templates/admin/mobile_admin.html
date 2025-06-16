@@ -1,0 +1,55 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    
+    <!-- Mobile viewport and meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SOI Hub Admin">
+    <meta name="theme-color" content="#2E7D32">
+    
+    <!-- Mobile-responsive CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/mobile-responsive.css' %}">
+    
+    <!-- Mobile JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add mobile class to body
+            if (window.innerWidth <= 768) {
+                document.documentElement.classList.add('mobile');
+            }
+            
+            // Handle table responsiveness
+            var tables = document.querySelectorAll('table');
+            tables.forEach(function(table) {
+                if (!table.closest('.table-container')) {
+                    var container = document.createElement('div');
+                    container.className = 'table-container';
+                    table.parentNode.insertBefore(container, table);
+                    container.appendChild(table);
+                }
+            });
+            
+            // Mobile form optimizations
+            var inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(function(input) {
+                if (window.innerWidth <= 768) {
+                    input.style.fontSize = '16px';
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            <span class="desktop-only">SOI Hub Administration</span>
+            <span class="mobile-only">SOI Admin</span>
+        </a>
+    </h1>
+{% endblock %} 

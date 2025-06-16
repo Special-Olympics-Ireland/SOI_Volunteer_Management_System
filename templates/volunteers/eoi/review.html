@@ -1,0 +1,406 @@
+{% extends 'volunteers/eoi/base.html' %}
+{% load i18n %}
+
+{% block title %}Review Application - ISG 2026 Volunteer Registration{% endblock %}
+
+{% block extra_css %}
+<style>
+    .review-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--soi-green);
+    }
+    
+    .review-header {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f8f9fa;
+    }
+    
+    .review-title {
+        color: var(--soi-green);
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .edit-link {
+        color: var(--soi-green);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--soi-green);
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .edit-link:hover {
+        background: var(--soi-green);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .info-item {
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 3px solid var(--soi-light-green);
+    }
+    
+    .info-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .info-value {
+        color: #212529;
+        font-size: 1rem;
+    }
+    
+    .info-value.empty {
+        color: #6c757d;
+        font-style: italic;
+    }
+    
+    .preferences-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    
+    .preference-tag {
+        background: linear-gradient(135deg, var(--soi-green), var(--soi-light-green));
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .photo-preview {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 10px;
+        border: 2px solid var(--soi-light-green);
+    }
+    
+    .consent-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .consent-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        color: white;
+    }
+    
+    .consent-accepted {
+        background: #28a745;
+    }
+    
+    .consent-declined {
+        background: #dc3545;
+    }
+    
+    .submission-card {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(76, 175, 80, 0.1));
+        border: 2px solid var(--soi-green);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        margin-top: 2rem;
+    }
+    
+    .submission-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--soi-green), var(--soi-light-green));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .completion-badge {
+        background: #28a745;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .review-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">{% trans "Review Your Application" %}</h3>
+            <p class="text-muted mb-4">{% trans "Please review all your information before submitting your volunteer application." %}</p>
+            
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle me-2"></i>{% trans "Application Complete" %} ({{ eoi_submission.completion_percentage }}%)
+            </div>
+            
+            <!-- Profile Information Section -->
+            {% if eoi_submission.profile_information %}
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5><i class="fas fa-user me-2"></i>{% trans "Profile Information" %}</h5>
+                    <a href="{% url 'volunteers:eoi_profile' submission_id=eoi_submission.id %}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-edit me-1"></i>{% trans "Edit" %}
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>{% trans "Name:" %}</strong> 
+                                {{ eoi_submission.profile_information.first_name }} {{ eoi_submission.profile_information.last_name }}
+                                {% if eoi_submission.profile_information.preferred_name %}
+                                    ({{ eoi_submission.profile_information.preferred_name }})
+                                {% endif %}
+                            </p>
+                            <p><strong>{% trans "Date of Birth:" %}</strong> {{ eoi_submission.profile_information.date_of_birth|date:"F j, Y" }}</p>
+                            <p><strong>{% trans "Email:" %}</strong> {{ eoi_submission.profile_information.email }}</p>
+                            <p><strong>{% trans "Phone:" %}</strong> {{ eoi_submission.profile_information.phone_number }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>{% trans "Address:" %}</strong><br>
+                                {{ eoi_submission.profile_information.address_line_1 }}<br>
+                                {% if eoi_submission.profile_information.address_line_2 %}
+                                    {{ eoi_submission.profile_information.address_line_2 }}<br>
+                                {% endif %}
+                                {{ eoi_submission.profile_information.city }}, {{ eoi_submission.profile_information.state_province }}<br>
+                                {{ eoi_submission.profile_information.postal_code }}, {{ eoi_submission.profile_information.country }}
+                            </p>
+                            <p><strong>{% trans "Emergency Contact:" %}</strong><br>
+                                {{ eoi_submission.profile_information.emergency_contact_name }}<br>
+                                {{ eoi_submission.profile_information.emergency_contact_phone }}<br>
+                                ({{ eoi_submission.profile_information.emergency_contact_relationship }})
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Recruitment Preferences Section -->
+            {% if eoi_submission.recruitment_preferences %}
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5><i class="fas fa-heart me-2"></i>{% trans "Recruitment Preferences" %}</h5>
+                    <a href="{% url 'volunteers:eoi_recruitment' submission_id=eoi_submission.id %}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-edit me-1"></i>{% trans "Edit" %}
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>{% trans "Experience Level:" %}</strong> {{ eoi_submission.recruitment_preferences.get_volunteer_experience_level_display }}</p>
+                            <p><strong>{% trans "Availability:" %}</strong> {{ eoi_submission.recruitment_preferences.get_availability_level_display }}</p>
+                            <p><strong>{% trans "Max Hours per Day:" %}</strong> {{ eoi_submission.recruitment_preferences.max_hours_per_day }} hours</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>{% trans "Transport:" %}</strong>
+                                {% if eoi_submission.recruitment_preferences.has_own_transport %}
+                                    {% trans "Has own transport" %} ({{ eoi_submission.recruitment_preferences.transport_method }})
+                                {% else %}
+                                    {% trans "No own transport" %}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    {% if eoi_submission.recruitment_preferences.motivation %}
+                    <p><strong>{% trans "Motivation:" %}</strong><br>{{ eoi_submission.recruitment_preferences.motivation }}</p>
+                    {% endif %}
+                    
+                    {% if eoi_submission.recruitment_preferences.preferred_sports %}
+                    <p><strong>{% trans "Preferred Sports:" %}</strong>
+                        {% for sport in eoi_submission.recruitment_preferences.preferred_sports %}
+                            <span class="badge bg-primary me-1">{{ sport }}</span>
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                    
+                    {% if eoi_submission.recruitment_preferences.preferred_venues %}
+                    <p><strong>{% trans "Preferred Venues:" %}</strong>
+                        {% for venue in eoi_submission.recruitment_preferences.preferred_venues %}
+                            <span class="badge bg-secondary me-1">{{ venue }}</span>
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                    
+                    {% if eoi_submission.recruitment_preferences.preferred_roles %}
+                    <p><strong>{% trans "Preferred Roles:" %}</strong>
+                        {% for role in eoi_submission.recruitment_preferences.preferred_roles %}
+                            <span class="badge bg-success me-1">{{ role }}</span>
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Games Information Section -->
+            {% if eoi_submission.games_information %}
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5><i class="fas fa-medal me-2"></i>{% trans "Games Information" %}</h5>
+                    <a href="{% url 'volunteers:eoi_games' submission_id=eoi_submission.id %}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-edit me-1"></i>{% trans "Edit" %}
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p><strong>{% trans "T-Shirt Size:" %}</strong> {{ eoi_submission.games_information.get_t_shirt_size_display }}</p>
+                            <p><strong>{% trans "Uniform Required:" %}</strong>
+                                {% if eoi_submission.games_information.requires_uniform %}
+                                    {% trans "Yes" %} - {{ eoi_submission.games_information.get_uniform_collection_preference_display }}
+                                {% else %}
+                                    {% trans "No" %}
+                                {% endif %}
+                            </p>
+                            <p><strong>{% trans "Dietary Requirements:" %}</strong> 
+                                {{ eoi_submission.games_information.dietary_requirements|default:"None specified" }}
+                            </p>
+                            <p><strong>{% trans "Food Allergies:" %}</strong>
+                                {% if eoi_submission.games_information.has_food_allergies %}
+                                    {% trans "Yes" %} - {{ eoi_submission.games_information.food_allergy_details }}
+                                {% else %}
+                                    {% trans "None" %}
+                                {% endif %}
+                            </p>
+                            <p><strong>{% trans "Accommodation:" %}</strong>
+                                {% if eoi_submission.games_information.requires_accommodation %}
+                                    {% trans "Required" %} - {{ eoi_submission.games_information.accommodation_preferences }}
+                                {% else %}
+                                    {% trans "Not required" %}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            {% if eoi_submission.games_information.volunteer_photo %}
+                            <div class="text-center">
+                                <p><strong>{% trans "Volunteer Photo:" %}</strong></p>
+                                <img src="{{ eoi_submission.games_information.volunteer_photo.url }}" 
+                                     alt="Volunteer Photo" class="img-thumbnail" style="max-width: 150px;">
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if eoi_submission.games_information.preferred_shifts %}
+                    <p><strong>{% trans "Preferred Shifts:" %}</strong>
+                        {% for shift in eoi_submission.games_information.preferred_shifts %}
+                            <span class="badge bg-info me-1">{{ shift }}</span>
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6>{% trans "Consent Status" %}</h6>
+                            <p>
+                                <i class="fas {% if eoi_submission.games_information.photo_consent %}fa-check text-success{% else %}fa-times text-danger{% endif %}"></i>
+                                {% trans "Photo Usage" %}
+                            </p>
+                            <p>
+                                <i class="fas {% if eoi_submission.games_information.social_media_consent %}fa-check text-success{% else %}fa-times text-danger{% endif %}"></i>
+                                {% trans "Social Media" %}
+                            </p>
+                            <p>
+                                <i class="fas {% if eoi_submission.games_information.testimonial_consent %}fa-check text-success{% else %}fa-times text-danger{% endif %}"></i>
+                                {% trans "Testimonials" %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>{% trans "Required Agreements" %}</h6>
+                            <p><i class="fas fa-check text-success"></i> {% trans "Terms & Conditions" %}</p>
+                            <p><i class="fas fa-check text-success"></i> {% trans "Privacy Policy" %}</p>
+                            <p><i class="fas fa-check text-success"></i> {% trans "Code of Conduct" %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Submission Section -->
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <h4 class="text-success">{% trans "Ready to Submit!" %}</h4>
+                    <p class="lead">{% trans "Your application is complete and ready for submission. Once submitted, you will receive a confirmation email with next steps." %}</p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="{% url 'volunteers:eoi_games' submission_id=eoi_submission.id %}" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>{% trans "Back to Edit" %}
+                            </a>
+                            <button type="submit" name="submit_eoi" class="btn btn-success btn-lg">
+                                <i class="fas fa-check me-2"></i>{% trans "Submit Application" %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add confirmation dialog for submission
+    const submitButton = document.querySelector('button[name="submit_eoi"]');
+    if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+            if (!confirm('{% trans "Are you sure you want to submit your application? You will not be able to make changes after submission." %}')) {
+                e.preventDefault();
+            }
+        });
+    }
+});
+</script>
+{% endblock %} 

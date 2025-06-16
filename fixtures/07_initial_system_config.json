@@ -1,0 +1,187 @@
+[
+  {
+    "model": "common.systemconfig",
+    "pk": "vvvvvvvv-vvvv-vvvv-vvvv-vvvvvvvvvvvv",
+    "fields": {
+      "key": "SYSTEM_MAINTENANCE_MODE",
+      "name": "System Maintenance Mode",
+      "description": "Enable or disable system maintenance mode",
+      "config_type": "SYSTEM",
+      "value": false,
+      "default_value": false,
+      "validation_rules": {
+        "type": "boolean"
+      },
+      "is_active": true,
+      "is_public": false,
+      "is_editable": true,
+      "requires_restart": false,
+      "version": 1,
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "tags": ["system", "maintenance"]
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": "wwwwwwww-wwww-wwww-wwww-wwwwwwwwwwww",
+    "fields": {
+      "key": "VOLUNTEER_REGISTRATION_ENABLED",
+      "name": "Volunteer Registration Enabled",
+      "description": "Enable or disable volunteer registration for events",
+      "config_type": "FEATURE",
+      "value": true,
+      "default_value": true,
+      "validation_rules": {
+        "type": "boolean"
+      },
+      "is_active": true,
+      "is_public": true,
+      "is_editable": true,
+      "requires_restart": false,
+      "version": 1,
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "tags": ["volunteer", "registration", "feature"]
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "fields": {
+      "key": "MAX_ROLES_PER_VOLUNTEER",
+      "name": "Maximum Roles Per Volunteer",
+      "description": "Maximum number of roles a volunteer can be assigned to",
+      "config_type": "SYSTEM",
+      "value": 3,
+      "default_value": 2,
+      "validation_rules": {
+        "type": "integer",
+        "min": 1,
+        "max": 10
+      },
+      "allowed_values": [1, 2, 3, 4, 5],
+      "is_active": true,
+      "is_public": false,
+      "is_editable": true,
+      "requires_restart": false,
+      "version": 1,
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "tags": ["volunteer", "roles", "limits"]
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+    "fields": {
+      "key": "EMAIL_NOTIFICATIONS_ENABLED",
+      "name": "Email Notifications Enabled",
+      "description": "Enable or disable email notifications system-wide",
+      "config_type": "NOTIFICATION",
+      "value": true,
+      "default_value": true,
+      "validation_rules": {
+        "type": "boolean"
+      },
+      "is_active": true,
+      "is_public": false,
+      "is_editable": true,
+      "requires_restart": false,
+      "version": 1,
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "tags": ["email", "notifications", "communication"]
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+    "fields": {
+      "key": "JUSTGO_INTEGRATION_ENABLED",
+      "name": "JustGo Integration Enabled",
+      "description": "Enable or disable JustGo API integration",
+      "config_type": "INTEGRATION",
+      "value": true,
+      "default_value": false,
+      "validation_rules": {
+        "type": "boolean"
+      },
+      "is_active": true,
+      "is_public": false,
+      "is_editable": true,
+      "requires_restart": true,
+      "version": 1,
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "tags": ["justgo", "integration", "api"]
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": "11111111-2222-3333-4444-555555555555",
+    "fields": {
+      "key": "PHOTO_UPLOAD_MAX_SIZE_MB",
+      "name": "Photo Upload Maximum Size (MB)",
+      "description": "Maximum file size for photo uploads in megabytes",
+      "config_type": "SYSTEM",
+      "value": 5,
+      "default_value": 2,
+      "validation_rules": {
+        "type": "integer",
+        "min": 1,
+        "max": 20
+      },
+      "allowed_values": [1, 2, 5, 10, 15, 20],
+      "is_active": true,
+      "is_public": false,
+      "is_editable": true,
+      "requires_restart": false,
+      "version": 1,
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "tags": ["photo", "upload", "limits", "file_size"]
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": "22222222-3333-4444-5555-666666666666",
+    "fields": {
+      "key": "BACKGROUND_CHECK_REQUIRED",
+      "name": "Background Check Required",
+      "description": "Require background checks for all volunteers",
+      "config_type": "SECURITY",
+      "value": true,
+      "default_value": true,
+      "validation_rules": {
+        "type": "boolean"
+      },
+      "is_active": true,
+      "is_public": false,
+      "is_editable": true,
+      "requires_restart": false,
+      "version": 1,
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "tags": ["security", "background_check", "volunteers"]
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": "33333333-4444-5555-6666-777777777777",
+    "fields": {
+      "key": "SESSION_TIMEOUT_MINUTES",
+      "name": "Session Timeout (Minutes)",
+      "description": "User session timeout in minutes",
+      "config_type": "SECURITY",
+      "value": 120,
+      "default_value": 60,
+      "validation_rules": {
+        "type": "integer",
+        "min": 15,
+        "max": 480
+      },
+      "allowed_values": [15, 30, 60, 120, 240, 480],
+      "is_active": true,
+      "is_public": false,
+      "is_editable": true,
+      "requires_restart": true,
+      "version": 1,
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "tags": ["security", "session", "timeout"]
+    }
+  }
+] 

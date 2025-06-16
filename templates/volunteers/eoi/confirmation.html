@@ -1,0 +1,383 @@
+{% extends 'volunteers/eoi/base.html' %}
+{% load i18n %}
+
+{% block title %}Application Submitted - ISG 2026 Volunteer Registration{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-container {
+        text-align: center;
+        padding: 3rem 2rem;
+    }
+    
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        margin: 0 auto 2rem;
+        animation: successPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes successPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .success-title {
+        color: var(--soi-green);
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .reference-number {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(76, 175, 80, 0.1));
+        border: 2px solid var(--soi-green);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        display: inline-block;
+    }
+    
+    .reference-label {
+        font-size: 0.875rem;
+        color: #6c757d;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .reference-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--soi-green);
+        font-family: 'Courier New', monospace;
+    }
+    
+    .next-steps-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: left;
+    }
+    
+    .step-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border-left: 4px solid var(--soi-green);
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--soi-green);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .step-content h6 {
+        color: var(--soi-green);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .step-content p {
+        margin: 0;
+        color: #495057;
+    }
+    
+    .timeline-estimate {
+        background: #e3f2fd;
+        border: 1px solid #2196f3;
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .timeline-title {
+        color: #1976d2;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .contact-info {
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+        border: 1px solid #ffc107;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .contact-title {
+        color: #f57c00;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .social-link {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .social-link:hover {
+        transform: translateY(-3px);
+        text-decoration: none;
+        color: white;
+    }
+    
+    .social-facebook { background: #3b5998; }
+    .social-twitter { background: #1da1f2; }
+    .social-instagram { background: #e4405f; }
+    .social-linkedin { background: #0077b5; }
+    
+    @media (max-width: 768px) {
+        .success-container {
+            padding: 2rem 1rem;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            font-size: 3rem;
+        }
+        
+        .reference-value {
+            font-size: 1.25rem;
+        }
+        
+        .social-links {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="row">
+        <div class="col-12">
+            <div class="success-container">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                
+                <h1 class="success-title">{% trans "Application Submitted Successfully!" %}</h1>
+                <p class="lead">{% trans "Thank you for your interest in volunteering for ISG 2026. Your application has been received and is now under review." %}</p>
+                
+                <div class="reference-number">
+                    <div class="reference-label">{% trans "Application Reference Number" %}</div>
+                    <div class="reference-value">{{ eoi_submission.id|slice:":8"|upper }}</div>
+                </div>
+                
+                <div class="timeline-estimate">
+                    <div class="timeline-title">
+                        <i class="fas fa-clock me-2"></i>{% trans "What happens next?" %}
+                    </div>
+                    <p class="mb-0">{% trans "We will review your application within 2-3 weeks and contact you via email with the next steps." %}</p>
+                </div>
+            </div>
+            
+            <div class="next-steps-card">
+                <h4 class="text-center mb-4">
+                    <i class="fas fa-route me-2"></i>{% trans "Next Steps in Your Volunteer Journey" %}
+                </h4>
+                
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h6>{% trans "Application Review" %}</h6>
+                        <p>{% trans "Our volunteer management team will review your application and preferences to find the best match for your skills and interests." %}</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h6>{% trans "Background Check" %}</h6>
+                        <p>{% trans "If your application is approved, we will conduct a background check as required for all volunteers working with the Games." %}</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h6>{% trans "Training & Orientation" %}</h6>
+                        <p>{% trans "You'll receive comprehensive training specific to your role, including general volunteer orientation and specialized training if required." %}</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h6>{% trans "Role Assignment" %}</h6>
+                        <p>{% trans "Based on your preferences and our needs, you'll be assigned to specific roles and venues during the Games." %}</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h6>{% trans "Games Time!" %}</h6>
+                        <p>{% trans "Join thousands of other volunteers in making ISG 2026 an unforgettable experience for athletes and spectators alike." %}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-title">
+                    <i class="fas fa-question-circle me-2"></i>{% trans "Questions or Need Help?" %}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>{% trans "Email:" %}</strong> volunteers@isg2026.ie</p>
+                        <p><strong>{% trans "Phone:" %}</strong> +353 1 234 5678</p>
+                        <p><strong>{% trans "Hours:" %}</strong> {% trans "Monday-Friday, 9:00 AM - 5:00 PM" %}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>{% trans "Website:" %}</strong> <a href="https://www.isg2026.ie" target="_blank">www.isg2026.ie</a></p>
+                        <p><strong>{% trans "Volunteer Portal:" %}</strong> <a href="#" target="_blank">{% trans "Coming Soon" %}</a></p>
+                        <p><strong>{% trans "Reference Number:" %}</strong> {{ eoi_submission.id|slice:":8"|upper }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <h5>{% trans "Stay Connected" %}</h5>
+                <p>{% trans "Follow us on social media for the latest updates about ISG 2026 and volunteer opportunities." %}</p>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link social-facebook" target="_blank">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link social-twitter" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link social-instagram" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link social-linkedin" target="_blank">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+                
+                {% if user.is_authenticated %}
+                <div class="mt-4">
+                    <a href="{% url 'volunteers:dashboard' %}" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-tachometer-alt me-2"></i>{% trans "Go to Dashboard" %}
+                    </a>
+                    <a href="{% url 'volunteers:eoi_start' %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-plus me-2"></i>{% trans "Submit Another Application" %}
+                    </a>
+                </div>
+                {% else %}
+                <div class="mt-4">
+                    <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-user-plus me-2"></i>{% trans "Create Account" %}
+                    </a>
+                    <a href="{% url 'volunteers:eoi_start' %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-plus me-2"></i>{% trans "Submit Another Application" %}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="text-center mt-5">
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-envelope me-2"></i>{% trans "Confirmation Email Sent" %}</h6>
+                    <p class="mb-0">
+                        {% if eoi_submission.profile_information.email %}
+                            {% blocktrans with email=eoi_submission.profile_information.email %}
+                                A confirmation email has been sent to {{ email }} with your application details and reference number.
+                            {% endblocktrans %}
+                        {% else %}
+                            {% trans "A confirmation email will be sent to you shortly with your application details." %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add confetti effect (optional)
+    if (typeof confetti !== 'undefined') {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
+    
+    // Auto-copy reference number on click
+    const referenceValue = document.querySelector('.reference-value');
+    if (referenceValue) {
+        referenceValue.addEventListener('click', function() {
+            navigator.clipboard.writeText(this.textContent).then(function() {
+                // Show temporary tooltip
+                const tooltip = document.createElement('div');
+                tooltip.textContent = '{% trans "Copied!" %}';
+                tooltip.style.cssText = `
+                    position: absolute;
+                    background: #28a745;
+                    color: white;
+                    padding: 0.5rem 1rem;
+                    border-radius: 5px;
+                    font-size: 0.875rem;
+                    z-index: 1000;
+                    pointer-events: none;
+                `;
+                
+                referenceValue.style.position = 'relative';
+                referenceValue.appendChild(tooltip);
+                
+                setTimeout(() => {
+                    tooltip.remove();
+                }, 2000);
+            });
+        });
+        
+        // Add cursor pointer to indicate clickable
+        referenceValue.style.cursor = 'pointer';
+        referenceValue.title = '{% trans "Click to copy reference number" %}';
+    }
+});
+</script>
+{% endblock %} 

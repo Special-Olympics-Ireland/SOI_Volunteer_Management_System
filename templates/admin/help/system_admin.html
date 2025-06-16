@@ -1,0 +1,284 @@
+{% extends "admin/help/help_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block help_content %}
+<div class="help-header">
+    <h1><i class="icon-settings"></i> {% trans "System Administration Help" %}</h1>
+    <p class="help-description">
+        {% trans "System configuration, maintenance, and administrative tools for SOI Hub management." %}
+    </p>
+</div>
+
+<div class="help-sections">
+    <section class="help-section">
+        <h2><i class="icon-config"></i> {% trans "System Configuration" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "General Settings" %}</h3>
+                <ul>
+                    <li><strong>{% trans "Site Configuration" %}</strong> - {% trans "Basic site settings, contact information, and branding" %}</li>
+                    <li><strong>{% trans "Email Settings" %}</strong> - {% trans "SMTP configuration for system notifications" %}</li>
+                    <li><strong>{% trans "Time Zone Settings" %}</strong> - {% trans "Default time zone and date formats" %}</li>
+                    <li><strong>{% trans "Language Settings" %}</strong> - {% trans "Default language and internationalization options" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Theme Management" %}</h3>
+                <ul>
+                    <li>{% trans "Customize admin interface colors and branding" %}</li>
+                    <li>{% trans "Create and manage theme presets" %}</li>
+                    <li>{% trans "Configure accessibility settings" %}</li>
+                    <li>{% trans "Apply SOI branding guidelines" %}</li>
+                </ul>
+                <p><strong>{% trans "Quick Access:" %}</strong> 
+                   <a href="{% url 'admin:common_theme_changelist' %}">{% trans "Manage Themes" %}</a>
+                </p>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Content Management" %}</h3>
+                <ul>
+                    <li>{% trans "Manage FAQ content and help documentation" %}</li>
+                    <li>{% trans "Update venue information and descriptions" %}</li>
+                    <li>{% trans "Configure system messages and notifications" %}</li>
+                    <li>{% trans "Maintain content templates" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-users-admin"></i> {% trans "User Management" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Admin User Roles" %}</h3>
+                <ul>
+                    <li><strong>{% trans "Super Admin" %}</strong> - {% trans "Full system access and configuration" %}</li>
+                    <li><strong>{% trans "Staff" %}</strong> - {% trans "General administrative access" %}</li>
+                    <li><strong>{% trans "VMT (Volunteer Management Team)" %}</strong> - {% trans "Volunteer-focused administration" %}</li>
+                    <li><strong>{% trans "CVT (Corporate Volunteer Team)" %}</strong> - {% trans "Corporate volunteer management" %}</li>
+                    <li><strong>{% trans "GOC (Games Organizing Committee)" %}</strong> - {% trans "Event and venue management" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Permission Management" %}</h3>
+                <ul>
+                    <li>{% trans "Assign and modify user permissions" %}</li>
+                    <li>{% trans "Create custom permission groups" %}</li>
+                    <li>{% trans "Manage role-based access control" %}</li>
+                    <li>{% trans "Audit user access and activities" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-override"></i> {% trans "Admin Overrides" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Override System" %}</h3>
+                <p>{% trans "Admin overrides allow authorized staff to bypass normal system rules in exceptional circumstances." %}</p>
+                <ul>
+                    <li>{% trans "Volunteer assignment overrides" %}</li>
+                    <li>{% trans "Capacity limit exceptions" %}</li>
+                    <li>{% trans "Deadline extensions" %}</li>
+                    <li>{% trans "Status change overrides" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Creating an Override" %}</h3>
+                <ol>
+                    <li>{% trans "Navigate to Common → Admin Overrides" %}</li>
+                    <li>{% trans "Click 'Add Admin Override'" %}</li>
+                    <li>{% trans "Select the override type and target" %}</li>
+                    <li>{% trans "Provide detailed justification" %}</li>
+                    <li>{% trans "Set expiration date if applicable" %}</li>
+                    <li>{% trans "Submit for approval (if required)" %}</li>
+                </ol>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Override Management" %}</h3>
+                <ul>
+                    <li>{% trans "Review and approve pending overrides" %}</li>
+                    <li>{% trans "Monitor active overrides and expiration" %}</li>
+                    <li>{% trans "Generate override audit reports" %}</li>
+                    <li>{% trans "Revoke overrides when no longer needed" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-audit"></i> {% trans "Audit and Logging" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Audit Trail" %}</h3>
+                <ul>
+                    <li>{% trans "Comprehensive logging of all admin actions" %}</li>
+                    <li>{% trans "User activity tracking and monitoring" %}</li>
+                    <li>{% trans "Data change history and versioning" %}</li>
+                    <li>{% trans "Security event logging" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Log Management" %}</h3>
+                <ul>
+                    <li>{% trans "View and search audit logs" %}</li>
+                    <li>{% trans "Export logs for compliance reporting" %}</li>
+                    <li>{% trans "Configure log retention policies" %}</li>
+                    <li>{% trans "Set up automated log monitoring" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-integration"></i> {% trans "System Integrations" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "JustGo Integration" %}</h3>
+                <ul>
+                    <li>{% trans "Configure JustGo API credentials" %}</li>
+                    <li>{% trans "Manage synchronization settings" %}</li>
+                    <li>{% trans "Monitor integration health" %}</li>
+                    <li>{% trans "Handle sync errors and conflicts" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "PowerBI Integration" %}</h3>
+                <ul>
+                    <li>{% trans "Set up PowerBI data connections" %}</li>
+                    <li>{% trans "Configure data refresh schedules" %}</li>
+                    <li>{% trans "Manage data export permissions" %}</li>
+                    <li>{% trans "Monitor data pipeline health" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Email Integration" %}</h3>
+                <ul>
+                    <li>{% trans "Configure SMTP settings" %}</li>
+                    <li>{% trans "Manage email templates" %}</li>
+                    <li>{% trans "Set up automated notifications" %}</li>
+                    <li>{% trans "Monitor email delivery status" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-maintenance"></i> {% trans "System Maintenance" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Regular Maintenance Tasks" %}</h3>
+                <ul>
+                    <li>{% trans "Database cleanup and optimization" %}</li>
+                    <li>{% trans "Cache management and clearing" %}</li>
+                    <li>{% trans "Log file rotation and archiving" %}</li>
+                    <li>{% trans "System backup verification" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Performance Monitoring" %}</h3>
+                <ul>
+                    <li>{% trans "Monitor system response times" %}</li>
+                    <li>{% trans "Track database performance" %}</li>
+                    <li>{% trans "Monitor memory and CPU usage" %}</li>
+                    <li>{% trans "Analyze user activity patterns" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Backup and Recovery" %}</h3>
+                <ul>
+                    <li>{% trans "Schedule automated backups" %}</li>
+                    <li>{% trans "Test backup restoration procedures" %}</li>
+                    <li>{% trans "Manage backup retention policies" %}</li>
+                    <li>{% trans "Document recovery procedures" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-security"></i> {% trans "Security Management" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Access Control" %}</h3>
+                <ul>
+                    <li>{% trans "Manage user authentication settings" %}</li>
+                    <li>{% trans "Configure password policies" %}</li>
+                    <li>{% trans "Set up two-factor authentication" %}</li>
+                    <li>{% trans "Monitor failed login attempts" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Data Protection" %}</h3>
+                <ul>
+                    <li>{% trans "GDPR compliance management" %}</li>
+                    <li>{% trans "Data encryption settings" %}</li>
+                    <li>{% trans "Personal data handling policies" %}</li>
+                    <li>{% trans "Data retention and deletion" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Security Monitoring" %}</h3>
+                <ul>
+                    <li>{% trans "Monitor suspicious activities" %}</li>
+                    <li>{% trans "Set up security alerts" %}</li>
+                    <li>{% trans "Review security logs" %}</li>
+                    <li>{% trans "Conduct security audits" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-emergency"></i> {% trans "Emergency Procedures" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "System Emergencies" %}</h3>
+                <ul>
+                    <li>{% trans "Emergency contact procedures" %}</li>
+                    <li>{% trans "System shutdown protocols" %}</li>
+                    <li>{% trans "Data recovery procedures" %}</li>
+                    <li>{% trans "Communication protocols" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Emergency Overrides" %}</h3>
+                <ul>
+                    <li>{% trans "Emergency admin access procedures" %}</li>
+                    <li>{% trans "Bypass normal approval workflows" %}</li>
+                    <li>{% trans "Emergency data modifications" %}</li>
+                    <li>{% trans "Post-emergency audit requirements" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="help-actions">
+    <a href="{% url 'admin:index' %}" class="btn btn-primary">
+        <i class="icon-config"></i> {% trans "Admin Dashboard" %}
+    </a>
+    <a href="{% url 'admin:common_adminoverride_changelist' %}" class="btn btn-secondary">
+        <i class="icon-override"></i> {% trans "Admin Overrides" %}
+    </a>
+    <a href="{% url 'admin:common_auditlog_changelist' %}" class="btn btn-secondary">
+        <i class="icon-audit"></i> {% trans "Audit Logs" %}
+    </a>
+</div>
+{% endblock %} 

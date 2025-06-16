@@ -1,0 +1,171 @@
+[
+  {
+    "model": "tasks.task",
+    "pk": "mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm",
+    "fields": {
+      "event_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "title": "Complete Volunteer Registration",
+      "slug": "complete-volunteer-registration",
+      "description": "Complete your volunteer registration profile with all required information.",
+      "task_type": "CHECKBOX",
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "assignment_type": "ALL_VOLUNTEERS",
+      "start_date": "2025-01-01",
+      "end_date": "2026-03-31",
+      "deadline": "2026-03-31T23:59:59Z",
+      "estimated_duration_minutes": 30,
+      "instructions": "Please complete all sections of your volunteer profile including personal information, emergency contacts, and preferences.",
+      "completion_criteria": "All required profile fields must be completed and verified.",
+      "verification_required": true,
+      "verification_type": "MANUAL_REVIEW",
+      "auto_approve": false,
+      "send_reminders": true,
+      "reminder_frequency_days": 7,
+      "task_configuration": {
+        "required_fields": ["personal_info", "emergency_contact", "preferences"],
+        "verification_checklist": ["profile_complete", "documents_uploaded", "background_check"]
+      },
+      "created_by_id": "22222222-2222-2222-2222-222222222222"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": "nnnnnnnn-nnnn-nnnn-nnnn-nnnnnnnnnnnn",
+    "fields": {
+      "event_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "title": "Upload Profile Photo",
+      "slug": "upload-profile-photo",
+      "description": "Upload a professional profile photo for your volunteer ID badge.",
+      "task_type": "PHOTO_UPLOAD",
+      "status": "ACTIVE",
+      "priority": "NORMAL",
+      "assignment_type": "ALL_VOLUNTEERS",
+      "start_date": "2025-01-01",
+      "end_date": "2026-05-31",
+      "deadline": "2026-05-31T23:59:59Z",
+      "estimated_duration_minutes": 10,
+      "instructions": "Upload a clear, recent photo of yourself. Photo should be passport-style with good lighting and neutral background.",
+      "completion_criteria": "Photo must be clear, recent, and meet ID badge requirements.",
+      "verification_required": true,
+      "verification_type": "MANUAL_REVIEW",
+      "auto_approve": false,
+      "send_reminders": true,
+      "reminder_frequency_days": 14,
+      "task_configuration": {
+        "max_file_size_mb": 5,
+        "allowed_formats": ["jpg", "jpeg", "png"],
+        "min_resolution": "300x300",
+        "photo_requirements": ["clear_face", "neutral_background", "recent"]
+      },
+      "created_by_id": "22222222-2222-2222-2222-222222222222"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": "oooooooo-oooo-oooo-oooo-oooooooooooo",
+    "fields": {
+      "event_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "role_id": "hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh",
+      "title": "Ceremony Volunteer Training Feedback",
+      "slug": "ceremony-volunteer-training-feedback",
+      "description": "Provide feedback on your ceremony volunteer training experience.",
+      "task_type": "TEXT_RESPONSE",
+      "status": "ACTIVE",
+      "priority": "NORMAL",
+      "assignment_type": "SPECIFIC_ROLE",
+      "start_date": "2026-04-01",
+      "end_date": "2026-06-01",
+      "deadline": "2026-06-01T23:59:59Z",
+      "estimated_duration_minutes": 15,
+      "instructions": "Please provide detailed feedback on your training experience including what was helpful and what could be improved.",
+      "completion_criteria": "Feedback must be constructive and detailed (minimum 100 words).",
+      "verification_required": false,
+      "verification_type": "AUTO_APPROVE",
+      "auto_approve": true,
+      "send_reminders": true,
+      "reminder_frequency_days": 3,
+      "task_configuration": {
+        "min_word_count": 100,
+        "max_word_count": 500,
+        "questions": [
+          "How would you rate the training overall?",
+          "What was most helpful about the training?",
+          "What could be improved?",
+          "Do you feel prepared for your role?"
+        ]
+      },
+      "created_by_id": "22222222-2222-2222-2222-222222222222"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": "pppppppp-pppp-pppp-pppp-pppppppppppp",
+    "fields": {
+      "event_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "role_id": "iiiiiiii-iiii-iiii-iiii-iiiiiiiiiiii",
+      "title": "Swimming Equipment Check",
+      "slug": "swimming-equipment-check",
+      "description": "Verify and document all swimming timing and scoring equipment before competition.",
+      "task_type": "CUSTOM",
+      "status": "ACTIVE",
+      "priority": "CRITICAL",
+      "assignment_type": "SPECIFIC_ROLE",
+      "start_date": "2026-06-14",
+      "end_date": "2026-06-15",
+      "deadline": "2026-06-15T08:00:00Z",
+      "estimated_duration_minutes": 45,
+      "instructions": "Complete comprehensive equipment check using the provided checklist. Document any issues and report immediately.",
+      "completion_criteria": "All equipment items must be checked and status documented. Any issues must be reported.",
+      "verification_required": true,
+      "verification_type": "SUPERVISOR_APPROVAL",
+      "auto_approve": false,
+      "send_reminders": true,
+      "reminder_frequency_days": 1,
+      "task_configuration": {
+        "checklist_items": [
+          "Timing system operational",
+          "Stopwatches calibrated",
+          "Lane ropes secure",
+          "Starting blocks functional",
+          "Scoreboard working",
+          "Backup equipment available"
+        ],
+        "required_photos": ["equipment_setup", "timing_display"],
+        "issue_reporting": true
+      },
+      "prerequisite_tasks": ["mmmmmmmm-mmmm-mmmm-mmmm-mmmmmmmmmmmm"],
+      "created_by_id": "33333333-3333-3333-3333-333333333333"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": "qqqqqqqq-qqqq-qqqq-qqqq-qqqqqqqqqqqq",
+    "fields": {
+      "event_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "title": "Training Session Attendance Confirmation",
+      "slug": "training-session-attendance-confirmation",
+      "description": "Confirm your attendance at the volunteer orientation training session.",
+      "task_type": "CHECKBOX",
+      "status": "ACTIVE",
+      "priority": "HIGH",
+      "assignment_type": "ALL_VOLUNTEERS",
+      "start_date": "2024-11-01",
+      "end_date": "2024-12-10",
+      "deadline": "2024-12-10T17:00:00Z",
+      "estimated_duration_minutes": 5,
+      "instructions": "Please confirm your attendance at the training session. If you cannot attend, please contact us immediately.",
+      "completion_criteria": "Attendance must be confirmed or alternative arrangements made.",
+      "verification_required": false,
+      "verification_type": "AUTO_APPROVE",
+      "auto_approve": true,
+      "send_reminders": true,
+      "reminder_frequency_days": 2,
+      "task_configuration": {
+        "attendance_options": ["attending", "cannot_attend", "need_alternative"],
+        "contact_info": "training@soi.ie"
+      },
+      "created_by_id": "22222222-2222-2222-2222-222222222222"
+    }
+  }
+] 

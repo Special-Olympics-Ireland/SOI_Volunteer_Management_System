@@ -1,0 +1,562 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load theme_tags %}
+
+{% block title %}Theme Management - SOI Hub{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin/css/theme-admin.css' %}">
+    {% theme_css %}
+{% endblock %}
+
+{% block content %}
+<div class="theme-management-container">
+    <div class="theme-header">
+        <h1>🎨 Theme Management</h1>
+        <p>Manage and customize themes for the SOI Hub system</p>
+        
+        <div class="theme-actions">
+            <a href="{% url 'admin:common_theme_add' %}" class="theme-action-btn">
+                ➕ Create New Theme
+            </a>
+            <a href="{% url 'themes:selector' %}" class="theme-action-btn secondary">
+                🎯 Theme Selector
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">🎨</div>
+            <div class="stat-content">
+                <div class="stat-number">{{ stats.total_themes }}</div>
+                <div class="stat-label">Total Themes</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-content">
+                <div class="stat-number">{{ stats.active_themes }}</div>
+                <div class="stat-label">Active Themes</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">💻</div>
+            <div class="stat-content">
+                <div class="stat-number">{{ stats.admin_themes }}</div>
+                <div class="stat-label">Admin Themes</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">📱</div>
+            <div class="stat-content">
+                <div class="stat-number">{{ stats.mobile_themes }}</div>
+                <div class="stat-label">Mobile Themes</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-section">
+        <form method="get" class="filters-form">
+            <div class="filter-group">
+                <label for="type">Theme Type:</label>
+                <select name="type" id="type" class="form-control">
+                    <option value="">All Types</option>
+                    {% for value, display in theme_types %}
+                        <option value="{{ value }}" {% if current_filters.type == value %}selected{% endif %}>
+                            {{ display }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="active">Status:</label>
+                <select name="active" id="active" class="form-control">
+                    <option value="">All Statuses</option>
+                    <option value="true" {% if current_filters.active == 'true' %}selected{% endif %}>Active</option>
+                    <option value="false" {% if current_filters.active == 'false' %}selected{% endif %}>Inactive</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="search">Search:</label>
+                <input type="text" name="search" id="search" class="form-control" 
+                       value="{{ current_filters.search }}" placeholder="Search themes...">
+            </div>
+            
+            <div class="filter-actions">
+                <button type="submit" class="theme-action-btn">🔍 Filter</button>
+                <a href="{% url 'themes:management' %}" class="theme-action-btn secondary">🔄 Clear</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Themes List -->
+    <div class="themes-section">
+        <h2>Themes ({{ page_obj.paginator.count }} total)</h2>
+        
+        {% if page_obj %}
+            <div class="themes-grid">
+                {% for theme in page_obj %}
+                    <div class="theme-card {% if theme.is_active %}active{% endif %}">
+                        <div class="theme-preview-mini">
+                            <div class="preview-header" style="background: {{ theme.primary_color }}; color: {{ theme.text_on_primary }};">
+                                {{ theme.name }}
+                            </div>
+                            <div class="preview-content" style="background: {{ theme.surface_color }}; color: {{ theme.text_primary }};">
+                                <div class="preview-colors">
+                                    <span class="color-dot" style="background: {{ theme.primary_color }};" title="Primary"></span>
+                                    <span class="color-dot" style="background: {{ theme.secondary_color }};" title="Secondary"></span>
+                                    <span class="color-dot" style="background: {{ theme.accent_color }};" title="Accent"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="theme-info">
+                            <h3>{{ theme.name }}</h3>
+                            <p class="theme-type">{{ theme.get_theme_type_display }}</p>
+                            <p class="theme-description">{{ theme.description|truncatechars:80 }}</p>
+                            
+                            <div class="theme-badges">
+                                {% if theme.is_active %}
+                                    <span class="badge active">✅ Active</span>
+                                {% endif %}
+                                {% if theme.is_default %}
+                                    <span class="badge default">⭐ Default</span>
+                                {% endif %}
+                                {% if theme.is_dark_mode %}
+                                    <span class="badge dark-mode">🌙 Dark</span>
+                                {% endif %}
+                                {% if theme.accessibility_compliant %}
+                                    <span class="badge accessible">♿ Accessible</span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="theme-actions">
+                                <a href="{% url 'admin:common_theme_change' theme.id %}" class="btn-small">✏️ Edit</a>
+                                <a href="{% url 'themes:preview' theme.id %}" class="btn-small" target="_blank">👁️ Preview</a>
+                                <a href="{% url 'themes:duplicate' theme.id %}" class="btn-small">📋 Copy</a>
+                                
+                                {% if theme.is_active %}
+                                    <form method="post" action="{% url 'themes:deactivate' theme.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-small danger" onclick="return confirm('Deactivate this theme?')">
+                                            ❌ Deactivate
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <form method="post" action="{% url 'themes:activate' theme.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-small success">
+                                            ✅ Activate
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+                <div class="pagination-container">
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1{% if current_filters.type %}&type={{ current_filters.type }}{% endif %}{% if current_filters.active %}&active={{ current_filters.active }}{% endif %}{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}" class="page-link">« First</a>
+                            <a href="?page={{ page_obj.previous_page_number }}{% if current_filters.type %}&type={{ current_filters.type }}{% endif %}{% if current_filters.active %}&active={{ current_filters.active }}{% endif %}{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}" class="page-link">‹ Previous</a>
+                        {% endif %}
+                        
+                        <span class="page-info">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                        
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}{% if current_filters.type %}&type={{ current_filters.type }}{% endif %}{% if current_filters.active %}&active={{ current_filters.active }}{% endif %}{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}" class="page-link">Next ›</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}{% if current_filters.type %}&type={{ current_filters.type }}{% endif %}{% if current_filters.active %}&active={{ current_filters.active }}{% endif %}{% if current_filters.search %}&search={{ current_filters.search }}{% endif %}" class="page-link">Last »</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            
+        {% else %}
+            <div class="no-themes">
+                <div class="no-themes-icon">🎨</div>
+                <h3>No themes found</h3>
+                <p>{% if current_filters.search or current_filters.type or current_filters.active %}
+                    No themes match your current filters. Try adjusting your search criteria.
+                {% else %}
+                    No themes have been created yet. Create your first theme to get started.
+                {% endif %}</p>
+                <a href="{% url 'admin:common_theme_add' %}" class="theme-action-btn">
+                    ➕ Create First Theme
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.theme-management-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.theme-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 30px;
+    background: var(--soi-surface, #f8f9fa);
+    border-radius: var(--soi-border-radius, 8px);
+    box-shadow: var(--soi-box-shadow, 0 2px 8px rgba(0,0,0,0.1));
+}
+
+.theme-header h1 {
+    color: var(--soi-primary, #2E7D32);
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+}
+
+.theme-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: var(--soi-border-radius, 8px);
+    box-shadow: var(--soi-box-shadow, 0 2px 8px rgba(0,0,0,0.1));
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--soi-primary, #2E7D32);
+}
+
+.stat-label {
+    color: var(--soi-text-secondary, #6c757d);
+    font-size: 0.9rem;
+}
+
+.filters-section {
+    background: white;
+    padding: 20px;
+    border-radius: var(--soi-border-radius, 8px);
+    box-shadow: var(--soi-box-shadow, 0 2px 8px rgba(0,0,0,0.1));
+    margin-bottom: 30px;
+}
+
+.filters-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    align-items: end;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--soi-text-primary, #212529);
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: var(--soi-border-radius, 6px);
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.themes-section {
+    background: white;
+    padding: 20px;
+    border-radius: var(--soi-border-radius, 8px);
+    box-shadow: var(--soi-box-shadow, 0 2px 8px rgba(0,0,0,0.1));
+}
+
+.themes-section h2 {
+    color: var(--soi-primary, #2E7D32);
+    margin-bottom: 20px;
+}
+
+.themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.theme-card {
+    border: 2px solid #dee2e6;
+    border-radius: var(--soi-border-radius, 8px);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.theme-card:hover {
+    border-color: var(--soi-primary, #2E7D32);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+}
+
+.theme-card.active {
+    border-color: var(--soi-primary, #2E7D32);
+    border-width: 3px;
+}
+
+.theme-preview-mini {
+    height: 80px;
+    position: relative;
+}
+
+.preview-header {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.preview-content {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-colors {
+    display: flex;
+    gap: 5px;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.theme-info {
+    padding: 15px;
+}
+
+.theme-info h3 {
+    margin: 0 0 5px 0;
+    color: var(--soi-text-primary, #212529);
+    font-size: 1.1rem;
+}
+
+.theme-type {
+    color: var(--soi-primary, #2E7D32);
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin: 0 0 8px 0;
+}
+
+.theme-description {
+    color: var(--soi-text-secondary, #6c757d);
+    font-size: 0.9rem;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.theme-badges {
+    margin-bottom: 15px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+
+.badge.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge.default {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge.dark-mode {
+    background: #343a40;
+    color: white;
+}
+
+.badge.accessible {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.theme-actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--soi-text-primary, #212529);
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-small:hover {
+    border-color: var(--soi-primary, #2E7D32);
+    color: var(--soi-primary, #2E7D32);
+    text-decoration: none;
+}
+
+.btn-small.success {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.btn-small.success:hover {
+    background: #218838;
+    border-color: #218838;
+    color: white;
+}
+
+.btn-small.danger {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.btn-small.danger:hover {
+    background: #c82333;
+    border-color: #c82333;
+    color: white;
+}
+
+.no-themes {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--soi-text-secondary, #6c757d);
+}
+
+.no-themes-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.no-themes h3 {
+    color: var(--soi-text-primary, #212529);
+    margin-bottom: 10px;
+}
+
+.pagination-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.page-link {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--soi-primary, #2E7D32);
+    background: white;
+}
+
+.page-link:hover {
+    background: var(--soi-primary, #2E7D32);
+    color: white;
+    text-decoration: none;
+}
+
+.page-info {
+    padding: 8px 12px;
+    color: var(--soi-text-secondary, #6c757d);
+    font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .theme-management-container {
+        padding: 10px;
+    }
+    
+    .theme-header h1 {
+        font-size: 2rem;
+    }
+    
+    .themes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filters-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-actions {
+        justify-content: center;
+    }
+    
+    .theme-actions {
+        justify-content: center;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+</style>
+{% endblock %} 

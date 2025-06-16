@@ -1,0 +1,229 @@
+{% extends "admin/help/help_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block help_content %}
+<div class="help-header">
+    <h1><i class="icon-volunteer"></i> {% trans "Volunteer Management Help" %}</h1>
+    <p class="help-description">
+        {% trans "Comprehensive guide to managing volunteers, applications, and the Expression of Interest (EOI) system." %}
+    </p>
+</div>
+
+<div class="help-stats">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_volunteers }}</div>
+        <div class="stat-label">{% trans "Total Volunteers" %}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ active_volunteers }}</div>
+        <div class="stat-label">{% trans "Active Volunteers" %}</div>
+    </div>
+</div>
+
+<div class="help-sections">
+    <section class="help-section">
+        <h2><i class="icon-form"></i> {% trans "Expression of Interest (EOI) System" %}</h2>
+        <div class="help-content">
+            <p>{% trans "The EOI system is the primary way volunteers register for ISG 2026. It consists of three main parts:" %}</p>
+            
+            <div class="help-subsection">
+                <h3>{% trans "1. Profile Information" %}</h3>
+                <ul>
+                    <li>{% trans "Personal details (name, contact information, date of birth)" %}</li>
+                    <li>{% trans "Address and emergency contact information" %}</li>
+                    <li>{% trans "Demographic information for reporting" %}</li>
+                    <li>{% trans "JustGo membership integration" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "2. Recruitment Preferences" %}</h3>
+                <ul>
+                    <li>{% trans "Preferred sports and venues" %}</li>
+                    <li>{% trans "Role preferences and experience" %}</li>
+                    <li>{% trans "Availability and scheduling preferences" %}</li>
+                    <li>{% trans "Skills and qualifications" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "3. Games Information" %}</h3>
+                <ul>
+                    <li>{% trans "Photo upload for accreditation" %}</li>
+                    <li>{% trans "T-shirt size and uniform preferences" %}</li>
+                    <li>{% trans "Dietary requirements and accessibility needs" %}</li>
+                    <li>{% trans "Accommodation and transport preferences" %}</li>
+                    <li>{% trans "Corporate volunteer group information" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-users"></i> {% trans "Managing Volunteer Applications" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Viewing Applications" %}</h3>
+                <ol>
+                    <li>{% trans "Navigate to Volunteers → EOI Submissions in the admin" %}</li>
+                    <li>{% trans "Use filters to find specific applications:" %}
+                        <ul>
+                            <li>{% trans "Status (Submitted, Under Review, Approved, etc.)" %}</li>
+                            <li>{% trans "Volunteer type (General, Corporate, Existing SOI)" %}</li>
+                            <li>{% trans "Submission date range" %}</li>
+                            <li>{% trans "Preferred sports or venues" %}</li>
+                        </ul>
+                    </li>
+                    <li>{% trans "Click on an application to view full details" %}</li>
+                </ol>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Application Review Process" %}</h3>
+                <ol>
+                    <li><strong>{% trans "Initial Review" %}</strong>
+                        <ul>
+                            <li>{% trans "Check completeness of application" %}</li>
+                            <li>{% trans "Verify minimum age requirement (15 years)" %}</li>
+                            <li>{% trans "Review photo quality for accreditation" %}</li>
+                        </ul>
+                    </li>
+                    <li><strong>{% trans "Background Checks" %}</strong>
+                        <ul>
+                            <li>{% trans "Initiate Garda vetting if required" %}</li>
+                            <li>{% trans "Verify references if provided" %}</li>
+                            <li>{% trans "Check JustGo membership status" %}</li>
+                        </ul>
+                    </li>
+                    <li><strong>{% trans "Approval Decision" %}</strong>
+                        <ul>
+                            <li>{% trans "Approve suitable candidates" %}</li>
+                            <li>{% trans "Request additional information if needed" %}</li>
+                            <li>{% trans "Reject unsuitable applications with reason" %}</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-profile"></i> {% trans "Volunteer Profiles" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Profile Management" %}</h3>
+                <ul>
+                    <li>{% trans "View and edit volunteer personal information" %}</li>
+                    <li>{% trans "Update contact details and preferences" %}</li>
+                    <li>{% trans "Manage training records and certifications" %}</li>
+                    <li>{% trans "Track volunteer history and performance" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Status Management" %}</h3>
+                <p>{% trans "Volunteer profiles can have the following statuses:" %}</p>
+                <ul>
+                    <li><strong>{% trans "PENDING" %}</strong> - {% trans "Application submitted, awaiting review" %}</li>
+                    <li><strong>{% trans "UNDER_REVIEW" %}</strong> - {% trans "Currently being reviewed by staff" %}</li>
+                    <li><strong>{% trans "APPROVED" %}</strong> - {% trans "Approved and ready for assignment" %}</li>
+                    <li><strong>{% trans "ACTIVE" %}</strong> - {% trans "Currently assigned to roles" %}</li>
+                    <li><strong>{% trans "INACTIVE" %}</strong> - {% trans "Not currently active" %}</li>
+                    <li><strong>{% trans "SUSPENDED" %}</strong> - {% trans "Temporarily suspended" %}</li>
+                    <li><strong>{% trans "REJECTED" %}</strong> - {% trans "Application rejected" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-corporate"></i> {% trans "Corporate Volunteer Groups" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Managing Corporate Groups" %}</h3>
+                <ul>
+                    <li>{% trans "Register new corporate volunteer groups" %}</li>
+                    <li>{% trans "Assign group coordinators and contacts" %}</li>
+                    <li>{% trans "Manage group-specific requirements" %}</li>
+                    <li>{% trans "Track group participation and assignments" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Group Registration Process" %}</h3>
+                <ol>
+                    <li>{% trans "Corporate groups register through dedicated form" %}</li>
+                    <li>{% trans "Group details are reviewed and approved" %}</li>
+                    <li>{% trans "Individual volunteers link to approved groups" %}</li>
+                    <li>{% trans "Group assignments can be managed collectively" %}</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-integration"></i> {% trans "JustGo Integration" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Membership Verification" %}</h3>
+                <ul>
+                    <li>{% trans "Automatic lookup of existing JustGo members" %}</li>
+                    <li>{% trans "Verification of membership status and credentials" %}</li>
+                    <li>{% trans "Pre-filling of profile information for existing members" %}</li>
+                    <li>{% trans "Creation of new JustGo profiles for qualifying volunteers" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Sync Management" %}</h3>
+                <ul>
+                    <li>{% trans "Monitor sync status for all volunteers" %}</li>
+                    <li>{% trans "Handle sync errors and conflicts" %}</li>
+                    <li>{% trans "Manual sync override for special cases" %}</li>
+                    <li>{% trans "Bulk synchronization operations" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-export"></i> {% trans "Data Export and Reporting" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Export Options" %}</h3>
+                <ul>
+                    <li>{% trans "CSV export for spreadsheet analysis" %}</li>
+                    <li>{% trans "Excel export with formatted data" %}</li>
+                    <li>{% trans "PDF reports for official documentation" %}</li>
+                    <li>{% trans "Custom field selection for exports" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Common Reports" %}</h3>
+                <ul>
+                    <li>{% trans "Volunteer registration statistics" %}</li>
+                    <li>{% trans "Application status summaries" %}</li>
+                    <li>{% trans "Demographic breakdowns" %}</li>
+                    <li>{% trans "Corporate group participation" %}</li>
+                    <li>{% trans "JustGo integration status" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="help-actions">
+    <a href="{% url 'admin:volunteers_eoisubmission_changelist' %}" class="btn btn-primary">
+        <i class="icon-list"></i> {% trans "View EOI Submissions" %}
+    </a>
+    <a href="{% url 'admin:volunteers_volunteerprofile_changelist' %}" class="btn btn-secondary">
+        <i class="icon-users"></i> {% trans "Manage Volunteer Profiles" %}
+    </a>
+    <a href="{% url 'admin:volunteers_corporatevolunteergroup_changelist' %}" class="btn btn-secondary">
+        <i class="icon-corporate"></i> {% trans "Corporate Groups" %}
+    </a>
+</div>
+{% endblock %} 

@@ -1,0 +1,605 @@
+{% extends 'volunteers/eoi/base.html' %}
+{% load i18n %}
+
+{% block title %}Corporate Group Registration - ISG 2026{% endblock %}
+
+{% block extra_css %}
+<style>
+    .corporate-hero {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.9), rgba(76, 175, 80, 0.9)), 
+                    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f8f9fa" width="1200" height="600"/><circle fill="%23e9ecef" cx="200" cy="150" r="80"/><circle fill="%23dee2e6" cx="800" cy="300" r="120"/><circle fill="%23e9ecef" cx="1000" cy="100" r="60"/></svg>');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        border-radius: 0 0 30px 30px;
+    }
+    
+    .corporate-icon {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        margin: 0 auto 2rem;
+        backdrop-filter: blur(10px);
+    }
+    
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .benefit-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-top: 4px solid var(--soi-green);
+    }
+    
+    .benefit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .benefit-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--soi-green), var(--soi-light-green));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin: 0 auto 1rem;
+    }
+    
+    .benefit-title {
+        color: var(--soi-green);
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .form-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--soi-green);
+    }
+    
+    .section-title {
+        color: var(--soi-green);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .requirements-list {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .requirement-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+    }
+    
+    .requirement-icon {
+        color: var(--soi-green);
+        margin-right: 0.75rem;
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
+    
+    .process-timeline {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(76, 175, 80, 0.05));
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .timeline-step {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .timeline-step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 50px;
+        width: 2px;
+        height: 40px;
+        background: var(--soi-light-green);
+    }
+    
+    .timeline-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--soi-green);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .timeline-content h6 {
+        color: var(--soi-green);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .contact-section {
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+        border: 1px solid #ffc107;
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 3rem 0;
+        text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+        .corporate-hero {
+            padding: 2rem 0;
+        }
+        
+        .benefits-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .timeline-step {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .timeline-step::after {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="corporate-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="corporate-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h1>{% trans "Corporate Volunteer Program" %}</h1>
+                <p class="lead">{% trans "Register your organization to participate in ISG 2026 as a corporate volunteer group" %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <!-- Benefits Section -->
+            <div class="text-center mb-5">
+                <h2>{% trans "Why Partner with ISG 2026?" %}</h2>
+                <p class="lead text-muted">{% trans "Join leading organizations in supporting Ireland's premier sporting event" %}</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5 class="benefit-title">{% trans "Team Building" %}</h5>
+                    <p>{% trans "Strengthen team bonds through shared volunteer experiences and collaborative service." %}</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h5 class="benefit-title">{% trans "Brand Recognition" %}</h5>
+                    <p>{% trans "Gain positive brand exposure and recognition as a community-minded organization." %}</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h5 class="benefit-title">{% trans "Social Impact" %}</h5>
+                    <p>{% trans "Make a meaningful contribution to Ireland's sporting heritage and community development." %}</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h5 class="benefit-title">{% trans "Networking" %}</h5>
+                    <p>{% trans "Connect with other organizations and build valuable business relationships." %}</p>
+                </div>
+            </div>
+            
+            <!-- Requirements Section -->
+            <div class="requirements-list">
+                <h4 class="text-center mb-4">
+                    <i class="fas fa-clipboard-check me-2"></i>{% trans "Registration Requirements" %}
+                </h4>
+                
+                <div class="requirement-item">
+                    <i class="fas fa-check requirement-icon"></i>
+                    <div>
+                        <strong>{% trans "Minimum Group Size:" %}</strong> 
+                        {% trans "At least 5 volunteers from your organization" %}
+                    </div>
+                </div>
+                
+                <div class="requirement-item">
+                    <i class="fas fa-check requirement-icon"></i>
+                    <div>
+                        <strong>{% trans "Commitment Period:" %}</strong> 
+                        {% trans "Minimum 3 days of volunteer service during the Games" %}
+                    </div>
+                </div>
+                
+                <div class="requirement-item">
+                    <i class="fas fa-check requirement-icon"></i>
+                    <div>
+                        <strong>{% trans "Training Participation:" %}</strong> 
+                        {% trans "All volunteers must complete mandatory training sessions" %}
+                    </div>
+                </div>
+                
+                <div class="requirement-item">
+                    <i class="fas fa-check requirement-icon"></i>
+                    <div>
+                        <strong>{% trans "Background Checks:" %}</strong> 
+                        {% trans "All volunteers must pass required background screening" %}
+                    </div>
+                </div>
+                
+                <div class="requirement-item">
+                    <i class="fas fa-check requirement-icon"></i>
+                    <div>
+                        <strong>{% trans "Designated Coordinator:" %}</strong> 
+                        {% trans "Appoint a primary contact person for group coordination" %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Registration Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>{% trans "Organization Registration" %}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.name.id_for_label }}" class="form-label">
+                                        {% trans "Organization Name" %} *
+                                    </label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="text-danger">{{ form.name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.industry_sector.id_for_label }}" class="form-label">
+                                        {% trans "Industry Sector" %}
+                                    </label>
+                                    {{ form.industry_sector }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">
+                                {% trans "Description" %}
+                            </label>
+                            {{ form.description }}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.website.id_for_label }}" class="form-label">
+                                        {% trans "Website" %}
+                                    </label>
+                                    {{ form.website }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.expected_volunteer_count.id_for_label }}" class="form-label">
+                                        {% trans "Expected Number of Volunteers" %} *
+                                    </label>
+                                    {{ form.expected_volunteer_count }}
+                                    {% if form.expected_volunteer_count.errors %}
+                                        <div class="text-danger">{{ form.expected_volunteer_count.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mt-4">{% trans "Primary Contact Information" %}</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.primary_contact_name.id_for_label }}" class="form-label">
+                                        {% trans "Contact Name" %} *
+                                    </label>
+                                    {{ form.primary_contact_name }}
+                                    {% if form.primary_contact_name.errors %}
+                                        <div class="text-danger">{{ form.primary_contact_name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.primary_contact_email.id_for_label }}" class="form-label">
+                                        {% trans "Contact Email" %} *
+                                    </label>
+                                    {{ form.primary_contact_email }}
+                                    {% if form.primary_contact_email.errors %}
+                                        <div class="text-danger">{{ form.primary_contact_email.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.primary_contact_phone.id_for_label }}" class="form-label">
+                                        {% trans "Contact Phone" %} *
+                                    </label>
+                                    {{ form.primary_contact_phone }}
+                                    {% if form.primary_contact_phone.errors %}
+                                        <div class="text-danger">{{ form.primary_contact_phone.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mt-4">{% trans "Address" %}</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.address_line_1.id_for_label }}" class="form-label">
+                                        {% trans "Address Line 1" %} *
+                                    </label>
+                                    {{ form.address_line_1 }}
+                                    {% if form.address_line_1.errors %}
+                                        <div class="text-danger">{{ form.address_line_1.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.address_line_2.id_for_label }}" class="form-label">
+                                        {% trans "Address Line 2" %}
+                                    </label>
+                                    {{ form.address_line_2 }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.city.id_for_label }}" class="form-label">
+                                        {% trans "City" %} *
+                                    </label>
+                                    {{ form.city }}
+                                    {% if form.city.errors %}
+                                        <div class="text-danger">{{ form.city.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.state_province.id_for_label }}" class="form-label">
+                                        {% trans "County" %} *
+                                    </label>
+                                    {{ form.state_province }}
+                                    {% if form.state_province.errors %}
+                                        <div class="text-danger">{{ form.state_province.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.postal_code.id_for_label }}" class="form-label">
+                                        {% trans "Postal Code" %} *
+                                    </label>
+                                    {{ form.postal_code }}
+                                    {% if form.postal_code.errors %}
+                                        <div class="text-danger">{{ form.postal_code.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="{{ form.country.id_for_label }}" class="form-label">
+                                        {% trans "Country" %} *
+                                    </label>
+                                    {{ form.country }}
+                                    {% if form.country.errors %}
+                                        <div class="text-danger">{{ form.country.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mt-4">{% trans "Volunteer Preferences" %}</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{% trans "Preferred Volunteer Roles" %}</label>
+                                    {% for choice in form.preferred_volunteer_roles %}
+                                        <div class="form-check">
+                                            {{ choice.tag }}
+                                            <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                                {{ choice.choice_label }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{% trans "Preferred Venues" %}</label>
+                                    {% for choice in form.preferred_venues %}
+                                        <div class="form-check">
+                                            {{ choice.tag }}
+                                            <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                                {{ choice.choice_label }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.group_requirements.id_for_label }}" class="form-label">
+                                {% trans "Special Requirements" %}
+                            </label>
+                            {{ form.group_requirements }}
+                        </div>
+                        
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>{% trans "Submit Registration" %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Process Timeline -->
+            <div class="process-timeline">
+                <h4 class="text-center mb-4">
+                    <i class="fas fa-route me-2"></i>{% trans "Registration Process" %}
+                </h4>
+                
+                <div class="timeline-step">
+                    <div class="timeline-number">1</div>
+                    <div class="timeline-content">
+                        <h6>{% trans "Submit Registration" %}</h6>
+                        <p>{% trans "Complete and submit your organization's registration form with all required information." %}</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-step">
+                    <div class="timeline-number">2</div>
+                    <div class="timeline-content">
+                        <h6>{% trans "Review & Approval" %}</h6>
+                        <p>{% trans "Our team will review your application and contact you within 5-7 business days." %}</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-step">
+                    <div class="timeline-number">3</div>
+                    <div class="timeline-content">
+                        <h6>{% trans "Individual Registrations" %}</h6>
+                        <p>{% trans "Once approved, your volunteers can register individually and select your organization from the dropdown." %}</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-step">
+                    <div class="timeline-number">4</div>
+                    <div class="timeline-content">
+                        <h6>{% trans "Coordination & Training" %}</h6>
+                        <p>{% trans "We'll work with your designated coordinator to schedule training and assign roles." %}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Section -->
+            <div class="contact-section">
+                <h4>{% trans "Questions About Corporate Registration?" %}</h4>
+                <p>{% trans "Our corporate partnerships team is here to help you get started." %}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>{% trans "Email:" %}</strong> corporate@isg2026.ie</p>
+                        <p><strong>{% trans "Phone:" %}</strong> +353 1 234 5679</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>{% trans "Hours:" %}</strong> {% trans "Monday-Friday, 9:00 AM - 5:00 PM" %}</p>
+                        <p><strong>{% trans "Response Time:" %}</strong> {% trans "Within 24 hours" %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form validation
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.checkValidity()) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            }
+        });
+    });
+    
+    // Expected volunteer count validation
+    const volunteerCountInput = document.getElementById('{{ form.expected_volunteer_count.id_for_label }}');
+    if (volunteerCountInput) {
+        volunteerCountInput.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            if (value < 5) {
+                this.setCustomValidity('{% trans "Minimum group size is 5 volunteers" %}');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    }
+});
+</script>
+{% endblock %} 

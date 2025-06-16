@@ -1,0 +1,393 @@
+[
+  {
+    "model": "accounts.user",
+    "pk": "00000000-0000-0000-0000-000000000001",
+    "fields": {
+      "username": "admin",
+      "email": "admin@soi.org.au",
+      "first_name": "System",
+      "last_name": "Administrator",
+      "user_type": "ADMIN",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": true,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "password": "pbkdf2_sha256$600000$test$test",
+      "country": "Ireland",
+      "preferred_language": "en",
+      "email_notifications": true,
+      "sms_notifications": false,
+      "gdpr_consent": true,
+      "marketing_consent": false,
+      "is_approved": true,
+      "profile_complete": true,
+      "email_verified": true,
+      "phone_verified": false
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": "00000000-0000-0000-0000-000000000002",
+    "fields": {
+      "username": "vmt_manager",
+      "email": "vmt@soi.org.au",
+      "first_name": "VMT",
+      "last_name": "Manager",
+      "user_type": "VMT",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": false,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "password": "pbkdf2_sha256$600000$test$test",
+      "country": "Ireland",
+      "preferred_language": "en",
+      "email_notifications": true,
+      "sms_notifications": false,
+      "gdpr_consent": true,
+      "marketing_consent": false,
+      "is_approved": true,
+      "profile_complete": true,
+      "email_verified": true,
+      "phone_verified": false
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": "00000000-0000-0000-0000-000000000003",
+    "fields": {
+      "username": "test_volunteer",
+      "email": "volunteer@example.com",
+      "first_name": "Test",
+      "last_name": "Volunteer",
+      "user_type": "VOLUNTEER",
+      "volunteer_type": "GENERAL",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "password": "pbkdf2_sha256$600000$test$test",
+      "country": "Ireland",
+      "preferred_language": "en",
+      "email_notifications": true,
+      "sms_notifications": false,
+      "gdpr_consent": true,
+      "marketing_consent": false,
+      "is_approved": true,
+      "profile_complete": false,
+      "email_verified": true,
+      "phone_verified": false
+    }
+  },
+  {
+    "model": "events.venue",
+    "pk": 1,
+    "fields": {
+      "name": "Brisbane Cricket Ground (Gabba)",
+      "address": "411 Vulture Street, Woolloongabba QLD 4102",
+      "city": "Brisbane",
+      "state": "QLD",
+      "postcode": "4102",
+      "country": "Australia",
+      "capacity": 42000,
+      "venue_type": "STADIUM",
+      "accessibility_features": ["wheelchair_access", "hearing_loop", "accessible_parking"],
+      "transport_info": {
+        "public_transport": "Bus routes 200, 204, 206",
+        "parking": "Limited parking available",
+        "accessibility": "Wheelchair accessible entrances"
+      },
+      "contact_info": {
+        "phone": "+61 7 3896 6166",
+        "email": "info@thegabba.com.au"
+      },
+      "is_active": true
+    }
+  },
+  {
+    "model": "events.venue",
+    "pk": 2,
+    "fields": {
+      "name": "Gold Coast Convention Centre",
+      "address": "1 Gold Coast Highway, Broadbeach QLD 4218",
+      "city": "Gold Coast",
+      "state": "QLD",
+      "postcode": "4218",
+      "country": "Australia",
+      "capacity": 6000,
+      "venue_type": "CONVENTION_CENTER",
+      "accessibility_features": ["wheelchair_access", "hearing_loop", "accessible_parking", "accessible_toilets"],
+      "transport_info": {
+        "public_transport": "G:link light rail to Broadbeach South",
+        "parking": "On-site parking available",
+        "accessibility": "Full wheelchair accessibility"
+      },
+      "contact_info": {
+        "phone": "+61 7 5504 4000",
+        "email": "info@gccec.com.au"
+      },
+      "is_active": true
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+      "name": "ISG 2026 Opening Ceremony",
+      "description": "The grand opening ceremony for the Invictus Games 2026",
+      "event_type": "CEREMONY",
+      "start_date": "2026-10-23",
+      "end_date": "2026-10-23",
+      "start_time": "19:00:00",
+      "end_time": "22:00:00",
+      "venue": 1,
+      "status": "PLANNING",
+      "capacity": 35000,
+      "registration_required": true,
+      "is_public": true,
+      "event_config": {
+        "volunteer_requirements": {
+          "total_volunteers": 500,
+          "minimum_age": 16,
+          "background_check_required": true
+        },
+        "logistics": {
+          "setup_time": "6 hours",
+          "breakdown_time": "4 hours",
+          "equipment_needed": ["sound_system", "lighting", "staging"]
+        },
+        "accessibility": {
+          "wheelchair_accessible": true,
+          "sign_language_interpreters": true,
+          "audio_description": true
+        }
+      },
+      "created_by": "00000000-0000-0000-0000-000000000001",
+      "is_active": true
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 2,
+    "fields": {
+      "name": "Swimming Competition - Day 1",
+      "description": "Swimming events for the Invictus Games 2026",
+      "event_type": "COMPETITION",
+      "start_date": "2026-10-24",
+      "end_date": "2026-10-24",
+      "start_time": "09:00:00",
+      "end_time": "17:00:00",
+      "venue": 2,
+      "status": "PLANNING",
+      "capacity": 3000,
+      "registration_required": true,
+      "is_public": true,
+      "event_config": {
+        "volunteer_requirements": {
+          "total_volunteers": 150,
+          "minimum_age": 18,
+          "swimming_knowledge_preferred": true
+        },
+        "competition_details": {
+          "sport": "Swimming",
+          "events": ["50m Freestyle", "100m Backstroke", "200m Individual Medley"],
+          "sessions": 3
+        }
+      },
+      "created_by": "00000000-0000-0000-0000-000000000002",
+      "is_active": true
+    }
+  },
+  {
+    "model": "events.role",
+    "pk": 1,
+    "fields": {
+      "event": 1,
+      "name": "Volunteer Coordinator",
+      "description": "Coordinate and manage volunteers during the event",
+      "total_positions": 10,
+      "filled_positions": 0,
+      "requirements": {
+        "minimum_age": 21,
+        "experience_required": true,
+        "leadership_skills": true,
+        "background_check": "WORKING_WITH_CHILDREN"
+      },
+      "credentials_required": ["First Aid", "Leadership Training"],
+      "responsibilities": [
+        "Manage volunteer teams",
+        "Coordinate with event staff",
+        "Handle volunteer queries",
+        "Ensure safety protocols"
+      ],
+      "role_config": {
+        "shift_length": 8,
+        "break_schedule": "2 x 15min, 1 x 30min",
+        "uniform_required": true,
+        "equipment_provided": ["radio", "clipboard", "hi-vis vest"]
+      },
+      "is_active": true
+    }
+  },
+  {
+    "model": "events.role",
+    "pk": 2,
+    "fields": {
+      "event": 1,
+      "name": "Usher",
+      "description": "Guide attendees to their seats and provide assistance",
+      "total_positions": 50,
+      "filled_positions": 0,
+      "requirements": {
+        "minimum_age": 16,
+        "customer_service_skills": true,
+        "physical_fitness": "MODERATE"
+      },
+      "credentials_required": [],
+      "responsibilities": [
+        "Guide attendees to seats",
+        "Provide event information",
+        "Assist with accessibility needs",
+        "Monitor crowd flow"
+      ],
+      "role_config": {
+        "shift_length": 6,
+        "break_schedule": "2 x 15min",
+        "uniform_required": true,
+        "equipment_provided": ["flashlight", "program"]
+      },
+      "is_active": true
+    }
+  },
+  {
+    "model": "events.role",
+    "pk": 3,
+    "fields": {
+      "event": 2,
+      "name": "Pool Deck Assistant",
+      "description": "Assist with pool deck operations during swimming events",
+      "total_positions": 20,
+      "filled_positions": 0,
+      "requirements": {
+        "minimum_age": 18,
+        "swimming_knowledge": true,
+        "water_safety_awareness": true
+      },
+      "credentials_required": ["Bronze Medallion", "First Aid"],
+      "responsibilities": [
+        "Monitor pool deck safety",
+        "Assist athletes with equipment",
+        "Support timing officials",
+        "Maintain pool deck cleanliness"
+      ],
+      "role_config": {
+        "shift_length": 4,
+        "break_schedule": "1 x 15min",
+        "uniform_required": true,
+        "equipment_provided": ["stopwatch", "towels", "safety equipment"]
+      },
+      "is_active": true
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "role": 1,
+      "name": "Complete Volunteer Coordinator Training",
+      "description": "Complete the mandatory training module for volunteer coordinators",
+      "task_type": "CHECKBOX",
+      "is_mandatory": true,
+      "due_date": "2026-09-01",
+      "estimated_duration": 120,
+      "instructions": "Access the online training portal and complete all modules. Print certificate upon completion.",
+      "task_config": {
+        "training_modules": ["Leadership Basics", "Event Management", "Emergency Procedures"],
+        "pass_mark": 80,
+        "certificate_required": true
+      },
+      "prerequisites": [],
+      "is_active": true
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "role": 1,
+      "name": "Submit Profile Photo",
+      "description": "Upload a professional headshot for your volunteer ID badge",
+      "task_type": "PHOTO",
+      "is_mandatory": true,
+      "due_date": "2026-09-15",
+      "estimated_duration": 10,
+      "instructions": "Upload a clear, professional headshot photo. Photo should be passport-style with plain background.",
+      "task_config": {
+        "photo_requirements": {
+          "format": ["JPEG", "PNG"],
+          "max_size_mb": 5,
+          "min_resolution": "300x400",
+          "background": "plain"
+        }
+      },
+      "prerequisites": [],
+      "is_active": true
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 3,
+    "fields": {
+      "role": 2,
+      "name": "Venue Familiarization",
+      "description": "Complete venue walkthrough and familiarization checklist",
+      "task_type": "CHECKBOX",
+      "is_mandatory": true,
+      "due_date": "2026-10-20",
+      "estimated_duration": 60,
+      "instructions": "Attend the venue walkthrough session and complete the familiarization checklist.",
+      "task_config": {
+        "checklist_items": [
+          "Emergency exits located",
+          "Accessible facilities identified",
+          "Key personnel contacts noted",
+          "Seating layout understood"
+        ]
+      },
+      "prerequisites": [],
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": 1,
+    "fields": {
+      "key": "volunteer_minimum_age",
+      "value": "15",
+      "description": "Minimum age requirement for volunteers",
+      "config_type": "INTEGER",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": 2,
+    "fields": {
+      "key": "justgo_api_timeout",
+      "value": "30",
+      "description": "Timeout in seconds for JustGo API calls",
+      "config_type": "INTEGER",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.systemconfig",
+    "pk": 3,
+    "fields": {
+      "key": "email_notifications_enabled",
+      "value": "true",
+      "description": "Enable/disable email notifications system-wide",
+      "config_type": "BOOLEAN",
+      "is_active": true
+    }
+  }
+] 

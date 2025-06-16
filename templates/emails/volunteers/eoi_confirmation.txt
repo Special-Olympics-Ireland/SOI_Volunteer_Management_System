@@ -1,0 +1,52 @@
+APPLICATION SUBMITTED SUCCESSFULLY!
+Thank you for your interest in volunteering for ISG 2026
+
+Dear {{ volunteer_name }},
+
+Thank you for submitting your Expression of Interest to volunteer for the Island Sports Games 2026. Your application has been successfully received and is now under review.
+
+APPLICATION REFERENCE NUMBER: {{ reference_number }}
+
+Please save this reference number for your records. You will need it for any future correspondence regarding your application.
+
+APPLICATION SUMMARY:
+- Volunteer Type: {{ volunteer_type }}
+- Submission Date: {{ submission_date }}
+- Application Status: Under Review
+- Completion: {{ completion_percentage }}%
+
+WHAT HAPPENS NEXT?
+
+1. APPLICATION REVIEW
+   Our volunteer management team will review your application and preferences to find the best match for your skills and interests.
+
+2. BACKGROUND CHECK
+   If your application is approved, we will conduct a background check as required for all volunteers working with the Games.
+
+3. TRAINING & ORIENTATION
+   You'll receive comprehensive training specific to your role, including general volunteer orientation and specialized training if required.
+
+4. ROLE ASSIGNMENT
+   Based on your preferences and our needs, you'll be assigned to specific roles and venues during the Games.
+
+TIMELINE:
+We will review your application within 2-3 weeks and contact you via email with the next steps.
+
+QUESTIONS OR NEED HELP?
+Email: volunteers@isg2026.ie
+Phone: +353 1 234 5678
+Hours: Monday-Friday, 9:00 AM - 5:00 PM
+Website: www.isg2026.ie
+
+We're excited about the possibility of having you join our volunteer team and help make ISG 2026 an unforgettable experience for athletes and spectators alike.
+
+Thank you again for your interest in volunteering!
+
+Best regards,
+The ISG 2026 Volunteer Team
+
+---
+Island Sports Games 2026
+Ireland's Premier Multi-Sport Event
+
+This email was sent to {{ email_address }}. If you have any questions, please contact us at volunteers@isg2026.ie 

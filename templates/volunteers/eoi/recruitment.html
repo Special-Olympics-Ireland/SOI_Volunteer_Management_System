@@ -1,0 +1,650 @@
+{% extends 'volunteers/eoi/base.html' %}
+{% load i18n %}
+
+{% block title %}Recruitment Preferences - ISG 2026 Volunteer Registration{% endblock %}
+
+{% block extra_css %}
+<style>
+    .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .checkbox-item {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .checkbox-item:hover {
+        border-color: var(--soi-light-green);
+        background: rgba(76, 175, 80, 0.05);
+    }
+    
+    .checkbox-item input[type="checkbox"]:checked + label {
+        color: var(--soi-green);
+        font-weight: 500;
+    }
+    
+    .checkbox-item input[type="checkbox"] {
+        margin-right: 0.5rem;
+    }
+    
+    .capability-card {
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: white;
+        transition: all 0.3s ease;
+    }
+    
+    .capability-card:hover {
+        border-color: var(--soi-light-green);
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);
+    }
+    
+    .capability-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--soi-light-green);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .capability-content {
+        flex: 1;
+    }
+    
+    .capability-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--soi-green);
+    }
+    
+    .capability-description {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+    
+    .motivation-section {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(76, 175, 80, 0.05));
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .experience-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .experience-none { background: #f8f9fa; color: #6c757d; }
+    .experience-beginner { background: #e3f2fd; color: #1976d2; }
+    .experience-intermediate { background: #e8f5e9; color: #388e3c; }
+    .experience-experienced { background: #fff3e0; color: #f57c00; }
+    .experience-expert { background: #fce4ec; color: #c2185b; }
+    .experience-professional { background: #f3e5f5; color: #7b1fa2; }
+    
+    .section-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--soi-green), var(--soi-light-green));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.5rem;
+    }
+    
+    .form-section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .time-slot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .time-slot-card {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: white;
+    }
+    
+    .time-slot-card:hover {
+        border-color: var(--soi-light-green);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    }
+    
+    .time-slot-card.selected {
+        border-color: var(--soi-green);
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(76, 175, 80, 0.1));
+    }
+    
+    .time-slot-icon {
+        font-size: 2rem;
+        color: var(--soi-green);
+        margin-bottom: 0.5rem;
+    }
+    
+    .time-slot-title {
+        font-weight: 600;
+        color: var(--soi-green);
+        margin-bottom: 0.25rem;
+    }
+    
+    .time-slot-time {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+    
+    @media (max-width: 768px) {
+        .checkbox-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .time-slot-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">{% trans "Recruitment Preferences" %}</h3>
+            <p class="text-muted mb-4">{% trans "Help us understand your interests and match you with the perfect volunteer role" %}</p>
+            
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <!-- Experience Section -->
+                <div class="form-section">
+                    <h4>{% trans "Experience & Background" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.volunteer_experience_level.id_for_label }}" class="form-label required-field">
+                                    {% trans "Volunteer Experience Level" %}
+                                </label>
+                                {{ form.volunteer_experience_level }}
+                                {% if form.volunteer_experience_level.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.volunteer_experience_level.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.previous_events.id_for_label }}" class="form-label">
+                                    {% trans "Previous Events" %}
+                                </label>
+                                {{ form.previous_events }}
+                                {% if form.previous_events.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.previous_events.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="{{ form.special_skills.id_for_label }}" class="form-label">
+                                    {% trans "Special Skills & Qualifications" %}
+                                </label>
+                                {{ form.special_skills }}
+                                {% if form.special_skills.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.special_skills.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Motivation Section -->
+                <div class="form-section">
+                    <h4>{% trans "Motivation & Goals" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="{{ form.motivation.id_for_label }}" class="form-label required-field">
+                                    {% trans "Why do you want to volunteer for ISG 2026?" %}
+                                </label>
+                                {{ form.motivation }}
+                                {% if form.motivation.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.motivation.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="{{ form.volunteer_goals.id_for_label }}" class="form-label">
+                                    {% trans "Volunteer Goals" %}
+                                </label>
+                                {{ form.volunteer_goals }}
+                                {% if form.volunteer_goals.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.volunteer_goals.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sports Preferences -->
+                <div class="form-section">
+                    <h4>{% trans "Sports Preferences" %}</h4>
+                    <div class="mb-3">
+                        <label class="form-label">{% trans "Preferred Sports" %}</label>
+                        <div class="row">
+                            {% for choice in form.preferred_sports %}
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="form-check">
+                                        {{ choice.tag }}
+                                        <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                            {{ choice.choice_label }}
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.preferred_sports.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.preferred_sports.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Venue Preferences -->
+                <div class="form-section">
+                    <h4>{% trans "Venue Preferences" %}</h4>
+                    <div class="mb-3">
+                        <label class="form-label">{% trans "Preferred Venues" %}</label>
+                        <div class="row">
+                            {% for choice in form.preferred_venues %}
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="form-check">
+                                        {{ choice.tag }}
+                                        <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                            {{ choice.choice_label }}
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.preferred_venues.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.preferred_venues.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Role Preferences -->
+                <div class="form-section">
+                    <h4>{% trans "Role Preferences" %}</h4>
+                    <div class="mb-3">
+                        <label class="form-label">{% trans "Preferred Volunteer Roles" %}</label>
+                        <div class="row">
+                            {% for choice in form.preferred_roles %}
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="form-check">
+                                        {{ choice.tag }}
+                                        <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                            {{ choice.choice_label }}
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.preferred_roles.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.preferred_roles.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Availability -->
+                <div class="form-section">
+                    <h4>{% trans "Availability" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.availability_level.id_for_label }}" class="form-label required-field">
+                                    {% trans "Availability Level" %}
+                                </label>
+                                {{ form.availability_level }}
+                                {% if form.availability_level.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.availability_level.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.max_hours_per_day.id_for_label }}" class="form-label">
+                                    {% trans "Maximum Hours Per Day" %}
+                                </label>
+                                {{ form.max_hours_per_day }}
+                                {% if form.max_hours_per_day.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.max_hours_per_day.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">{% trans "Preferred Time Slots" %}</label>
+                        <div class="row">
+                            {% for choice in form.preferred_time_slots %}
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="form-check">
+                                        {{ choice.tag }}
+                                        <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                            {{ choice.choice_label }}
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.preferred_time_slots.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.preferred_time_slots.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Physical Capabilities -->
+                <div class="form-section">
+                    <h4>{% trans "Physical Capabilities" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                {{ form.can_lift_heavy_items }}
+                                <label class="form-check-label" for="{{ form.can_lift_heavy_items.id_for_label }}">
+                                    {% trans "Can lift heavy items (over 20kg)" %}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                {{ form.can_stand_long_periods }}
+                                <label class="form-check-label" for="{{ form.can_stand_long_periods.id_for_label }}">
+                                    {% trans "Can stand for long periods (4+ hours)" %}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                {{ form.can_work_outdoors }}
+                                <label class="form-check-label" for="{{ form.can_work_outdoors.id_for_label }}">
+                                    {% trans "Comfortable working outdoors" %}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                {{ form.can_work_with_crowds }}
+                                <label class="form-check-label" for="{{ form.can_work_with_crowds.id_for_label }}">
+                                    {% trans "Comfortable working with crowds" %}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Transport & Communication -->
+                <div class="form-section">
+                    <h4>{% trans "Transport & Communication" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-check mb-3">
+                                {{ form.has_own_transport }}
+                                <label class="form-check-label" for="{{ form.has_own_transport.id_for_label }}">
+                                    {% trans "I have my own reliable transport" %}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.transport_method.id_for_label }}" class="form-label">
+                                    {% trans "Primary Transport Method" %}
+                                </label>
+                                {{ form.transport_method }}
+                                {% if form.transport_method.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.transport_method.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.preferred_communication_method.id_for_label }}" class="form-label">
+                                    {% trans "Preferred Communication" %}
+                                </label>
+                                {{ form.preferred_communication_method }}
+                                {% if form.preferred_communication_method.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.preferred_communication_method.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Training Interests -->
+                <div class="form-section">
+                    <h4>{% trans "Training & Development" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">{% trans "Training Interests" %}</label>
+                                <div class="row">
+                                    {% for choice in form.training_interests %}
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                {{ choice.tag }}
+                                                <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                                    {{ choice.choice_label }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if form.training_interests.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.training_interests.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-3">
+                                {{ form.leadership_interest }}
+                                <label class="form-check-label" for="{{ form.leadership_interest.id_for_label }}">
+                                    {% trans "Interested in leadership roles" %}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Errors -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <h6>{% trans "Please correct the following errors:" %}</h6>
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                
+                <!-- Navigation Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'volunteers:eoi_profile' submission_id=eoi_submission.id %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>{% trans "Back to Profile" %}
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Save & Continue" %}<i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle time slot card selection
+    const timeSlotCards = document.querySelectorAll('.time-slot-card');
+    timeSlotCards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        
+        card.addEventListener('click', function(e) {
+            if (e.target.type !== 'checkbox') {
+                checkbox.checked = !checkbox.checked;
+            }
+            updateTimeSlotCardAppearance(card, checkbox.checked);
+        });
+        
+        checkbox.addEventListener('change', function() {
+            updateTimeSlotCardAppearance(card, this.checked);
+        });
+        
+        // Initialize appearance
+        updateTimeSlotCardAppearance(card, checkbox.checked);
+    });
+    
+    function updateTimeSlotCardAppearance(card, isChecked) {
+        if (isChecked) {
+            card.classList.add('selected');
+        } else {
+            card.classList.remove('selected');
+        }
+    }
+    
+    // Handle checkbox item interactions
+    const checkboxItems = document.querySelectorAll('.checkbox-item');
+    checkboxItems.forEach(item => {
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        const label = item.querySelector('label');
+        
+        item.addEventListener('click', function(e) {
+            if (e.target.type !== 'checkbox' && e.target.tagName !== 'LABEL') {
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+    
+    // Form validation
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.checkValidity()) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            }
+        });
+    });
+    
+    // Motivation character count
+    const motivationField = document.getElementById('{{ form.motivation.id_for_label }}');
+    if (motivationField) {
+        const helpText = motivationField.parentNode.querySelector('.help-text');
+        
+        function updateCharCount() {
+            const count = motivationField.value.length;
+            const minCount = 50;
+            const remaining = Math.max(0, minCount - count);
+            
+            if (remaining > 0) {
+                helpText.innerHTML = `{% trans "Tell us what motivates you to volunteer and why ISG 2026 is important to you" %} <span class="text-warning">(${remaining} more characters needed)</span>`;
+            } else {
+                helpText.innerHTML = `{% trans "Tell us what motivates you to volunteer and why ISG 2026 is important to you" %} <span class="text-success">(${count} characters)</span>`;
+            }
+        }
+        
+        motivationField.addEventListener('input', updateCharCount);
+        updateCharCount(); // Initialize
+    }
+    
+    // Experience level badge styling
+    const experienceSelect = document.getElementById('{{ form.volunteer_experience_level.id_for_label }}');
+    if (experienceSelect) {
+        function updateExperienceBadge() {
+            const value = experienceSelect.value.toLowerCase();
+            const badge = document.querySelector('.experience-badge');
+            
+            if (badge) {
+                badge.className = `experience-badge experience-${value}`;
+            }
+        }
+        
+        experienceSelect.addEventListener('change', updateExperienceBadge);
+    }
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,920 @@
+{% extends 'volunteers/eoi/base.html' %}
+{% load i18n %}
+
+{% block title %}Games Information - ISG 2026 Volunteer Registration{% endblock %}
+
+{% block extra_css %}
+<style>
+    .photo-upload-area {
+        border: 2px dashed #e9ecef;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .photo-upload-area:hover {
+        border-color: var(--soi-light-green);
+        background: rgba(76, 175, 80, 0.05);
+    }
+    
+    .photo-upload-area.dragover {
+        border-color: var(--soi-green);
+        background: rgba(76, 175, 80, 0.1);
+    }
+    
+    .photo-preview {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 10px;
+        margin: 1rem auto;
+        display: none;
+    }
+    
+    .upload-icon {
+        font-size: 3rem;
+        color: var(--soi-green);
+        margin-bottom: 1rem;
+    }
+    
+    .consent-card {
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        background: white;
+        transition: all 0.3s ease;
+    }
+    
+    .consent-card:hover {
+        border-color: var(--soi-light-green);
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);
+    }
+    
+    .consent-card.required {
+        border-color: #dc3545;
+        background: rgba(220, 53, 69, 0.05);
+    }
+    
+    .consent-card.accepted {
+        border-color: var(--soi-green);
+        background: rgba(76, 175, 80, 0.05);
+    }
+    
+    .consent-title {
+        font-weight: 600;
+        color: var(--soi-green);
+        margin-bottom: 0.5rem;
+    }
+    
+    .consent-description {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 1rem;
+    }
+    
+    .size-selector {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .size-option {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .size-option:hover {
+        border-color: var(--soi-light-green);
+        transform: translateY(-2px);
+    }
+    
+    .size-option.selected {
+        border-color: var(--soi-green);
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(76, 175, 80, 0.1));
+    }
+    
+    .size-label {
+        font-weight: 600;
+        color: var(--soi-green);
+    }
+    
+    .dietary-alert {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .group-info-card {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(76, 175, 80, 0.05));
+        border: 1px solid var(--soi-light-green);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .shift-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .shift-card {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: white;
+    }
+    
+    .shift-card:hover {
+        border-color: var(--soi-light-green);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    }
+    
+    .shift-card.selected {
+        border-color: var(--soi-green);
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(76, 175, 80, 0.1));
+    }
+    
+    .shift-icon {
+        font-size: 2rem;
+        color: var(--soi-green);
+        margin-bottom: 0.5rem;
+    }
+    
+    .shift-title {
+        font-weight: 600;
+        color: var(--soi-green);
+        margin-bottom: 0.25rem;
+    }
+    
+    .shift-time {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+    
+    .final-section {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(76, 175, 80, 0.05));
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+        text-align: center;
+    }
+    
+    .completion-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--soi-green), var(--soi-light-green));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        margin: 0 auto 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .size-selector {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .shift-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">{% trans "Games Information" %}</h3>
+            <p class="text-muted mb-4">{% trans "Final step! Please provide your Games-specific information and complete the required agreements." %}</p>
+            
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                
+                <!-- Photo Upload Section -->
+                <div class="form-section">
+                    <h4><i class="fas fa-camera me-2"></i>{% trans "Volunteer Photo" %}</h4>
+                    <p class="text-muted mb-3">{% trans "Please upload a recent photo for your volunteer ID badge" %}</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="photo-upload-area" id="photo-upload-area">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h5>{% trans "Upload Your Photo" %}</h5>
+                                <p class="mb-2">{% trans "Click to select or drag and drop" %}</p>
+                                <small class="text-muted">{% trans "JPG, JPEG, PNG • Max 5MB" %}</small>
+                                {{ form.volunteer_photo }}
+                                <img id="photo-preview" class="photo-preview" alt="Photo preview">
+                            </div>
+                            {% if form.volunteer_photo.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.volunteer_photo.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="consent-card">
+                                <div class="consent-title">{% trans "Photo Usage Consent" %}</div>
+                                <div class="consent-description">
+                                    {% trans "Your photo will be used for volunteer identification and may appear in promotional materials for ISG 2026." %}
+                                </div>
+                                <div class="form-check">
+                                    {{ form.photo_consent }}
+                                    <label class="form-check-label" for="{{ form.photo_consent.id_for_label }}">
+                                        {{ form.photo_consent.label }}
+                                    </label>
+                                </div>
+                                {% if form.photo_consent.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.photo_consent.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Uniform & Equipment Section -->
+                <div class="form-section">
+                    <h4><i class="fas fa-tshirt me-2"></i>{% trans "Uniform & Equipment" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label required-field">{% trans "T-Shirt Size" %}</label>
+                                <div class="size-selector">
+                                    {% for value, label in form.t_shirt_size.field.choices %}
+                                        {% if value %}
+                                            <div class="size-option" data-size="{{ value }}">
+                                                <div class="size-label">{{ value }}</div>
+                                                <small>{{ label }}</small>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {{ form.t_shirt_size }}
+                                {% if form.t_shirt_size.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.t_shirt_size.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="form-check mb-3">
+                                    {{ form.requires_uniform }}
+                                    <label class="form-check-label" for="{{ form.requires_uniform.id_for_label }}">
+                                        {% trans "I require a volunteer uniform" %}
+                                    </label>
+                                </div>
+                                
+                                <label for="{{ form.uniform_collection_preference.id_for_label }}" class="form-label">
+                                    {% trans "Uniform Collection Preference" %}
+                                </label>
+                                {{ form.uniform_collection_preference }}
+                                {% if form.uniform_collection_preference.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.uniform_collection_preference.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dietary Requirements Section -->
+                <div class="form-section">
+                    <h4><i class="fas fa-utensils me-2"></i>{% trans "Dietary Requirements" %}</h4>
+                    
+                    <div class="dietary-alert">
+                        <h6><i class="fas fa-info-circle me-2"></i>{% trans "Important" %}</h6>
+                        <p class="mb-0">{% trans "Please provide detailed information about any dietary requirements or allergies. This helps us ensure your safety and comfort during meal times." %}</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="{{ form.dietary_requirements.id_for_label }}" class="form-label">
+                                    {% trans "Dietary Requirements & Preferences" %}
+                                </label>
+                                {{ form.dietary_requirements }}
+                                <div class="help-text">
+                                    {% trans "Please describe any dietary requirements, preferences, or restrictions (e.g., vegetarian, vegan, halal, kosher, gluten-free)" %}
+                                </div>
+                                {% if form.dietary_requirements.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.dietary_requirements.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                {{ form.has_food_allergies }}
+                                <label class="form-check-label" for="{{ form.has_food_allergies.id_for_label }}">
+                                    {% trans "I have food allergies or intolerances" %}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3" id="allergy-details-section" style="display: none;">
+                                <label for="{{ form.food_allergy_details.id_for_label }}" class="form-label required-field">
+                                    {% trans "Food Allergy Details" %}
+                                </label>
+                                {{ form.food_allergy_details }}
+                                {% if form.food_allergy_details.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.food_allergy_details.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Availability During Games Section -->
+                <div class="form-section">
+                    <h4><i class="fas fa-calendar-check me-2"></i>{% trans "Availability During Games" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.available_dates.id_for_label }}" class="form-label">
+                                    {% trans "Available Dates" %}
+                                </label>
+                                {{ form.available_dates }}
+                                <div class="help-text">
+                                    {% trans "List the dates you are available during the Games (e.g., June 15-20, June 25)" %}
+                                </div>
+                                {% if form.available_dates.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.available_dates.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.unavailable_dates.id_for_label }}" class="form-label">
+                                    {% trans "Unavailable Dates" %}
+                                </label>
+                                {{ form.unavailable_dates }}
+                                <div class="help-text">
+                                    {% trans "List any dates you are NOT available (e.g., June 22, June 28)" %}
+                                </div>
+                                {% if form.unavailable_dates.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.unavailable_dates.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preferred Shifts -->
+                    <div class="mb-3">
+                        <label class="form-label">{% trans "Preferred Shift Times" %}</label>
+                        <p class="text-muted mb-3">{% trans "Select your preferred shift times during the Games. You can select multiple options." %}</p>
+                        <div class="shift-grid">
+                            {% for choice in form.preferred_shifts %}
+                                <div class="shift-card" data-shift="{{ choice.choice_value }}">
+                                    {{ choice.tag }}
+                                    <div class="shift-icon">
+                                        {% if choice.choice_value == 'early_morning' %}
+                                            <i class="fas fa-sunrise"></i>
+                                        {% elif choice.choice_value == 'morning' %}
+                                            <i class="fas fa-sun"></i>
+                                        {% elif choice.choice_value == 'afternoon' %}
+                                            <i class="fas fa-cloud-sun"></i>
+                                        {% elif choice.choice_value == 'evening' %}
+                                            <i class="fas fa-sunset"></i>
+                                        {% elif choice.choice_value == 'late_evening' %}
+                                            <i class="fas fa-moon"></i>
+                                        {% elif choice.choice_value == 'overnight' %}
+                                            <i class="fas fa-star"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="shift-title">{{ choice.choice_label|cut:" (" }}</div>
+                                    <div class="shift-time">
+                                        {% if "(" in choice.choice_label %}
+                                            {{ choice.choice_label|slice:"choice.choice_label|length:" }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.preferred_shifts.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.preferred_shifts.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Accommodation Section -->
+                <div class="form-section">
+                    <h4><i class="fas fa-bed me-2"></i>{% trans "Accommodation" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-3">
+                                {{ form.requires_accommodation }}
+                                <label class="form-check-label" for="{{ form.requires_accommodation.id_for_label }}">
+                                    {% trans "I require accommodation during the Games" %}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3" id="accommodation-details-section" style="display: none;">
+                                <label for="{{ form.accommodation_preferences.id_for_label }}" class="form-label required-field">
+                                    {% trans "Accommodation Preferences" %}
+                                </label>
+                                {{ form.accommodation_preferences }}
+                                {% if form.accommodation_preferences.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.accommodation_preferences.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Group Information Section -->
+                <div class="form-section">
+                    <h4><i class="fas fa-users me-2"></i>{% trans "Group Information" %}</h4>
+                    
+                    <div class="group-info-card">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.corporate_group.id_for_label }}" class="form-label">
+                                        {% trans "Corporate/Organization Group" %}
+                                    </label>
+                                    {{ form.corporate_group }}
+                                    <div class="help-text">
+                                        {% trans "If you are volunteering as part of a corporate or organizational group, please select it here" %}
+                                    </div>
+                                    {% if form.corporate_group.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.corporate_group.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    {{ form.is_part_of_group }}
+                                    <label class="form-check-label" for="{{ form.is_part_of_group.id_for_label }}">
+                                        {% trans "I am part of a group (not listed above)" %}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="group-details-section" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="{{ form.group_name.id_for_label }}" class="form-label">
+                                            {% trans "Group Name" %}
+                                        </label>
+                                        {{ form.group_name }}
+                                        {% if form.group_name.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.group_name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="{{ form.group_leader_name.id_for_label }}" class="form-label">
+                                            {% trans "Group Leader Name" %}
+                                        </label>
+                                        {{ form.group_leader_name }}
+                                        {% if form.group_leader_name.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.group_leader_name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="{{ form.group_leader_contact.id_for_label }}" class="form-label">
+                                            {% trans "Group Leader Contact" %}
+                                        </label>
+                                        {{ form.group_leader_contact }}
+                                        {% if form.group_leader_contact.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.group_leader_contact.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Information Section -->
+                <div class="form-section">
+                    <h4><i class="fas fa-comment me-2"></i>{% trans "Additional Information" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.additional_information.id_for_label }}" class="form-label">
+                                    {% trans "Additional Information" %}
+                                </label>
+                                {{ form.additional_information }}
+                                <div class="help-text">
+                                    {% trans "Any additional information you would like to share with us" %}
+                                </div>
+                                {% if form.additional_information.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.additional_information.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.how_did_you_hear.id_for_label }}" class="form-label">
+                                    {% trans "How did you hear about us?" %}
+                                </label>
+                                {{ form.how_did_you_hear }}
+                                <div class="help-text">
+                                    {% trans "e.g., website, social media, friend, advertisement" %}
+                                </div>
+                                {% if form.how_did_you_hear.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.how_did_you_hear.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Consent & Agreements Section -->
+                <div class="form-section">
+                    <h4><i class="fas fa-file-contract me-2"></i>{% trans "Consent & Agreements" %}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="consent-card">
+                                <div class="consent-title">{% trans "Social Media Consent" %}</div>
+                                <div class="consent-description">
+                                    {% trans "Consent to appear in social media posts and marketing materials for ISG 2026." %}
+                                </div>
+                                <div class="form-check">
+                                    {{ form.social_media_consent }}
+                                    <label class="form-check-label" for="{{ form.social_media_consent.id_for_label }}">
+                                        {{ form.social_media_consent.label }}
+                                    </label>
+                                </div>
+                                {% if form.social_media_consent.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.social_media_consent.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="consent-card">
+                                <div class="consent-title">{% trans "Testimonial Consent" %}</div>
+                                <div class="consent-description">
+                                    {% trans "Consent to provide testimonials and quotes about your volunteer experience." %}
+                                </div>
+                                <div class="form-check">
+                                    {{ form.testimonial_consent }}
+                                    <label class="form-check-label" for="{{ form.testimonial_consent.id_for_label }}">
+                                        {{ form.testimonial_consent.label }}
+                                    </label>
+                                </div>
+                                {% if form.testimonial_consent.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.testimonial_consent.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Required Agreements -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="consent-card required" id="terms-card">
+                                <div class="consent-title">{% trans "Terms & Conditions" %}</div>
+                                <div class="consent-description">
+                                    {% trans "Required: Accept the terms and conditions for volunteering." %}
+                                </div>
+                                <div class="form-check">
+                                    {{ form.terms_accepted }}
+                                    <label class="form-check-label" for="{{ form.terms_accepted.id_for_label }}">
+                                        {{ form.terms_accepted.label }}
+                                    </label>
+                                </div>
+                                {% if form.terms_accepted.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.terms_accepted.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="consent-card required" id="privacy-card">
+                                <div class="consent-title">{% trans "Privacy Policy" %}</div>
+                                <div class="consent-description">
+                                    {% trans "Required: Accept the privacy policy." %}
+                                </div>
+                                <div class="form-check">
+                                    {{ form.privacy_policy_accepted }}
+                                    <label class="form-check-label" for="{{ form.privacy_policy_accepted.id_for_label }}">
+                                        {{ form.privacy_policy_accepted.label }}
+                                    </label>
+                                </div>
+                                {% if form.privacy_policy_accepted.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.privacy_policy_accepted.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="consent-card required" id="conduct-card">
+                                <div class="consent-title">{% trans "Code of Conduct" %}</div>
+                                <div class="consent-description">
+                                    {% trans "Required: Accept the volunteer code of conduct." %}
+                                </div>
+                                <div class="form-check">
+                                    {{ form.code_of_conduct_accepted }}
+                                    <label class="form-check-label" for="{{ form.code_of_conduct_accepted.id_for_label }}">
+                                        {{ form.code_of_conduct_accepted.label }}
+                                    </label>
+                                </div>
+                                {% if form.code_of_conduct_accepted.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.code_of_conduct_accepted.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Errors -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <h6>{% trans "Please correct the following errors:" %}</h6>
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                
+                <!-- Final Section -->
+                <div class="final-section">
+                    <div class="completion-icon">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <h4>{% trans "Ready to Submit!" %}</h4>
+                    <p class="lead">{% trans "You're almost done! Please review your information and submit your volunteer application." %}</p>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'volunteers:eoi_recruitment' submission_id=eoi_submission.id %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>{% trans "Back to Recruitment" %}
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        {% trans "Complete Application" %}<i class="fas fa-check ms-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Photo upload handling
+    const photoInput = document.getElementById('{{ form.volunteer_photo.id_for_label }}');
+    const uploadArea = document.getElementById('photo-upload-area');
+    const photoPreview = document.getElementById('photo-preview');
+    
+    if (photoInput && uploadArea) {
+        // Hide the default file input
+        photoInput.style.display = 'none';
+        
+        // Click to upload
+        uploadArea.addEventListener('click', function() {
+            photoInput.click();
+        });
+        
+        // Drag and drop
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                photoInput.files = files;
+                handlePhotoPreview(files[0]);
+            }
+        });
+        
+        // File input change
+        photoInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                handlePhotoPreview(this.files[0]);
+            }
+        });
+        
+        function handlePhotoPreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                photoPreview.src = e.target.result;
+                photoPreview.style.display = 'block';
+                uploadArea.querySelector('.upload-icon').style.display = 'none';
+                uploadArea.querySelector('h5').textContent = file.name;
+                uploadArea.querySelector('p').textContent = '{% trans "Click to change photo" %}';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    // T-shirt size selection
+    const sizeOptions = document.querySelectorAll('.size-option');
+    const sizeSelect = document.getElementById('{{ form.t_shirt_size.id_for_label }}');
+    
+    if (sizeSelect) {
+        sizeSelect.style.display = 'none';
+        
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                sizeOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                sizeSelect.value = this.dataset.size;
+            });
+        });
+        
+        // Initialize selection
+        if (sizeSelect.value) {
+            const selectedOption = document.querySelector(`[data-size="${sizeSelect.value}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+            }
+        }
+    }
+    
+    // Shift selection handling
+    const shiftCards = document.querySelectorAll('.shift-card');
+    shiftCards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        
+        card.addEventListener('click', function(e) {
+            if (e.target.type !== 'checkbox') {
+                checkbox.checked = !checkbox.checked;
+            }
+            updateShiftCardAppearance(card, checkbox.checked);
+        });
+        
+        checkbox.addEventListener('change', function() {
+            updateShiftCardAppearance(card, this.checked);
+        });
+        
+        // Initialize appearance
+        updateShiftCardAppearance(card, checkbox.checked);
+    });
+    
+    function updateShiftCardAppearance(card, isChecked) {
+        if (isChecked) {
+            card.classList.add('selected');
+        } else {
+            card.classList.remove('selected');
+        }
+    }
+    
+    // Conditional field display
+    const allergyCheckbox = document.getElementById('{{ form.has_food_allergies.id_for_label }}');
+    const allergySection = document.getElementById('allergy-details-section');
+    
+    if (allergyCheckbox && allergySection) {
+        allergyCheckbox.addEventListener('change', function() {
+            allergySection.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Initialize
+        if (allergyCheckbox.checked) {
+            allergySection.style.display = 'block';
+        }
+    }
+    
+    const accommodationCheckbox = document.getElementById('{{ form.requires_accommodation.id_for_label }}');
+    const accommodationSection = document.getElementById('accommodation-details-section');
+    
+    if (accommodationCheckbox && accommodationSection) {
+        accommodationCheckbox.addEventListener('change', function() {
+            accommodationSection.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Initialize
+        if (accommodationCheckbox.checked) {
+            accommodationSection.style.display = 'block';
+        }
+    }
+    
+    const groupCheckbox = document.getElementById('{{ form.is_part_of_group.id_for_label }}');
+    const groupSection = document.getElementById('group-details-section');
+    
+    if (groupCheckbox && groupSection) {
+        groupCheckbox.addEventListener('change', function() {
+            groupSection.style.display = this.checked ? 'block' : 'none';
+        });
+        
+        // Initialize
+        if (groupCheckbox.checked) {
+            groupSection.style.display = 'block';
+        }
+    }
+    
+    // Consent card styling
+    const consentCheckboxes = document.querySelectorAll('.consent-card input[type="checkbox"]');
+    consentCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const card = this.closest('.consent-card');
+            if (this.checked) {
+                card.classList.add('accepted');
+                card.classList.remove('required');
+            } else {
+                card.classList.remove('accepted');
+                if (this.required) {
+                    card.classList.add('required');
+                }
+            }
+        });
+        
+        // Initialize
+        const card = checkbox.closest('.consent-card');
+        if (checkbox.checked) {
+            card.classList.add('accepted');
+            card.classList.remove('required');
+        }
+    });
+    
+    // Form validation
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.checkValidity()) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

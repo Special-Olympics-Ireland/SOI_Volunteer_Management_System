@@ -1,0 +1,73 @@
+# SOI Hub - ISG 2026 Volunteer Management Backend System
+# Python Dependencies
+
+# Core Django Framework
+Django>=5.0,<5.1
+djangorestframework>=3.14.0
+django-filter>=23.0
+django-cors-headers>=4.3.0
+
+# Database
+psycopg2-binary>=2.9.7
+django-redis>=5.4.0
+
+# Environment Configuration
+python-decouple>=3.8
+
+# API Documentation
+drf-spectacular>=0.26.0
+
+# File Handling & Images
+Pillow>=10.0.0
+
+# HTTP Requests (for JustGo API integration)
+requests>=2.31.0
+urllib3>=2.0.0
+
+# Date/Time Utilities
+python-dateutil>=2.8.2
+
+# Excel/CSV Export
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+
+# PDF Generation
+reportlab>=4.0.0
+
+# Email
+django-anymail>=10.0
+
+# Security
+cryptography>=41.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-django>=4.5.0
+pytest-cov>=4.1.0
+factory-boy>=3.3.0
+
+# Development Tools
+django-debug-toolbar>=4.2.0
+django-extensions>=3.2.0
+
+# Production Server
+gunicorn>=21.2.0
+whitenoise>=6.5.0
+
+# Monitoring & Logging
+sentry-sdk>=1.32.0
+
+# Task Queue (for background processing)
+celery>=5.3.0
+redis>=4.6.0
+
+# Real-time WebSocket Support
+channels>=4.0.0
+channels-redis>=4.1.0
+
+# Data Validation
+jsonschema>=4.19.0
+
+# Utilities
+python-slugify>=8.0.0
+uuid>=1.30 

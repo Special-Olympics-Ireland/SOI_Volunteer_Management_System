@@ -1,0 +1,354 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/soi-admin.css' %}">
+    <style>
+        .task-management-dashboard {
+            padding: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-card.warning .stat-number {
+            color: #f57c00;
+        }
+        
+        .stat-card.danger .stat-number {
+            color: #d32f2f;
+        }
+        
+        .stat-card.info .stat-number {
+            color: #1976d2;
+        }
+        
+        .management-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .action-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .action-card h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+        
+        .action-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .btn-action {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-action:hover {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+        
+        .recent-activity {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .recent-activity h3 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 10px;
+        }
+        
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #2e7d32);
+            transition: width 0.3s;
+        }
+        
+        .quick-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-stat {
+            text-align: center;
+        }
+        
+        .quick-stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        
+        .quick-stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="task-management-dashboard">
+    <h1>{{ title }}</h1>
+    
+    <!-- Statistics Overview -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.total_tasks }}</div>
+            <div class="stat-label">Total Tasks</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.active_tasks }}</div>
+            <div class="stat-label">Active Tasks</div>
+        </div>
+        
+        <div class="stat-card {% if stats.overdue_tasks > 0 %}danger{% endif %}">
+            <div class="stat-number">{{ stats.overdue_tasks }}</div>
+            <div class="stat-label">Overdue Tasks</div>
+        </div>
+        
+        <div class="stat-card info">
+            <div class="stat-number">{{ stats.total_completions }}</div>
+            <div class="stat-label">Total Assignments</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.completed_tasks }}</div>
+            <div class="stat-label">Completed Tasks</div>
+        </div>
+        
+        <div class="stat-card warning">
+            <div class="stat-number">{{ stats.pending_review }}</div>
+            <div class="stat-label">Pending Review</div>
+        </div>
+    </div>
+    
+    <!-- Completion Rate Progress -->
+    <div class="quick-stats">
+        <div class="quick-stat">
+            <div class="quick-stat-number">{{ stats.completion_rate }}%</div>
+            <div class="quick-stat-label">Overall Completion Rate</div>
+        </div>
+        <div style="flex: 1; margin: 0 20px;">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ stats.completion_rate }}%;"></div>
+            </div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-number">
+                {% if stats.total_completions > 0 %}
+                    {{ stats.completed_tasks }}/{{ stats.total_completions }}
+                {% else %}
+                    0/0
+                {% endif %}
+            </div>
+            <div class="quick-stat-label">Tasks Completed</div>
+        </div>
+    </div>
+    
+    <!-- Management Actions -->
+    <div class="management-actions">
+        <div class="action-card">
+            <h3>📋 Create New Task</h3>
+            <p>Create a new task and assign it to roles or specific volunteers.</p>
+            <a href="{% url 'admin:tasks_task_add' %}" class="btn-action">Create Task</a>
+        </div>
+        
+        <div class="action-card">
+            <h3>👥 Bulk Assignment</h3>
+            <p>Assign multiple tasks to multiple volunteers at once.</p>
+            <a href="{% url 'admin:tasks_task_bulk_assign' %}" class="btn-action">Bulk Assign</a>
+        </div>
+        
+        <div class="action-card">
+            <h3>📊 Task Analytics</h3>
+            <p>View detailed analytics and performance metrics for tasks.</p>
+            <a href="{% url 'admin:tasks_task_analytics' %}" class="btn-action">View Analytics</a>
+        </div>
+        
+        <div class="action-card">
+            <h3>📝 Task Templates</h3>
+            <p>Manage reusable task templates for common activities.</p>
+            <a href="{% url 'admin:tasks_tasktemplate_changelist' %}" class="btn-action">Manage Templates</a>
+        </div>
+        
+        <div class="action-card">
+            <h3>✅ Task Completions</h3>
+            <p>Review and manage task completion submissions.</p>
+            <a href="{% url 'admin:tasks_taskcompletion_changelist' %}" class="btn-action">View Completions</a>
+        </div>
+        
+        <div class="action-card">
+            <h3>🔗 Task Dependencies</h3>
+            <p>Manage task dependencies and prerequisites.</p>
+            <a href="{% url 'admin:tasks_taskdependency_changelist' %}" class="btn-action">Manage Dependencies</a>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="recent-activity">
+        <h3>Quick Actions & Information</h3>
+        
+        <div class="activity-item">
+            <strong>📋 All Tasks</strong> - 
+            <a href="{% url 'admin:tasks_task_changelist' %}">View and manage all tasks</a>
+            <div class="activity-time">Manage task creation, editing, and assignment</div>
+        </div>
+        
+        <div class="activity-item">
+            <strong>⏰ Overdue Tasks</strong> - 
+            <a href="{% url 'admin:tasks_task_changelist' %}?due_date__lt=today&is_active__exact=1">View overdue tasks</a>
+            <div class="activity-time">Tasks that have passed their due date</div>
+        </div>
+        
+        <div class="activity-item">
+            <strong>🔍 Pending Review</strong> - 
+            <a href="{% url 'admin:tasks_taskcompletion_changelist' %}?status__exact=PENDING_REVIEW">Review submitted tasks</a>
+            <div class="activity-time">Tasks submitted by volunteers awaiting review</div>
+        </div>
+        
+        <div class="activity-item">
+            <strong>📈 High Priority Tasks</strong> - 
+            <a href="{% url 'admin:tasks_task_changelist' %}?priority__in=HIGH,CRITICAL,URGENT">View high priority tasks</a>
+            <div class="activity-time">Tasks marked as high priority, critical, or urgent</div>
+        </div>
+        
+        <div class="activity-item">
+            <strong>🎯 Mandatory Tasks</strong> - 
+            <a href="{% url 'admin:tasks_task_changelist' %}?is_mandatory__exact=1">View mandatory tasks</a>
+            <div class="activity-time">Tasks that are required for all volunteers</div>
+        </div>
+        
+        <div class="activity-item">
+            <strong>📊 Export Data</strong> - 
+            <a href="{% url 'admin:tasks_task_changelist' %}">Export task data to CSV</a>
+            <div class="activity-time">Download task and completion data for analysis</div>
+        </div>
+    </div>
+    
+    <!-- Help Information -->
+    <div class="recent-activity" style="margin-top: 20px;">
+        <h3>Task Management Help</h3>
+        
+        <div class="activity-item">
+            <strong>Task Types:</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li><strong>☑️ Checkbox:</strong> Simple completion tasks</li>
+                <li><strong>📷 Photo:</strong> Tasks requiring photo submission</li>
+                <li><strong>📝 Text:</strong> Tasks requiring text response</li>
+                <li><strong>⚙️ Custom:</strong> Tasks with custom completion criteria</li>
+            </ul>
+        </div>
+        
+        <div class="activity-item">
+            <strong>Priority Levels:</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li><strong style="color: #4caf50;">LOW:</strong> Non-urgent tasks</li>
+                <li><strong style="color: #ff9800;">MEDIUM:</strong> Standard priority</li>
+                <li><strong style="color: #f44336;">HIGH:</strong> Important tasks</li>
+                <li><strong style="color: #9c27b0;">CRITICAL:</strong> Essential tasks</li>
+                <li><strong style="color: #e91e63;">URGENT:</strong> Immediate attention required</li>
+            </ul>
+        </div>
+        
+        <div class="activity-item">
+            <strong>Task Status:</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li><strong>Not Started:</strong> Task assigned but not begun</li>
+                <li><strong>In Progress:</strong> Task currently being worked on</li>
+                <li><strong>Pending Review:</strong> Task submitted, awaiting approval</li>
+                <li><strong>Completed:</strong> Task successfully finished</li>
+                <li><strong>Failed:</strong> Task not completed successfully</li>
+                <li><strong>Cancelled:</strong> Task cancelled or no longer needed</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %} 

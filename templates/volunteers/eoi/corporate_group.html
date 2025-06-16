@@ -1,0 +1,236 @@
+{% extends 'volunteers/eoi/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Select Corporate Group" %} - {{ block.super }}{% endblock %}
+
+{% block eoi_content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header Section -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-building fa-3x text-soi-green"></i>
+                    </div>
+                    <h2 class="h3 fw-bold text-soi-green mb-3">{% trans "Select Your Corporate Group" %}</h2>
+                    <p class="lead text-muted mb-0">
+                        {% trans "Please select the corporate group you're registering with for the ISG 2026." %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Corporate Group Selection Form -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-soi-green text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-users me-2"></i>
+                        {% trans "Available Corporate Groups" %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if corporate_groups %}
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            <div class="mb-4">
+                                <p class="text-muted">
+                                    {% trans "Select your organization from the list below. If your organization is not listed, please contact our Corporate Volunteer Team." %}
+                                </p>
+                            </div>
+
+                            <!-- Corporate Groups List -->
+                            <div class="row">
+                                {% for group in corporate_groups %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100 corporate-group-card" data-group-id="{{ group.id }}">
+                                        <div class="card-body">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" 
+                                                       name="corporate_group_id" 
+                                                       value="{{ group.id }}" 
+                                                       id="group_{{ group.id }}"
+                                                       required>
+                                                <label class="form-check-label w-100" for="group_{{ group.id }}">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-grow-1">
+                                                            <h6 class="fw-bold text-soi-green mb-2">{{ group.name }}</h6>
+                                                            {% if group.description %}
+                                                                <p class="text-muted small mb-2">{{ group.description|truncatewords:15 }}</p>
+                                                            {% endif %}
+                                                            <div class="d-flex flex-wrap gap-2">
+                                                                {% if group.industry_sector %}
+                                                                    <span class="badge bg-light text-dark">
+                                                                        <i class="fas fa-industry me-1"></i>
+                                                                        {{ group.get_industry_sector_display }}
+                                                                    </span>
+                                                                {% endif %}
+                                                                <span class="badge bg-soi-green">
+                                                                    <i class="fas fa-users me-1"></i>
+                                                                    {{ group.expected_volunteer_count }} {% trans "volunteers" %}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Contact Information -->
+                            <div class="alert alert-info mt-4">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-info-circle fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="alert-heading">{% trans "Can't find your organization?" %}</h6>
+                                        <p class="mb-2">
+                                            {% trans "If your organization is not listed above, please contact our Corporate Volunteer Team to register your group." %}
+                                        </p>
+                                        <div class="d-flex flex-wrap gap-3">
+                                            <a href="mailto:corporate@isg2026.com" class="btn btn-sm btn-outline-info">
+                                                <i class="fas fa-envelope me-1"></i>
+                                                {% trans "Email Us" %}
+                                            </a>
+                                            <a href="tel:+61398765432" class="btn btn-sm btn-outline-info">
+                                                <i class="fas fa-phone me-1"></i>
+                                                {% trans "Call Us" %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                                <a href="{% url 'volunteers:eoi_start' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>
+                                    {% trans "Back" %}
+                                </a>
+                                <button type="submit" class="btn btn-soi-green btn-lg">
+                                    {% trans "Continue" %}
+                                    <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <!-- No Corporate Groups Available -->
+                        <div class="text-center py-5">
+                            <div class="mb-4">
+                                <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                            </div>
+                            <h5 class="text-muted mb-3">{% trans "No Corporate Groups Available" %}</h5>
+                            <p class="text-muted mb-4">
+                                {% trans "There are currently no active corporate groups available for registration. Please contact our Corporate Volunteer Team for assistance." %}
+                            </p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="mailto:corporate@isg2026.com" class="btn btn-soi-green">
+                                    <i class="fas fa-envelope me-2"></i>
+                                    {% trans "Contact Corporate Team" %}
+                                </a>
+                                <a href="{% url 'volunteers:eoi_start' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>
+                                    {% trans "Back to Start" %}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.corporate-group-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.corporate-group-card:hover {
+    border-color: var(--soi-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.corporate-group-card.selected {
+    border-color: var(--soi-green);
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+.form-check-input:checked ~ .form-check-label .corporate-group-card {
+    border-color: var(--soi-green);
+    background-color: rgba(46, 125, 50, 0.05);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle corporate group card selection
+    const groupCards = document.querySelectorAll('.corporate-group-card');
+    const radioInputs = document.querySelectorAll('input[name="corporate_group_id"]');
+    
+    groupCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const groupId = this.dataset.groupId;
+            const radioInput = document.getElementById(`group_${groupId}`);
+            
+            // Clear all selections
+            groupCards.forEach(c => c.classList.remove('selected'));
+            
+            // Select this card
+            this.classList.add('selected');
+            radioInput.checked = true;
+        });
+    });
+    
+    // Handle radio button changes
+    radioInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            groupCards.forEach(card => card.classList.remove('selected'));
+            if (this.checked) {
+                const card = document.querySelector(`[data-group-id="${this.value}"]`);
+                if (card) {
+                    card.classList.add('selected');
+                }
+            }
+        });
+    });
+    
+    // Form validation
+    const form = document.querySelector('.needs-validation');
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // Show error message
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-danger mt-3';
+                alert.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>{% trans "Please select a corporate group to continue." %}';
+                
+                // Remove existing alerts
+                const existingAlert = form.querySelector('.alert-danger');
+                if (existingAlert) {
+                    existingAlert.remove();
+                }
+                
+                // Add new alert
+                form.appendChild(alert);
+                
+                // Scroll to alert
+                alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            form.classList.add('was-validated');
+        });
+    }
+});
+</script>
+{% endblock %} 

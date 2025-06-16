@@ -1,0 +1,246 @@
+{% extends "admin/help/help_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block help_content %}
+<div class="help-header">
+    <h1><i class="icon-chart"></i> {% trans "Reporting & Analytics Help" %}</h1>
+    <p class="help-description">
+        {% trans "Generate comprehensive reports and view analytics for volunteer management, events, and system performance." %}
+    </p>
+</div>
+
+<div class="help-stats">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_reports }}</div>
+        <div class="stat-label">{% trans "Total Reports" %}</div>
+    </div>
+</div>
+
+<div class="help-sections">
+    <section class="help-section">
+        <h2><i class="icon-report"></i> {% trans "Report Types" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Volunteer Reports" %}</h3>
+                <ul>
+                    <li><strong>{% trans "Registration Summary" %}</strong> - {% trans "Overview of volunteer registrations by status, type, and demographics" %}</li>
+                    <li><strong>{% trans "Application Status Report" %}</strong> - {% trans "Detailed breakdown of EOI application statuses" %}</li>
+                    <li><strong>{% trans "Volunteer Demographics" %}</strong> - {% trans "Age, gender, location, and other demographic analysis" %}</li>
+                    <li><strong>{% trans "Corporate Group Report" %}</strong> - {% trans "Corporate volunteer participation and group statistics" %}</li>
+                    <li><strong>{% trans "JustGo Integration Status" %}</strong> - {% trans "Sync status and membership verification report" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Event Reports" %}</h3>
+                <ul>
+                    <li><strong>{% trans "Event Summary" %}</strong> - {% trans "Overview of all events with key statistics" %}</li>
+                    <li><strong>{% trans "Venue Utilization" %}</strong> - {% trans "Venue usage, capacity, and assignment statistics" %}</li>
+                    <li><strong>{% trans "Role Assignment Report" %}</strong> - {% trans "Role filling status and volunteer assignments" %}</li>
+                    <li><strong>{% trans "Event Timeline" %}</strong> - {% trans "Chronological view of event schedules and milestones" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Task Reports" %}</h3>
+                <ul>
+                    <li><strong>{% trans "Task Completion Status" %}</strong> - {% trans "Progress tracking for all volunteer tasks" %}</li>
+                    <li><strong>{% trans "Training Compliance" %}</strong> - {% trans "Training completion and certification status" %}</li>
+                    <li><strong>{% trans "Verification Report" %}</strong> - {% trans "Tasks requiring staff verification and approval" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "System Reports" %}</h3>
+                <ul>
+                    <li><strong>{% trans "User Activity" %}</strong> - {% trans "System usage and user engagement statistics" %}</li>
+                    <li><strong>{% trans "Admin Override Log" %}</strong> - {% trans "Audit trail of administrative overrides" %}</li>
+                    <li><strong>{% trans "Performance Metrics" %}</strong> - {% trans "System performance and response time analysis" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-generate"></i> {% trans "Generating Reports" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Standard Reports" %}</h3>
+                <ol>
+                    <li>{% trans "Navigate to Reporting → Reports in the admin interface" %}</li>
+                    <li>{% trans "Select the report type from the available templates" %}</li>
+                    <li>{% trans "Configure report parameters:" %}
+                        <ul>
+                            <li>{% trans "Date range for data inclusion" %}</li>
+                            <li>{% trans "Filters (status, type, location, etc.)" %}</li>
+                            <li>{% trans "Output format (PDF, Excel, CSV)" %}</li>
+                            <li>{% trans "Grouping and sorting options" %}</li>
+                        </ul>
+                    </li>
+                    <li>{% trans "Click 'Generate Report' to create the report" %}</li>
+                    <li>{% trans "Download or view the generated report" %}</li>
+                </ol>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Custom Reports" %}</h3>
+                <ol>
+                    <li>{% trans "Click 'Create Custom Report' in the reporting section" %}</li>
+                    <li>{% trans "Select data sources (volunteers, events, tasks, etc.)" %}</li>
+                    <li>{% trans "Choose fields to include in the report" %}</li>
+                    <li>{% trans "Apply filters and conditions" %}</li>
+                    <li>{% trans "Configure formatting and layout" %}</li>
+                    <li>{% trans "Save as template for future use" %}</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-schedule"></i> {% trans "Scheduled Reports" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Setting Up Automated Reports" %}</h3>
+                <ol>
+                    <li>{% trans "Create or select an existing report template" %}</li>
+                    <li>{% trans "Click 'Schedule Report' in the report actions" %}</li>
+                    <li>{% trans "Configure schedule settings:" %}
+                        <ul>
+                            <li>{% trans "Frequency (daily, weekly, monthly)" %}</li>
+                            <li>{% trans "Specific days and times" %}</li>
+                            <li>{% trans "Email recipients" %}</li>
+                            <li>{% trans "Report format preferences" %}</li>
+                        </ul>
+                    </li>
+                    <li>{% trans "Save the schedule configuration" %}</li>
+                </ol>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Managing Scheduled Reports" %}</h3>
+                <ul>
+                    <li>{% trans "View all scheduled reports in the Reporting dashboard" %}</li>
+                    <li>{% trans "Edit schedule settings and recipients" %}</li>
+                    <li>{% trans "Pause or disable scheduled reports" %}</li>
+                    <li>{% trans "View execution history and status" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-analytics"></i> {% trans "Analytics Dashboard" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Real-time Analytics" %}</h3>
+                <ul>
+                    <li>{% trans "Live volunteer registration statistics" %}</li>
+                    <li>{% trans "Event preparation progress tracking" %}</li>
+                    <li>{% trans "Task completion rates and trends" %}</li>
+                    <li>{% trans "System performance metrics" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Key Performance Indicators (KPIs)" %}</h3>
+                <ul>
+                    <li><strong>{% trans "Volunteer Engagement" %}</strong> - {% trans "Registration rates, application completion, and activity levels" %}</li>
+                    <li><strong>{% trans "Event Readiness" %}</strong> - {% trans "Role filling percentage, venue preparation status" %}</li>
+                    <li><strong>{% trans "Task Completion" %}</strong> - {% trans "Training completion rates, verification status" %}</li>
+                    <li><strong>{% trans "System Health" %}</strong> - {% trans "Response times, error rates, integration status" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-powerbi"></i> {% trans "PowerBI Integration" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Advanced Analytics" %}</h3>
+                <ul>
+                    <li>{% trans "Connect SOI Hub data to PowerBI for advanced visualization" %}</li>
+                    <li>{% trans "Create interactive dashboards and reports" %}</li>
+                    <li>{% trans "Perform complex data analysis and modeling" %}</li>
+                    <li>{% trans "Share insights with stakeholders" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Data Export for PowerBI" %}</h3>
+                <ol>
+                    <li>{% trans "Navigate to Reporting → PowerBI Integration" %}</li>
+                    <li>{% trans "Select data sets to export" %}</li>
+                    <li>{% trans "Configure data refresh schedules" %}</li>
+                    <li>{% trans "Generate connection strings and credentials" %}</li>
+                    <li>{% trans "Import data into PowerBI workspace" %}</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-export"></i> {% trans "Export Formats" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Available Formats" %}</h3>
+                <ul>
+                    <li><strong>{% trans "PDF" %}</strong> - {% trans "Professional formatted reports for presentations and official documentation" %}</li>
+                    <li><strong>{% trans "Excel (XLSX)" %}</strong> - {% trans "Spreadsheet format with multiple sheets and formatting" %}</li>
+                    <li><strong>{% trans "CSV" %}</strong> - {% trans "Simple comma-separated values for data analysis" %}</li>
+                    <li><strong>{% trans "JSON" %}</strong> - {% trans "Structured data format for API integration" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Format Selection Guidelines" %}</h3>
+                <ul>
+                    <li>{% trans "Use PDF for official reports and presentations" %}</li>
+                    <li>{% trans "Choose Excel for detailed data analysis and manipulation" %}</li>
+                    <li>{% trans "Select CSV for simple data imports to other systems" %}</li>
+                    <li>{% trans "Use JSON for API integrations and data exchange" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2><i class="icon-troubleshoot"></i> {% trans "Troubleshooting Reports" %}</h2>
+        <div class="help-content">
+            <div class="help-subsection">
+                <h3>{% trans "Common Issues" %}</h3>
+                <ul>
+                    <li><strong>{% trans "Report Generation Timeout" %}</strong> - {% trans "Reduce date range or add more specific filters" %}</li>
+                    <li><strong>{% trans "Empty Reports" %}</strong> - {% trans "Check filter criteria and data availability" %}</li>
+                    <li><strong>{% trans "Formatting Issues" %}</strong> - {% trans "Verify template settings and field mappings" %}</li>
+                    <li><strong>{% trans "Scheduled Report Failures" %}</strong> - {% trans "Check email settings and recipient addresses" %}</li>
+                </ul>
+            </div>
+
+            <div class="help-subsection">
+                <h3>{% trans "Performance Optimization" %}</h3>
+                <ul>
+                    <li>{% trans "Use specific date ranges instead of 'all time'" %}</li>
+                    <li>{% trans "Apply filters to reduce data volume" %}</li>
+                    <li>{% trans "Schedule large reports during off-peak hours" %}</li>
+                    <li>{% trans "Consider using summary reports for regular monitoring" %}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="help-actions">
+    <a href="{% url 'admin:reporting_report_changelist' %}" class="btn btn-primary">
+        <i class="icon-report"></i> {% trans "View Reports" %}
+    </a>
+    <a href="{% url 'admin:reporting_reporttemplate_changelist' %}" class="btn btn-secondary">
+        <i class="icon-template"></i> {% trans "Manage Templates" %}
+    </a>
+    <a href="{% url 'admin:reporting_reportschedule_changelist' %}" class="btn btn-secondary">
+        <i class="icon-schedule"></i> {% trans "Scheduled Reports" %}
+    </a>
+</div>
+{% endblock %} 

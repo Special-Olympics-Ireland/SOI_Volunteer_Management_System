@@ -1,0 +1,336 @@
+{% extends 'volunteers/eoi/base.html' %}
+{% load i18n %}
+
+{% block title %}Start Your Application - ISG 2026 Volunteer Registration{% endblock %}
+
+{% block extra_css %}
+<style>
+    .volunteer-type-card {
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: white;
+    }
+    
+    .volunteer-type-card:hover {
+        border-color: var(--soi-light-green);
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .volunteer-type-card.selected {
+        border-color: var(--soi-green);
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(76, 175, 80, 0.1));
+    }
+    
+    .volunteer-type-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--soi-green), var(--soi-light-green));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    .volunteer-type-title {
+        color: var(--soi-green);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .volunteer-type-description {
+        color: #6c757d;
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    .welcome-section {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(76, 175, 80, 0.05));
+        border-radius: 15px;
+    }
+    
+    .welcome-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--soi-green), var(--soi-light-green));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .benefits-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .benefit-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--soi-light-green);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <div class="welcome-icon">
+            <i class="fas fa-hands-helping"></i>
+        </div>
+        <h2>{% trans "Welcome to ISG 2026 Volunteer Registration" %}</h2>
+        <p class="lead">{% trans "Join us in creating an unforgettable Island Games experience. Your contribution will help make this event truly special for athletes and spectators alike." %}</p>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <h3 class="mb-4">{% trans "What type of volunteer are you?" %}</h3>
+            <p class="text-muted mb-4">{% trans "Please select the category that best describes your volunteer application. This helps us tailor the registration process to your needs." %}</p>
+            
+            <form method="post" id="volunteer-type-form">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="volunteer-type-card" data-value="NEW_VOLUNTEER">
+                            <div class="volunteer-type-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <h5 class="volunteer-type-title">{% trans "New Volunteer" %}</h5>
+                            <p class="volunteer-type-description">
+                                {% trans "First time volunteering at a major sporting event. Perfect for those looking to start their volunteering journey with us." %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="volunteer-type-card" data-value="RETURNING_VOLUNTEER">
+                            <div class="volunteer-type-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <h5 class="volunteer-type-title">{% trans "Returning Volunteer" %}</h5>
+                            <p class="volunteer-type-description">
+                                {% trans "Previously volunteered at sporting events or with our organization. We value your experience and dedication." %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="volunteer-type-card" data-value="CORPORATE_VOLUNTEER">
+                            <div class="volunteer-type-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <h5 class="volunteer-type-title">{% trans "Corporate Volunteer" %}</h5>
+                            <p class="volunteer-type-description">
+                                {% trans "Volunteering as part of a corporate or organizational group. Great for team building and community engagement." %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="volunteer-type-card" data-value="STUDENT_VOLUNTEER">
+                            <div class="volunteer-type-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h5 class="volunteer-type-title">{% trans "Student Volunteer" %}</h5>
+                            <p class="volunteer-type-description">
+                                {% trans "Currently enrolled as a student. Gain valuable experience while contributing to a major sporting event." %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="volunteer-type-card" data-value="FAMILY_VOLUNTEER">
+                            <div class="volunteer-type-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h5 class="volunteer-type-title">{% trans "Family Volunteer" %}</h5>
+                            <p class="volunteer-type-description">
+                                {% trans "Volunteering with family members. Create lasting memories while serving your community together." %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="volunteer-type-card" data-value="SPECIALIST_VOLUNTEER">
+                            <div class="volunteer-type-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h5 class="volunteer-type-title">{% trans "Specialist Volunteer" %}</h5>
+                            <p class="volunteer-type-description">
+                                {% trans "Professional with specialized skills (medical, technical, etc.). Your expertise is invaluable to our success." %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden form field -->
+                <input type="hidden" name="volunteer_type" id="volunteer_type" value="">
+                
+                <!-- Form Errors -->
+                {% if form.volunteer_type.errors %}
+                    <div class="alert alert-danger mt-3">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>{% trans "Please select a volunteer type" %}</h6>
+                        {{ form.volunteer_type.errors.0 }}
+                    </div>
+                {% endif %}
+                
+                <!-- Submit Button -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg" id="continue-btn" disabled>
+                        {% trans "Continue Registration" %}<i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Benefits Section -->
+            <div class="benefits-section">
+                <h4 class="mb-3">{% trans "Why Volunteer with ISG 2026?" %}</h4>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div>
+                        <strong>{% trans "Official Recognition" %}</strong><br>
+                        <small class="text-muted">{% trans "Receive official volunteer certificates and references" %}</small>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <div>
+                        <strong>{% trans "Volunteer Kit" %}</strong><br>
+                        <small class="text-muted">{% trans "Official uniform, meals, and volunteer merchandise" %}</small>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <strong>{% trans "Meet New People" %}</strong><br>
+                        <small class="text-muted">{% trans "Connect with like-minded volunteers from across the islands" %}</small>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div>
+                        <strong>{% trans "Behind the Scenes" %}</strong><br>
+                        <small class="text-muted">{% trans "Experience the Games from a unique perspective" %}</small>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div>
+                        <strong>{% trans "Make a Difference" %}</strong><br>
+                        <small class="text-muted">{% trans "Contribute to the success of this historic event" %}</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="benefits-section mt-3">
+                <h5>{% trans "Need Help?" %}</h5>
+                <p class="mb-2">
+                    <i class="fas fa-envelope text-success me-2"></i>
+                    <a href="mailto:volunteers@isg2026.ie">volunteers@isg2026.ie</a>
+                </p>
+                <p class="mb-0">
+                    <i class="fas fa-phone text-success me-2"></i>
+                    <a href="tel:+35312345678">+353 1 234 5678</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.volunteer-type-card');
+    const hiddenInput = document.getElementById('volunteer_type');
+    const continueBtn = document.getElementById('continue-btn');
+    
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            cards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            this.classList.add('selected');
+            
+            // Set the hidden input value
+            const value = this.getAttribute('data-value');
+            hiddenInput.value = value;
+            
+            // Enable the continue button
+            continueBtn.disabled = false;
+            continueBtn.classList.add('pulse');
+            
+            // Remove pulse animation after a short delay
+            setTimeout(() => {
+                continueBtn.classList.remove('pulse');
+            }, 1000);
+        });
+    });
+    
+    // Add pulse animation CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        .pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>
+{% endblock %} 

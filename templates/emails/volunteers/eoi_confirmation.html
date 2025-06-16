@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EOI Confirmation - ISG 2026</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .email-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            margin: 10px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px 20px;
+        }
+        
+        .success-badge {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .reference-box {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .reference-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .reference-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2e7d32;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-title {
+            color: #2e7d32;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .info-item {
+            margin-bottom: 10px;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .next-steps {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .step-number {
+            background: #2e7d32;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+        
+        .contact-info {
+            background: #e3f2fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .footer {
+            background: #2e7d32;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #81c784;
+            text-decoration: none;
+        }
+        
+        .social-links {
+            margin: 15px 0;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #81c784;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+            
+            .reference-number {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Application Submitted Successfully!</h1>
+            <p>Thank you for your interest in volunteering for ISG 2026</p>
+        </div>
+        
+        <div class="content">
+            <div class="success-badge">
+                ✓ Application Received
+            </div>
+            
+            <p>Dear {{ volunteer_name }},</p>
+            
+            <p>Thank you for submitting your Expression of Interest to volunteer for the <strong>Island Sports Games 2026</strong>. Your application has been successfully received and is now under review.</p>
+            
+            <div class="reference-box">
+                <div class="reference-label">Application Reference Number</div>
+                <div class="reference-number">{{ reference_number }}</div>
+            </div>
+            
+            <p><strong>Please save this reference number</strong> for your records. You will need it for any future correspondence regarding your application.</p>
+            
+            <div class="info-section">
+                <div class="info-title">Application Summary</div>
+                <div class="info-item">
+                    <span class="info-label">Volunteer Type:</span> {{ volunteer_type }}
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Submission Date:</span> {{ submission_date }}
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Application Status:</span> Under Review
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Completion:</span> {{ completion_percentage }}%
+                </div>
+            </div>
+            
+            <div class="next-steps">
+                <h3 style="color: #856404; margin-top: 0;">What Happens Next?</h3>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Application Review</div>
+                        <p>Our volunteer management team will review your application and preferences to find the best match for your skills and interests.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Background Check</div>
+                        <p>If your application is approved, we will conduct a background check as required for all volunteers working with the Games.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Training & Orientation</div>
+                        <p>You'll receive comprehensive training specific to your role, including general volunteer orientation and specialized training if required.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Role Assignment</div>
+                        <p>Based on your preferences and our needs, you'll be assigned to specific roles and venues during the Games.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; padding: 15px; margin: 20px 0;">
+                <h4 style="color: #155724; margin-top: 0;">Timeline</h4>
+                <p style="margin-bottom: 0; color: #155724;">We will review your application within <strong>2-3 weeks</strong> and contact you via email with the next steps.</p>
+            </div>
+            
+            <div class="contact-info">
+                <h4 style="color: #1565c0; margin-top: 0;">Questions or Need Help?</h4>
+                <p><strong>Email:</strong> volunteers@isg2026.ie</p>
+                <p><strong>Phone:</strong> +353 1 234 5678</p>
+                <p><strong>Hours:</strong> Monday-Friday, 9:00 AM - 5:00 PM</p>
+                <p style="margin-bottom: 0;"><strong>Website:</strong> <a href="https://www.isg2026.ie" style="color: #1565c0;">www.isg2026.ie</a></p>
+            </div>
+            
+            <p>We're excited about the possibility of having you join our volunteer team and help make ISG 2026 an unforgettable experience for athletes and spectators alike.</p>
+            
+            <p>Thank you again for your interest in volunteering!</p>
+            
+            <p>Best regards,<br>
+            <strong>The ISG 2026 Volunteer Team</strong></p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Island Sports Games 2026</strong></p>
+            <p>Ireland's Premier Multi-Sport Event</p>
+            
+            <div class="social-links">
+                <a href="#">Facebook</a> |
+                <a href="#">Twitter</a> |
+                <a href="#">Instagram</a> |
+                <a href="#">LinkedIn</a>
+            </div>
+            
+            <p style="font-size: 12px; opacity: 0.8; margin-bottom: 0;">
+                This email was sent to {{ email_address }}. If you have any questions, please contact us at volunteers@isg2026.ie
+            </p>
+        </div>
+    </div>
+</body>
+</html> 

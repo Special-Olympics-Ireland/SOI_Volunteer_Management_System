@@ -1,0 +1,86 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% load theme_tags %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('SOI Hub Administration') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'admin/img/soi-logo.png' %}" alt="SOI Logo" style="height: 40px; margin-right: 10px; vertical-align: middle;">
+        SOI Hub Admin
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}
+<div style="float: right; margin-top: 10px;">
+    <a href="{% url 'help:index' %}" style="color: white; text-decoration: none; margin-right: 15px; padding: 5px 10px; background: rgba(255,255,255,0.2); border-radius: 4px;">
+        📚 Help
+    </a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'admin:logout' %}" style="color: white; text-decoration: none;">
+            Logout {{ user.username }}
+        </a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/soi-admin.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/soi-admin-theme.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/mobile-responsive.css' %}?v={% now 'U' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SOI Hub - ISG 2026 Volunteer Management System Administration">
+    <link rel="icon" type="image/x-icon" href="{% static 'admin/img/soi-favicon.ico' %}">
+    
+    {# Dynamic Theme CSS #}
+    {% theme_css %}
+{% endblock %}
+
+{% block footer %}
+<div style="background: #f8f9fa; border-top: 1px solid #e0e0e0; padding: 2rem 0; margin-top: 4rem; text-align: center; color: #666; font-size: 0.9rem;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <p style="margin: 0;">SOI Hub - ISG 2026 Volunteer Management System</p>
+        <p style="margin: 0.5rem 0 0 0;">© {% now "Y" %} Special Olympics Ireland</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+    {{ block.super }}
+    <script>
+        // Simple admin enhancements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add loading states to forms
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function() {
+                    const submitBtn = form.querySelector('input[type="submit"], button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.style.opacity = '0.7';
+                        submitBtn.disabled = true;
+                        const originalText = submitBtn.value || submitBtn.textContent;
+                        if (submitBtn.tagName === 'INPUT') {
+                            submitBtn.value = 'Saving...';
+                        } else {
+                            submitBtn.textContent = 'Saving...';
+                        }
+                    }
+                });
+            });
+            
+            // Auto-hide messages after 5 seconds
+            const messages = document.querySelectorAll('.messagelist li');
+            messages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    setTimeout(() => {
+                        message.remove();
+                    }, 300);
+                }, 5000);
+            });
+        });
+    </script>
+{% endblock %}

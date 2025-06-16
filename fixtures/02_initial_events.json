@@ -1,0 +1,151 @@
+[
+  {
+    "model": "events.event",
+    "pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "fields": {
+      "name": "ISG 2026 - International Special Olympics Games",
+      "slug": "isg-2026",
+      "short_name": "ISG 2026",
+      "description": "The International Special Olympics Games 2026 will be held in Ireland, bringing together athletes from around the world to compete in various sports.",
+      "tagline": "Together We Rise",
+      "event_type": "INTERNATIONAL_GAMES",
+      "status": "PLANNING",
+      "start_date": "2026-06-15",
+      "end_date": "2026-06-22",
+      "registration_open_date": "2025-01-01T00:00:00Z",
+      "registration_close_date": "2026-03-31T23:59:59Z",
+      "host_city": "Dublin",
+      "host_country": "Ireland",
+      "timezone": "Europe/Dublin",
+      "volunteer_target": 10000,
+      "volunteer_minimum_age": 15,
+      "is_public": true,
+      "is_featured": true,
+      "is_active": true,
+      "event_configuration": {
+        "timezone": "Europe/Dublin",
+        "currency": "EUR",
+        "languages": ["en", "ga"],
+        "contact_email": "volunteers@isg2026.ie",
+        "website": "https://isg2026.ie"
+      },
+      "volunteer_configuration": {
+        "allow_self_registration": true,
+        "require_background_check": true,
+        "require_training": true,
+        "allow_group_registration": true,
+        "max_roles_per_volunteer": 3
+      },
+      "venue_configuration": {
+        "default_capacity": 1000,
+        "require_accessibility_info": true,
+        "allow_venue_changes": true
+      },
+      "role_configuration": {
+        "allow_role_preferences": true,
+        "require_skill_assessment": false,
+        "allow_schedule_conflicts": false
+      },
+      "features_enabled": {
+        "volunteer_portal": true,
+        "mobile_app": true,
+        "real_time_updates": true,
+        "photo_uploads": true,
+        "task_management": true,
+        "reporting": true
+      },
+      "integrations_config": {
+        "justgo_enabled": true,
+        "email_service": "sendgrid",
+        "sms_service": "twilio",
+        "analytics": "google_analytics"
+      },
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "fields": {
+      "name": "National Games Ireland 2025",
+      "slug": "national-games-2025",
+      "short_name": "NG 2025",
+      "description": "The National Special Olympics Games for Ireland, featuring athletes from across the country.",
+      "tagline": "Ireland United in Sport",
+      "event_type": "NATIONAL_GAMES",
+      "status": "REGISTRATION_OPEN",
+      "start_date": "2025-06-10",
+      "end_date": "2025-06-13",
+      "registration_open_date": "2024-12-01T00:00:00Z",
+      "registration_close_date": "2025-04-30T23:59:59Z",
+      "host_city": "Cork",
+      "host_country": "Ireland",
+      "timezone": "Europe/Dublin",
+      "volunteer_target": 2500,
+      "volunteer_minimum_age": 16,
+      "is_public": true,
+      "is_featured": true,
+      "is_active": true,
+      "event_configuration": {
+        "timezone": "Europe/Dublin",
+        "currency": "EUR",
+        "languages": ["en", "ga"],
+        "contact_email": "volunteers@ng2025.ie",
+        "website": "https://ng2025.ie"
+      },
+      "volunteer_configuration": {
+        "allow_self_registration": true,
+        "require_background_check": true,
+        "require_training": true,
+        "allow_group_registration": true,
+        "max_roles_per_volunteer": 2
+      },
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+    "fields": {
+      "name": "Training Event - Volunteer Orientation",
+      "slug": "volunteer-orientation-2024",
+      "short_name": "Vol Orientation",
+      "description": "Comprehensive training event for new volunteers to learn about Special Olympics and their roles.",
+      "tagline": "Preparing Our Champions",
+      "event_type": "TRAINING_EVENT",
+      "status": "ACTIVE",
+      "start_date": "2024-12-15",
+      "end_date": "2024-12-15",
+      "registration_open_date": "2024-11-01T00:00:00Z",
+      "registration_close_date": "2024-12-10T17:00:00Z",
+      "host_city": "Dublin",
+      "host_country": "Ireland",
+      "timezone": "Europe/Dublin",
+      "volunteer_target": 200,
+      "volunteer_minimum_age": 15,
+      "is_public": true,
+      "is_featured": false,
+      "is_active": true,
+      "event_configuration": {
+        "timezone": "Europe/Dublin",
+        "currency": "EUR",
+        "languages": ["en"],
+        "contact_email": "training@soi.ie"
+      },
+      "volunteer_configuration": {
+        "allow_self_registration": true,
+        "require_background_check": false,
+        "require_training": false,
+        "allow_group_registration": false,
+        "max_roles_per_volunteer": 1
+      },
+      "created_by_id": "11111111-1111-1111-1111-111111111111",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  }
+] 
