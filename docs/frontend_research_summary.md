@@ -139,37 +139,35 @@ We conducted extensive research evaluating 40+ frontend technologies for the SOI
 | Offline Support | 9/10 | 7/10 | React more mature here |
 | Cost (Long-term) | 7/10 | 9/10 | Flutter cheaper to maintain |
 
-## 🎯 Our Recommendation
+## 🎯 Our Decision: Flutter Selected! ✅
 
-### Primary Recommendation: React + React Native
+### **DECISION MADE**: Flutter Chosen for SOI Volunteer Management System
 
-**Why We Chose This:**
-1. **Talent**: Easier to hire React developers in Ireland
-2. **Ecosystem**: Best libraries for complex requirements
-3. **Proven**: Less risk for mission-critical system
-4. **Flexibility**: Can optimize web and mobile separately
-5. **Support**: Massive community for problem-solving
+After comprehensive evaluation of 40+ technologies, **Flutter has been selected** as the frontend framework for the SOI Volunteer Management System.
 
-**Implementation Approach:**
-- Start with React web app
-- Share components/logic with React Native
-- Use React Native Web for more code sharing
-- Progressive enhancement for features
-
-### Alternative Recommendation: Flutter
-
-**When to Choose Flutter Instead:**
-1. Team is starting fresh (no React experience)
-2. Timeline is extremely tight (save 2-4 weeks)
-3. Consistency is more important than flexibility
-4. Budget is very constrained (lower maintenance)
-5. Team is small and needs to stay small
+**Why Flutter Won:**
+1. **Single Codebase**: 95% code reuse across all platforms
+2. **Development Speed**: 2-4 weeks faster delivery
+3. **Performance**: Native compilation, smooth 60 FPS
+4. **Consistency**: Identical experience on all devices
+5. **Timeline Fit**: Perfect for ISG 2026 deadline
 
 **Implementation Approach:**
-- Single codebase for all platforms
-- Focus on mobile experience first
-- Optimize web experience where needed
-- Leverage hot reload for rapid development
+- Single codebase for iOS, Android, and Web
+- Mobile-first development approach
+- Progressive enhancement for web features
+- Leverage hot reload for rapid iteration
+
+### Why Not React + React Native?
+
+While React+RN scored highly (8.2-8.6/10), Flutter's advantages proved decisive:
+- **Single codebase** vs two separate codebases
+- **Faster development** crucial for timeline
+- **Lower maintenance** important for non-profit budget
+- **Better consistency** across all platforms
+- **Simpler architecture** reduces complexity
+
+The talent pool concern was addressed by Dart's ease of learning and growing Flutter community.
 
 ## 🚀 Hybrid Strategy (Best of Both Worlds)
 
